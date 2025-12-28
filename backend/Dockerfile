@@ -23,7 +23,7 @@ COPY . .
 # 6. Install dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# 7. Omeo alalana ny folder storage sy cache
+# 7. Permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 # 8. Configure Apache document root
@@ -31,10 +31,10 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
-# 9. MANERY AN'I APACHE HAMAKY NY PORT OMEN'I RENDER (TENA ILAY IZAO)
-RUN sed -i 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf
-RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:${PORT}>/g' /etc/apache2/sites-available/000-default.conf
+# 9. Force Apache to listen on port 10000
+RUN sed -i 's/Listen 80/Listen 10000/g' /etc/apache2/ports.conf
+RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:10000>/g' /etc/apache2/sites-available/000-default.conf
 
-# 10. Start Migration sy Apache
-# Ampiasaina ny "sh -c" mba hahafahan'ny Docker mamaky ny variable $PORT
-CMD sh -c "php artisan migrate --force && apache2-foreground"
+# 10. Start Migration and Apache
+EXPOSE 10000
+CMD php artisan migrate --force && apache2-foreground
