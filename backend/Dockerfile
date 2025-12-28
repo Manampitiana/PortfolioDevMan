@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     && docker-php-ext-install pdo pdo_pgsql
 
-# 2. Ampidiro ny Apache mod_rewrite
+# 2. Apache mod_rewrite
 RUN a2enmod rewrite
 
 # 3. Set working directory
@@ -31,8 +31,10 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
-# 9. Expose port 80
-EXPOSE 80
+# 9. MANERY AN'I APACHE HAMAKY NY PORT OMEN'I RENDER (TENA ILAY IZAO)
+RUN sed -i 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf
+RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:${PORT}>/g' /etc/apache2/sites-available/000-default.conf
 
-# 10. Start Migration sy Apache (Andalana iray mba hialana amin'ny 502 error)
-CMD php artisan migrate --force && apache2-foreground
+# 10. Start Migration sy Apache
+# Ampiasaina ny "sh -c" mba hahafahan'ny Docker mamaky ny variable $PORT
+CMD sh -c "php artisan migrate --force && apache2-foreground"
