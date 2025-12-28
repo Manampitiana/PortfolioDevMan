@@ -1,6 +1,6 @@
 FROM php:8.2-apache
 
-# 1. Install system dependencies
+# 1. Mametraka ny fitaovana ilaina (System dependencies)
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     unzip \
@@ -8,33 +8,37 @@ RUN apt-get update && apt-get install -y \
     curl \
     && docker-php-ext-install pdo pdo_pgsql
 
-# 2. Apache mod_rewrite
+# 2. Ampidiro ny Apache mod_rewrite (ilaina amin'ny Laravel routes)
 RUN a2enmod rewrite
 
-# 3. Set working directory
+# 3. Faritana ny toerana hiasana
 WORKDIR /var/www/html
 
-# 4. Install composer
+# 4. Mametraka ny Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 5. Copy project files
+# 5. Adikao ny rakitra rehetra avy amin'ny solosainao
 COPY . .
 
-# 6. Install dependencies
+# 6. Mametraka ny Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# 7. Permissions
+# 7. Omeo alalana ny folder storage sy cache (Permissions)
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# 8. Configure Apache document root
+# 8. Configure Apache Document Root ho any amin'ny /public
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
-# 9. Force Apache to listen on port 10000
-RUN sed -i 's/Listen 80/Listen 10000/g' /etc/apache2/ports.conf
-RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:10000>/g' /etc/apache2/sites-available/000-default.conf
+# 9. MANERY AN'I APACHE HAMAKY NY PORT OMEN'I RENDER (TENA ILAY IZAO)
+# Ity baiko ity dia manolo ny "80" ho lasa "$PORT" ao amin'ny config an'ny Apache
+RUN sed -i 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf
+RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:${PORT}>/g' /etc/apache2/sites-available/000-default.conf
 
-# 10. Start Migration and Apache
+# 10. Mamoaka ny port 10000 (standard ao amin'ny Render)
 EXPOSE 10000
-CMD php artisan migrate --force && apache2-foreground
+
+# 11. Manomboka ny Migration sy ny Apache
+# Ampiasaina ny "sh -c" mba hahafahan'ny Docker mamaky ny variable $PORT amin'ny fotoana hanombohany
+CMD sh -c "php artisan migrate --force && apache2-foreground"
