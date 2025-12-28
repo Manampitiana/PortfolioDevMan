@@ -18,8 +18,13 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => AdminMiddleware::class,
         ]);
 
-       // Register global middleware
-       $middleware->prepend(CorsMiddleware::class);
+        // Register global middleware
+        $middleware->prepend(CorsMiddleware::class);
+
+        $middleware->statefulApi(); // Raha mampiasa Sanctum ianao
+        $middleware->validateCsrfTokens(except: [
+            // Ampidiro eto ny lalana tsy mila CSRF raha ilaina
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
