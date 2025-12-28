@@ -30,8 +30,8 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# 9. Omeo alalana handeha ny start.sh
-RUN chmod +x start.sh
+# 9. Omeo alalana handeha ny entrypoint.sh
+RUN chmod +x entrypoint.sh
 
 # 10. Start server mampiasa ny script
 CMD ["./entrypoint.sh"]
