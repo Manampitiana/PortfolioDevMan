@@ -24,16 +24,14 @@ RUN composer install --no-dev --optimize-autoloader
 RUN chown -R www-data:www-data storage bootstrap/cache && \
     chmod -R 775 storage bootstrap/cache
 
-# 8. Apache config
+# 8. Apache document root config
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# 9. MANERY AN'I APACHE HAMAKY NY PORT (FORCE)
-# Ampiasaintsika ny ports.conf sy 000-default.conf
-RUN sed -i 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf
-RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:${PORT}>/g' /etc/apache2/sites-available/000-default.conf
+# 9. Omeo alalana handeha ny start.sh
+RUN chmod +x start.sh
 
-# 10. Start script
-CMD php artisan migrate --force && apache2-foreground
+# 10. Start server mampiasa ny script
+CMD ["./entrypoint.sh"]

@@ -1,9 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
-# 1. Miandry kely ny DB ho vonona (optionnel)
-echo "Running migrations..."
+# 1. Ovaina ny port an'ny Apache ho lasa izay omen'ny Render ($PORT)
+sed -i "s/80/${PORT}/g" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
+
+# 2. Alefaso ny migration
 php artisan migrate --force
 
-# 2. Manomboka ny Apache ao amin'ny foreground
-echo "Starting Apache..."
-exec apache2-foreground
+# 3. Alefaso ny Apache
+apache2-foreground
