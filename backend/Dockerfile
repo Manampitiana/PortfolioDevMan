@@ -33,11 +33,11 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.
 
 # 9. MANERY AN'I APACHE HAMAKY NY PORT OMEN'I RENDER (TENA ILAY IZAO)
 # Ity baiko ity dia manolo ny "80" ho lasa "$PORT" ao amin'ny config an'ny Apache
-RUN sed -i 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf
-RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:${PORT}>/g' /etc/apache2/sites-available/000-default.conf
+RUN sed -i 's/Listen 10000/Listen 80/g' /etc/apache2/ports.conf && \
+RUN sed -i 's/:10000/:80/g' /etc/apache2/sites-available/000-default.conf
 
 # 10. Mamoaka ny port 10000 (standard ao amin'ny Render)
-EXPOSE 10000
+EXPOSE 80
 
 # 11. Manomboka ny Migration sy ny Apache
 # Ampiasaina ny "sh -c" mba hahafahan'ny Docker mamaky ny variable $PORT amin'ny fotoana hanombohany
