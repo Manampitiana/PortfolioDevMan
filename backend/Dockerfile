@@ -1,7 +1,7 @@
 # 1️⃣ Base image
 FROM php:8.2-apache
 
-# 2️⃣ Install system dependencies sy PHP extensions ilaina
+# 2️⃣ Install system dependencies & PHP extensions
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     unzip \
@@ -33,7 +33,7 @@ COPY . .
 # 8️⃣ Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# 9️⃣ Setup permissions for storage & cache (Render free container)
+# 9️⃣ Setup permissions for storage & cache
 RUN mkdir -p \
     storage/framework/cache \
     storage/framework/sessions \
@@ -42,20 +42,23 @@ RUN mkdir -p \
  && chown -R www-data:www-data storage bootstrap/cache \
  && chmod -R 777 storage bootstrap/cache
 
-# 10️⃣ Configure Apache DocumentRoot
+# 🔹 Configure Apache DocumentRoot
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
  && sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# 11️⃣ Expose port
-EXPOSE 10000
+# 🔹 Change listening port to match Render
 ENV PORT=10000
 RUN sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf \
  && sed -i "s/<VirtualHost \\*:80>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-available/000-default.conf
 
-# 12️⃣ Startup command: migrate, clear cache, start Apache
-CMD php artisan config:clear \
+EXPOSE ${PORT}
+
+# 10️⃣ Run Laravel commands and start Apache
+# Note: ENV variables from Render will be automatically injected
+CMD php artisan key:generate --force \
+ && php artisan config:clear \
  && php artisan route:clear \
  && php artisan view:clear \
  && php artisan migrate --force \
