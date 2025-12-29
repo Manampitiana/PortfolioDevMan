@@ -37,9 +37,12 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# 9. Faritana ny Port hivoahan'ny serasera
-EXPOSE 80
+# Render uses dynamic PORT
+ENV PORT=10000
 
-# 10. Manomboka ny Migration sy ny Apache
-# Ny "apache2-foreground" no mitazona ny container ho velona
+RUN sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf \
+ && sed -i "s/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-available/000-default.conf
+
+EXPOSE 10000
+
 CMD php artisan migrate --force && apache2-foreground
