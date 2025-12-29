@@ -60,5 +60,5 @@ CMD php artisan key:generate --force || true \
  && php artisan route:clear || true \
  && php artisan view:clear || true \
  && php artisan migrate --force || true \
- && php artisan db:seed --class=AdminSeeder --force\
+ && php artisan db:seed --class=AdminSeeder --force
  && apache2-foreground
