@@ -57,8 +57,7 @@ EXPOSE ${PORT}
 
 # 10️⃣ Run Laravel commands and start Apache
 # Note: ENV variables from Render will be automatically injected
-CMD php artisan key:generate --force \
- && php artisan config:clear \
+CMD php artisan config:clear \
  && php artisan route:clear \
  && php artisan view:clear \
  && php artisan migrate --force \
