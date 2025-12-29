@@ -67,7 +67,7 @@ export default function AdminSkills() {
             {skills.map((skill, index) => (
               <tr key={index} className="border-t border-gray-700">
                 <td className="px-4 py-3">
-                  <img src={`http://localhost:8000/storage/${skill.logo}`} alt={skill.name} className='w-12 h-12 object-cover' />
+                  <img src={`https://portfolio-backend-58gy.onrender.com/storage/${skill.logo}`} alt={skill.name} className='w-12 h-12 object-cover' />
                 </td>
                 <td className="px-4 py-3">{skill.name}</td>
                 <td className="px-4 py-3">{skill.category}</td>

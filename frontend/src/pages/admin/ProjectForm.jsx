@@ -242,7 +242,7 @@ export default function ProjectForm() {
         {existingGallery.length > 0 && (
           <div className="flex gap-2 mt-2 flex-wrap">
             {existingGallery.map((file, idx) => (
-              <img key={idx} src={`http://localhost:8000/storage/${file}`} alt={`Gallery ${idx}`} className="h-16 w-16 object-cover rounded" />
+              <img key={idx} src={`https://portfolio-backend-58gy.onrender.com/storage/${file}`} alt={`Gallery ${idx}`} className="h-16 w-16 object-cover rounded" />
             ))}
           </div>
         )}
@@ -268,7 +268,7 @@ export default function ProjectForm() {
           {form.cover_image ? (
             <span className="text-sm text-green-400">{form.cover_image.name}</span>
           ) : existingCover ? (
-            <img src={`http://localhost:8000/storage/${existingCover}`} alt="Existing Cover" className="h-16 w-16 object-cover rounded" />
+            <img src={`https://portfolio-backend-58gy.onrender.com/storage/${existingCover}`} alt="Existing Cover" className="h-16 w-16 object-cover rounded" />
           ) : null}
         </div>
       </div>

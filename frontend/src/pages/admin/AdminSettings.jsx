@@ -111,7 +111,7 @@ export default function AdminSettings() {
               {previews.logo ? (
                 <img src={previews.logo} alt="Preview" className="w-full h-full object-cover" />
               ) : form.logo ? (
-                <img src={`http://localhost:8000/storage/${form.logo}`} alt="Current" className="w-full h-full object-cover" />
+                <img src={`https://portfolio-backend-58gy.onrender.com/storage/${form.logo}`} alt="Current" className="w-full h-full object-cover" />
               ) : (
                 <span className="text-gray-500 text-[10px]">No Logo</span>
               )}
@@ -134,7 +134,7 @@ export default function AdminSettings() {
               {previews.favicon ? (
                 <img src={previews.favicon} alt="Preview" className="w-full h-full object-cover" />
               ) : form.favicon ? (
-                <img src={`http://localhost:8000/storage/${form.favicon}`} alt="Current" className="w-full h-full object-cover" />
+                <img src={`https://portfolio-backend-58gy.onrender.com/storage/${form.favicon}`} alt="Current" className="w-full h-full object-cover" />
               ) : (
                 <span className="text-gray-500 text-[8px]">No Icon</span>
               )}

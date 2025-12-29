@@ -140,7 +140,7 @@ export default function SkillsForm({ initialData = null }) {
                             />
                         ) : existingLogo ? (
                             <img
-                                src={`http://localhost:8000/storage/${existingLogo}`}
+                                src={`https://portfolio-backend-58gy.onrender.com/storage/${existingLogo}`}
                                 alt="Current Logo"
                                 className="mt-3 h-16 w-16 p-2 object-contain rounded bg-gray-900"
                             />
