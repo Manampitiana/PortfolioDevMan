@@ -1,6 +1,5 @@
 FROM php:8.2-apache
 
-# System deps
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     unzip \
@@ -11,32 +10,29 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     && docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
-# Enable apache rewrite
 RUN a2enmod rewrite
 
-# Set working dir
 WORKDIR /var/www/html
 
-# Install composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Copy project
 COPY . .
 
-# Install dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Storage permissions
-RUN mkdir -p storage/framework/{sessions,views,cache} \
+# Permissions (IMPORTANT)
+RUN mkdir -p \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    bootstrap/cache \
  && chown -R www-data:www-data storage bootstrap/cache \
- && chmod -R 775 storage bootstrap/cache
+ && chmod -R 777 storage bootstrap/cache
 
-# Apache document root → public
+# Apache config
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
  && sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
-# Fix ServerName warning
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Render dynamic port
@@ -46,11 +42,10 @@ RUN sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf \
 
 EXPOSE 10000
 
-# Start app
 CMD php artisan key:generate --force || true \
- && php artisan config:clear \
- && php artisan cache:clear \
- && php artisan route:clear \
- && php artisan view:clear \
+ && php artisan config:clear || true \
+ && php artisan cache:clear || true \
+ && php artisan route:clear || true \
+ && php artisan view:clear || true \
  && php artisan migrate --force || true \
  && apache2-foreground
