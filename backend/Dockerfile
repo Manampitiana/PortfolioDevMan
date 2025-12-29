@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
-    && docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
+ && docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
 # 3️⃣ Enable Apache rewrite
 RUN a2enmod rewrite
@@ -55,11 +55,11 @@ RUN sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf \
 
 EXPOSE ${PORT}
 
-# 10️⃣ Run Laravel commands and start Apache
-# Note: ENV variables from Render will be automatically injected
+# 🔹 Run Laravel commands, create storage symlink, migrate & seed DB, start Apache
 CMD php artisan config:clear \
  && php artisan route:clear \
  && php artisan view:clear \
+ && php artisan storage:link || true \
  && php artisan migrate --force \
  && php artisan db:seed --class=AdminSeeder --force \
  && apache2-foreground
