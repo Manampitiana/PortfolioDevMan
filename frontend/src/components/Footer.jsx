@@ -49,13 +49,13 @@ export default function Footer() {
                 <div className="w-9 h-9 overflow-hidden bg-gradient-to-tr from-blue-600 to-indigo-500 rounded flex items-center justify-center mr-3 shadow-lg shadow-blue-500/20 group-hover:rotate-6 transition-transform">
                   {settings?.logo ? (
                     <img
-                      src={`http://localhost:8000/storage/${settings.logo}`}
+                      src={`https://portfolio-backend-58gy.onrender.com/storage/${settings.logo}`}
                       className="w-full h-full object-contain"
                       alt="Logo"
                     />
                   ) : settings?.favicon ? (
                     <img
-                      src={`http://localhost:8000/storage/${settings.favicon}`}
+                      src={`https://portfolio-backend-58gy.onrender.com/storage/${settings.favicon}`}
                       className="w-full h-full object-contain p-1"
                       alt="Favicon"
                     />

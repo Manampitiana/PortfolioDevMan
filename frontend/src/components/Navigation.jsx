@@ -29,13 +29,13 @@ export default function Navigation() {
 
               {settings?.logo ? (
                 <img
-                  src={`http://localhost:8000/storage/${settings.logo}`}
+                  src={`https://portfolio-backend-58gy.onrender.com/storage/${settings.logo}`}
                   className="w-full h-full object-contain"
                   alt="Logo du site"
                 />
               ) : settings?.favicon ? (
                 <img
-                  src={`http://localhost:8000/storage/${settings.favicon}`}
+                  src={`https://portfolio-backend-58gy.onrender.com/storage/${settings.favicon}`}
                   className="w-full h-full object-contain p-1"
                   alt="Favicon utilisée comme logo"
                 />

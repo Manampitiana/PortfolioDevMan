@@ -213,7 +213,7 @@ export default function Home() {
                 >
                   <div className="flex items-center mb-4">
                     <img
-                      src={`http://localhost:8000/storage/${skill.logo}`}
+                      src={`https://portfolio-backend-58gy.onrender.com/storage/${skill.logo}`}
                       alt={skill.name}
                       className="w-8 h-8 object-cover mr-2"
                     />
@@ -288,7 +288,7 @@ export default function Home() {
               >
                 <div className="relative overflow-hidden">
                   <motion.img
-                    src={`http://localhost:8000/storage/${project.cover_image}`}
+                    src={`https://portfolio-backend-58gy.onrender.com/storage/${project.cover_image}`}
                     alt={project.title}
                     className='w-full h-48 object-cover'
                     whileHover={{ scale: 1.1 }}

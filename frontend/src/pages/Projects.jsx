@@ -88,7 +88,7 @@ export default function Projects() {
                   <div key={project.id} className="group bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm rounded-xl border border-gray-400 dark:border-gray-700 overflow-hidden hover:border-cyan-500/50 transition-all duration-300 hover:transform hover:-translate-y-2">
                     <div className="relative overflow-hidden">
                       <div className="w-full h-48 bg-[var(--theme-color)] flex items-center justify-center">
-                        <img src={`http://localhost:8000/storage/${project.cover_image}`} alt={project.title} className='w-full h-full object-cover'/>
+                        <img src={`https://portfolio-backend-58gy.onrender.com/storage/${project.cover_image}`} alt={project.title} className='w-full h-full object-cover'/>
                       </div>
                       <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
                         <Link to={project.project_url} onClick={() => incrementView(project.id)} className="p-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors">
@@ -145,7 +145,7 @@ export default function Projects() {
                   <div key={project.id} className="group bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm rounded-xl border dark:border-gray-700 border-gray-400 overflow-hidden hover:border-cyan-500/50 transition-all duration-300 hover:transform hover:-translate-y-1">
                     <div className="relative overflow-hidden">
                       <div className="w-full h-48 bg-[var(--theme-color)] flex items-center justify-center">
-                        <img src={`http://localhost:8000/storage/${project.cover_image}`} alt={project.title} className='w-full h-full object-cover'/>
+                        <img src={`https://portfolio-backend-58gy.onrender.com/storage/${project.cover_image}`} alt={project.title} className='w-full h-full object-cover'/>
                       </div>
                       <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
                         <Link to={project.project_url} onClick={() => incrementView(project.id)} className="p-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors">
