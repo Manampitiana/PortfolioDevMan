@@ -19,8 +19,10 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:5173')], // Ny URL-n'ny React
-    
+    // 'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:5173')], // Ny URL-n'ny React
+    'allowed_origins' => [
+        'https://portfolio-dev-man.vercel.app/',
+    ],
     'allowed_origins_patterns' => [],
     
     'allowed_headers' => ['*'],
