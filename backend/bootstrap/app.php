@@ -24,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->statefulApi(); // Raha mampiasa Sanctum ianao
         $middleware->validateCsrfTokens(except: [
             // Ampidiro eto ny lalana tsy mila CSRF raha ilaina
+             'api/*', 
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
