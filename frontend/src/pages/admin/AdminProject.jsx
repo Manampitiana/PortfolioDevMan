@@ -108,12 +108,12 @@ function ProjectTable({ projects, loading, handleDelete }) {
                                     <td className="py-4 px-4 text-gray-300">{project.is_current ? 'Yes' : 'No'}</td>
                                     <td className="py-4 px-4">
                                         {project.cover_image && (
-                                            <img src={`https://portfolio-backend-58gy.onrender.com/storage/${project.cover_image}`} alt="cover" className="w-12 h-12 rounded" />
+                                            <img src={project.cover_image} alt="cover" className="w-12 h-12 rounded" />
                                         )}
                                     </td>
                                     <td className="py-4 px-4">
                                         {project.gallery && JSON.parse(project.gallery).map((img, idx) => (
-                                            <img key={idx} src={`https://portfolio-backend-58gy.onrender.com/storage/${img}`} alt={`gallery-${idx}`} className="w-8 h-8 rounded mr-1 inline-block" />
+                                            <img key={idx} src={img} alt={`gallery-${idx}`} className="w-8 h-8 rounded mr-1 inline-block" />
                                         ))}
                                     </td>
                                     <td className="py-4 px-4 truncate max-w-xs">{project.technologies && JSON.parse(project.technologies).join(', ')}</td>

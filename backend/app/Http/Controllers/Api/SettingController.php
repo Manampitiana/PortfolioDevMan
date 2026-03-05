@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
@@ -20,7 +19,6 @@ class SettingController extends Controller
 
     public function store(Request $request)
     {
-        // Antsoina ny update fa tsy asiana ID
         return $this->update($request);
     }
 
@@ -29,14 +27,14 @@ class SettingController extends Controller
         $settings = Setting::firstOrCreate(['id' => 1]);
 
         $data = $request->validate([
-            'site_name' => 'nullable|string',
-            'tagline' => 'nullable|string',
-            'theme_color' => 'nullable|string',
+            'site_name'        => 'nullable|string',
+            'tagline'          => 'nullable|string',
+            'theme_color'      => 'nullable|string',
             'meta_description' => 'nullable|string',
-            'meta_keywords' => 'nullable|string',
-            'contact_email' => 'nullable|email',
-            'contact_phone' => 'nullable|string',
-            'social_links' => 'nullable', 
+            'meta_keywords'    => 'nullable|string',
+            'contact_email'    => 'nullable|email',
+            'contact_phone'    => 'nullable|string',
+            'social_links'     => 'nullable',
             'maintenance_mode' => 'nullable',
         ]);
 
@@ -46,32 +44,36 @@ class SettingController extends Controller
 
         $data['maintenance_mode'] = filter_var($request->maintenance_mode, FILTER_VALIDATE_BOOLEAN);
 
-        // --- 3. Fitantanana ny LOGO (miaraka amin'ny famafana ny taloha) ---
+        // --- LOGO — fafao taloha any Cloudinary, upload vaovao ---
         if ($request->hasFile('logo')) {
-            // Raha efa nisy logo taloha, dia fafao izany ao amin'ny storage
-            if ($settings->logo && Storage::disk('public')->exists($settings->logo)) {
-                Storage::disk('public')->delete($settings->logo);
+            if ($settings->logo_public_id) {
+                cloudinary()->destroy($settings->logo_public_id);
             }
-            // Tehirizo ilay logo vaovao
-            $data['logo'] = $request->file('logo')->store('settings', 'public');
+            $uploaded          = cloudinary()->upload($request->file('logo')->getRealPath(), [
+                'folder' => 'portfolio/settings'
+            ]);
+            $data['logo']            = $uploaded->getSecurePath();
+            $data['logo_public_id']  = $uploaded->getPublicId();
         }
-        
-        // --- 4. Fitantanana ny FAVICON (miaraka amin'ny famafana ny taloha) ---
+
+        // --- FAVICON — fafao taloha any Cloudinary, upload vaovao ---
         if ($request->hasFile('favicon')) {
-            // Raha efa nisy favicon taloha, dia fafao izany
-            if ($settings->favicon && Storage::disk('public')->exists($settings->favicon)) {
-                Storage::disk('public')->delete($settings->favicon);
+            if ($settings->favicon_public_id) {
+                cloudinary()->destroy($settings->favicon_public_id);
             }
-            // Tehirizo ilay favicon vaovao
-            $data['favicon'] = $request->file('favicon')->store('settings', 'public');
+            $uploaded               = cloudinary()->upload($request->file('favicon')->getRealPath(), [
+                'folder' => 'portfolio/settings'
+            ]);
+            $data['favicon']            = $uploaded->getSecurePath();
+            $data['favicon_public_id']  = $uploaded->getPublicId();
         }
 
         $settings->update($data);
 
         return response()->json([
             'success' => true,
-            'message' => 'Settings updated successfully!', 
-            'data' => $settings
+            'message' => 'Settings updated successfully!',
+            'data'    => $settings
         ]);
     }
 }

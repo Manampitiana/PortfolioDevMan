@@ -8,6 +8,7 @@ class AboutMe extends Model
 {
     protected $fillable = [
         'pdp',
+        'pdp_public_id',
         'full_name',
         'title',
         'short_bio',

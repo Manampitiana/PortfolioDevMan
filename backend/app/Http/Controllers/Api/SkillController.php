@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Skill;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class SkillController extends Controller
 {
@@ -17,7 +16,7 @@ class SkillController extends Controller
         $skills = Skill::orderBy('created_at', 'desc')->get();
         return response()->json([
             'success' => true,
-            'skills' => $skills
+            'skills'  => $skills
         ]);
     }
 
@@ -27,28 +26,31 @@ class SkillController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'level' => 'required|integer|min:0|max:100',
-            'category' => 'required|string|max:255',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:8048',
+            'name'      => 'required|string|max:255',
+            'level'     => 'required|integer|min:0|max:100',
+            'category'  => 'required|string|max:255',
+            'logo'      => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:8048',
             'is_active' => 'nullable|boolean',
         ]);
 
-        // Cover image
+        // Upload logo any Cloudinary
         if ($request->hasFile('logo')) {
-            $coverPath = $request->file('logo')->store('skills', 'public');
-            $validated['logo'] = $coverPath;
+            $uploaded               = cloudinary()->upload($request->file('logo')->getRealPath(), [
+                'folder' => 'portfolio/skills'
+            ]);
+            $validated['logo']           = $uploaded->getSecurePath();
+            $validated['logo_public_id'] = $uploaded->getPublicId();
         }
+
         $validated['is_active'] = (int) $request->input('is_active', 1);
 
-        $skills = Skill::create($validated);
+        $skill = Skill::create($validated);
 
         return response()->json([
             'success' => true,
             'message' => 'Skills created successfully!',
-            'skills' => $skills
+            'skills'  => $skill
         ], 201);
-
     }
 
     /**
@@ -60,7 +62,7 @@ class SkillController extends Controller
 
         return response()->json([
             'success' => true,
-            'skill' => $skill
+            'skill'   => $skill
         ]);
     }
 
@@ -72,27 +74,31 @@ class SkillController extends Controller
         $skill = Skill::findOrFail($id);
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'level' => 'required|integer|min:0|max:100',
-            'category' => 'required|string|max:255',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:8048',
+            'name'      => 'required|string|max:255',
+            'level'     => 'required|integer|min:0|max:100',
+            'category'  => 'required|string|max:255',
+            'logo'      => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:8048',
             'is_active' => 'required|boolean',
         ]);
 
-        if($request->hasFile('logo')){
-
-            // Delete old logo if exists
-            if($skill->logo && Storage::disk('public')->exists($skill->logo)){
-                Storage::disk('public')->delete($skill->logo);
+        // Fafao taloha any Cloudinary, upload vaovao
+        if ($request->hasFile('logo')) {
+            if ($skill->logo_public_id) {
+                cloudinary()->destroy($skill->logo_public_id);
             }
-
-            // Delete old logo if exists
-            $validated['logo'] = $request->file('logo')->store('skills', 'public');
+            $uploaded               = cloudinary()->upload($request->file('logo')->getRealPath(), [
+                'folder' => 'portfolio/skills'
+            ]);
+            $validated['logo']           = $uploaded->getSecurePath();
+            $validated['logo_public_id'] = $uploaded->getPublicId();
         }
 
         $skill->update($validated);
 
-        return response()->json(['message' => 'Skill updated successfully!', 'skill' => $skill]);
+        return response()->json([
+            'message' => 'Skill updated successfully!',
+            'skill'   => $skill
+        ]);
     }
 
     /**
@@ -102,9 +108,9 @@ class SkillController extends Controller
     {
         $skill = Skill::findOrFail($id);
 
-        // Delete logo if exists
-        if($skill->logo && Storage::disk('public')->exists($skill->logo)){
-            Storage::disk('public')->delete($skill->logo);
+        // Fafao ny logo any Cloudinary
+        if ($skill->logo_public_id) {
+            cloudinary()->destroy($skill->logo_public_id);
         }
 
         $skill->delete();

@@ -35,28 +35,24 @@ class AboutMeController extends Controller
             'email'       => 'required|email',
             'phone'       => 'nullable|string',
             'location'    => 'nullable|string',
-            'is_active'   => 'required', // Avy amin'ny FormData dia string "true"/"false" izy io matetika
+            'is_active'   => 'required',
             'pdp'         => 'nullable|image|mimes:jpeg,png,jpg,webp|max:8048',
         ]);
 
-        // 1. Mitady raha efa misy data taloha (satria iray ihany ny mombamomba anao)
         $aboutMe = AboutMe::first() ?? new AboutMe();
 
-        // 2. Fikarakarana ny Sary (Profile Picture)
         if ($request->hasFile('pdp')) {
-            // Fafana ny sary taloha raha misy
-            if ($aboutMe->pdp) {
-                Storage::disk('public')->delete($aboutMe->pdp);
+            // Delete taloha raha misy
+            if ($aboutMe->pdp_public_id) {
+                cloudinary()->destroy($aboutMe->pdp_public_id);
             }
-            // Tehirizina ny sary vaovao
-            $path = $request->file('pdp')->store('pdp', 'public');
-            $validated['pdp'] = $path;
+            // Upload any Cloudinary
+            $uploaded = cloudinary()->upload($request->file('pdp')->getRealPath());
+            $validated['pdp'] = $uploaded->getSecurePath();
+            $validated['pdp_public_id'] = $uploaded->getPublicId();
         }
 
-        // 3. Ovaina ho boolean ny is_active (satria FormData no nandefasana azy)
         $validated['is_active'] = filter_var($request->is_active, FILTER_VALIDATE_BOOLEAN);
-
-        // 4. Update na Create
         $aboutMe->fill($validated);
         $aboutMe->save();
 
