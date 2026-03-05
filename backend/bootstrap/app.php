@@ -19,7 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         // Register global middleware
-        $middleware->prepend(CorsMiddleware::class);
+        // $middleware->prepend(CorsMiddleware::class);
 
         // $middleware->statefulApi(); // Raha mampiasa Sanctum ianao
         $middleware->validateCsrfTokens(except: [
