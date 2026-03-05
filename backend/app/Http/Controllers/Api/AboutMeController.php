@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\AboutMe;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class AboutMeController extends Controller
 {
@@ -15,10 +14,7 @@ class AboutMeController extends Controller
     public function index()
     {
         $aboutMe = AboutMe::first();
-        // Raha tiana hita ny URL feno an'ilay sary
-        if ($aboutMe && $aboutMe->pdp) {
-            $aboutMe->pdp = asset('storage/' . $aboutMe->pdp);
-        }
+        // ✅ Cloudinary URL mivantana — tsy mila asset('storage/...') intsony
         return response()->json($aboutMe);
     }
 
@@ -41,14 +37,17 @@ class AboutMeController extends Controller
 
         $aboutMe = AboutMe::first() ?? new AboutMe();
 
+        // Upload sary any Cloudinary
         if ($request->hasFile('pdp')) {
-            // Delete taloha raha misy
+            // Fafao ny sary taloha any Cloudinary raha misy
             if ($aboutMe->pdp_public_id) {
                 cloudinary()->destroy($aboutMe->pdp_public_id);
             }
             // Upload any Cloudinary
-            $uploaded = cloudinary()->upload($request->file('pdp')->getRealPath());
-            $validated['pdp'] = $uploaded->getSecurePath();
+            $uploaded                   = cloudinary()->upload($request->file('pdp')->getRealPath(), [
+                'folder' => 'portfolio/about'
+            ]);
+            $validated['pdp']           = $uploaded->getSecurePath();
             $validated['pdp_public_id'] = $uploaded->getPublicId();
         }
 
@@ -62,25 +61,16 @@ class AboutMeController extends Controller
         ], 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         //
