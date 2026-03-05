@@ -30,10 +30,13 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # 7️⃣ Copy project files
 COPY . .
 
-# 8️⃣ Install Laravel dependencies
+# 8️⃣ Install Laravel dependencies (including Cloudinary)
 RUN composer install --no-dev --optimize-autoloader
 
-# 9️⃣ Setup permissions for storage & cache
+# 9️⃣ Publish Cloudinary config
+RUN php artisan vendor:publish --provider="CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider" || true
+
+# 🔟 Setup permissions for storage & cache
 RUN mkdir -p \
     storage/framework/cache \
     storage/framework/sessions \
@@ -52,7 +55,7 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 # 🔹 Change listening port (Render)
 ENV PORT=10000
 RUN sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf \
- && sed -i "s/<VirtualHost \\*:80>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-available/000-default.conf
+ && sed -i "s/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-available/000-default.conf
 
 EXPOSE ${PORT}
 
