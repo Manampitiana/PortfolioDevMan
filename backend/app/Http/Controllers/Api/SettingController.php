@@ -49,7 +49,7 @@ class SettingController extends Controller
             if ($settings->logo_public_id) {
                 cloudinary()->destroy($settings->logo_public_id);
             }
-            $uploaded          = cloudinary()->upload($request->file('logo')->getRealPath(), [
+            $uploaded = cloudinary()->uploadFile($request->file('logo')->getRealPath(), [
                 'folder' => 'portfolio/settings'
             ]);
             $data['logo']            = $uploaded->getSecurePath();
@@ -61,7 +61,7 @@ class SettingController extends Controller
             if ($settings->favicon_public_id) {
                 cloudinary()->destroy($settings->favicon_public_id);
             }
-            $uploaded               = cloudinary()->upload($request->file('favicon')->getRealPath(), [
+            $uploaded = cloudinary()->uploadFile($request->file('favicon')->getRealPath(), [
                 'folder' => 'portfolio/settings'
             ]);
             $data['favicon']            = $uploaded->getSecurePath();

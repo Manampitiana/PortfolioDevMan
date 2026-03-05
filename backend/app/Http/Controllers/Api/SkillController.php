@@ -35,7 +35,7 @@ class SkillController extends Controller
 
         // Upload logo any Cloudinary
         if ($request->hasFile('logo')) {
-            $uploaded               = cloudinary()->upload($request->file('logo')->getRealPath(), [
+            $uploaded = cloudinary()->uploadFile($request->file('logo')->getRealPath(), [
                 'folder' => 'portfolio/skills'
             ]);
             $validated['logo']           = $uploaded->getSecurePath();
@@ -86,7 +86,7 @@ class SkillController extends Controller
             if ($skill->logo_public_id) {
                 cloudinary()->destroy($skill->logo_public_id);
             }
-            $uploaded               = cloudinary()->upload($request->file('logo')->getRealPath(), [
+            $uploaded = cloudinary()->uploadFile($request->file('logo')->getRealPath(), [
                 'folder' => 'portfolio/skills'
             ]);
             $validated['logo']           = $uploaded->getSecurePath();

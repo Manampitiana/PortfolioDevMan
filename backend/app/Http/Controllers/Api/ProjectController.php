@@ -59,7 +59,7 @@ class ProjectController extends Controller
 
         // Cover image — upload any Cloudinary
         if ($request->hasFile('cover_image')) {
-            $uploaded = cloudinary()->upload($request->file('cover_image')->getRealPath(), [
+            $uploaded = cloudinary()->uploadFile($request->file('cover_image')->getRealPath(), [
                 'folder' => 'portfolio/projects'
             ]);
             $validated['cover_image']            = $uploaded->getSecurePath();
@@ -71,7 +71,7 @@ class ProjectController extends Controller
             $galleryUrls      = [];
             $galleryPublicIds = [];
             foreach ($request->file('gallery') as $file) {
-                $uploaded           = cloudinary()->upload($file->getRealPath(), [
+                $uploaded = cloudinary()->uploadFile($file->getRealPath(), [
                     'folder' => 'portfolio/projects/gallery'
                 ]);
                 $galleryUrls[]      = $uploaded->getSecurePath();
@@ -152,7 +152,7 @@ class ProjectController extends Controller
             if ($project->cover_image_public_id) {
                 cloudinary()->destroy($project->cover_image_public_id);
             }
-            $uploaded = cloudinary()->upload($request->file('cover_image')->getRealPath(), [
+            $uploaded = cloudinary()->uploadFile($request->file('cover_image')->getRealPath(), [
                 'folder' => 'portfolio/projects'
             ]);
             $validated['cover_image']           = $uploaded->getSecurePath();
@@ -171,7 +171,7 @@ class ProjectController extends Controller
             $galleryUrls      = [];
             $galleryPublicIds = [];
             foreach ($request->file('gallery') as $file) {
-                $uploaded           = cloudinary()->upload($file->getRealPath(), [
+                $uploaded = cloudinary()->uploadFile($file->getRealPath(), [
                     'folder' => 'portfolio/projects/gallery'
                 ]);
                 $galleryUrls[]      = $uploaded->getSecurePath();

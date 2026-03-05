@@ -44,7 +44,7 @@ class AboutMeController extends Controller
                 cloudinary()->destroy($aboutMe->pdp_public_id);
             }
             // Upload any Cloudinary
-            $uploaded                   = cloudinary()->upload($request->file('pdp')->getRealPath(), [
+            $uploaded = cloudinary()->uploadFile($request->file('pdp')->getRealPath(), [
                 'folder' => 'portfolio/about'
             ]);
             $validated['pdp']           = $uploaded->getSecurePath();
