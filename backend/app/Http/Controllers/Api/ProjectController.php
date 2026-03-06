@@ -3,30 +3,24 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Helpers\CloudinaryHelper;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $projects = Project::all();
         return response()->json([
-            'success' => true,
+            'success'  => true,
             'projects' => $projects
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        // decode JSON avy amin'ny FormData ho array
         if ($request->has('technologies') && is_string($request->technologies)) {
             $request->merge([
                 'technologies' => json_decode($request->technologies, true)
@@ -52,36 +46,30 @@ class ProjectController extends Controller
             'github_url'        => 'nullable|url|max:255',
         ]);
 
-        // encode technologies ho JSON
         if (isset($validated['technologies']) && is_array($validated['technologies'])) {
             $validated['technologies'] = json_encode($validated['technologies']);
         }
 
-        // Cover image — upload any Cloudinary
+        // Cover image
         if ($request->hasFile('cover_image')) {
-            $uploaded = cloudinary()->uploadFile($request->file('cover_image')->getRealPath(), [
-                'folder' => 'portfolio/projects'
-            ]);
-            $validated['cover_image']            = $uploaded->getSecurePath();
-            $validated['cover_image_public_id']  = $uploaded->getPublicId();
+            $result                             = CloudinaryHelper::upload($request->file('cover_image'), 'portfolio/projects');
+            $validated['cover_image']           = $result['secure_url'];
+            $validated['cover_image_public_id'] = $result['public_id'];
         }
 
-        // Gallery — upload tsirairay any Cloudinary
+        // Gallery
         if ($request->hasFile('gallery')) {
             $galleryUrls      = [];
             $galleryPublicIds = [];
             foreach ($request->file('gallery') as $file) {
-                $uploaded = cloudinary()->uploadFile($file->getRealPath(), [
-                    'folder' => 'portfolio/projects/gallery'
-                ]);
-                $galleryUrls[]      = $uploaded->getSecurePath();
-                $galleryPublicIds[] = $uploaded->getPublicId();
+                $result             = CloudinaryHelper::upload($file, 'portfolio/projects/gallery');
+                $galleryUrls[]      = $result['secure_url'];
+                $galleryPublicIds[] = $result['public_id'];
             }
             $validated['gallery']            = json_encode($galleryUrls);
             $validated['gallery_public_ids'] = json_encode($galleryPublicIds);
         }
 
-        // Slug automatique
         if (empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['title']);
         }
@@ -95,9 +83,6 @@ class ProjectController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $project = Project::findOrFail($id);
@@ -109,14 +94,10 @@ class ProjectController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $project = Project::findOrFail($id);
 
-        // decode JSON avy amin'ny FormData ho array
         if ($request->has('technologies') && is_string($request->technologies)) {
             $request->merge([
                 'technologies' => json_decode($request->technologies, true)
@@ -142,46 +123,39 @@ class ProjectController extends Controller
             'github_url'        => 'nullable|url|max:255',
         ]);
 
-        // encode technologies ho JSON
         if (isset($validated['technologies']) && is_array($validated['technologies'])) {
             $validated['technologies'] = json_encode($validated['technologies']);
         }
 
-        // Cover image update — fafao taloha any Cloudinary, upload vaovao
+        // Cover image update
         if ($request->hasFile('cover_image')) {
             if ($project->cover_image_public_id) {
-                cloudinary()->destroy($project->cover_image_public_id);
+                CloudinaryHelper::destroy($project->cover_image_public_id);
             }
-            $uploaded = cloudinary()->uploadFile($request->file('cover_image')->getRealPath(), [
-                'folder' => 'portfolio/projects'
-            ]);
-            $validated['cover_image']           = $uploaded->getSecurePath();
-            $validated['cover_image_public_id'] = $uploaded->getPublicId();
+            $result                             = CloudinaryHelper::upload($request->file('cover_image'), 'portfolio/projects');
+            $validated['cover_image']           = $result['secure_url'];
+            $validated['cover_image_public_id'] = $result['public_id'];
         }
 
-        // Gallery update — fafao taloha any Cloudinary, upload vaovao
+        // Gallery update
         if ($request->hasFile('gallery')) {
             if ($project->gallery_public_ids) {
                 $oldPublicIds = json_decode($project->gallery_public_ids, true);
                 foreach ($oldPublicIds as $publicId) {
-                    cloudinary()->destroy($publicId);
+                    CloudinaryHelper::destroy($publicId);
                 }
             }
-
             $galleryUrls      = [];
             $galleryPublicIds = [];
             foreach ($request->file('gallery') as $file) {
-                $uploaded = cloudinary()->uploadFile($file->getRealPath(), [
-                    'folder' => 'portfolio/projects/gallery'
-                ]);
-                $galleryUrls[]      = $uploaded->getSecurePath();
-                $galleryPublicIds[] = $uploaded->getPublicId();
+                $result             = CloudinaryHelper::upload($file, 'portfolio/projects/gallery');
+                $galleryUrls[]      = $result['secure_url'];
+                $galleryPublicIds[] = $result['public_id'];
             }
             $validated['gallery']            = json_encode($galleryUrls);
             $validated['gallery_public_ids'] = json_encode($galleryPublicIds);
         }
 
-        // Slug automatique raha empty
         if (empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['title']);
         }
@@ -195,23 +169,18 @@ class ProjectController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $project = Project::findOrFail($id);
 
-        // Fafao ny cover image any Cloudinary
         if ($project->cover_image_public_id) {
-            cloudinary()->destroy($project->cover_image_public_id);
+            CloudinaryHelper::destroy($project->cover_image_public_id);
         }
 
-        // Fafao ny gallery any Cloudinary
         if ($project->gallery_public_ids) {
             $publicIds = json_decode($project->gallery_public_ids, true);
             foreach ($publicIds as $publicId) {
-                cloudinary()->destroy($publicId);
+                CloudinaryHelper::destroy($publicId);
             }
         }
 

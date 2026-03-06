@@ -3,24 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Helpers\CloudinaryHelper;
 use App\Models\AboutMe;
 use Illuminate\Http\Request;
 
 class AboutMeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $aboutMe = AboutMe::first();
-        // ✅ Cloudinary URL mivantana — tsy mila asset('storage/...') intsony
         return response()->json($aboutMe);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -37,18 +31,13 @@ class AboutMeController extends Controller
 
         $aboutMe = AboutMe::first() ?? new AboutMe();
 
-        // Upload sary any Cloudinary
         if ($request->hasFile('pdp')) {
-            // Fafao ny sary taloha any Cloudinary raha misy
             if ($aboutMe->pdp_public_id) {
-                cloudinary()->destroy($aboutMe->pdp_public_id);
+                CloudinaryHelper::destroy($aboutMe->pdp_public_id);
             }
-            // Upload any Cloudinary
-            $uploaded = cloudinary()->uploadFile($request->file('pdp')->getRealPath(), [
-                'folder' => 'portfolio/about'
-            ]);
-            $validated['pdp']           = $uploaded->getSecurePath();
-            $validated['pdp_public_id'] = $uploaded->getPublicId();
+            $result                     = CloudinaryHelper::upload($request->file('pdp'), 'portfolio/about');
+            $validated['pdp']           = $result['secure_url'];
+            $validated['pdp_public_id'] = $result['public_id'];
         }
 
         $validated['is_active'] = filter_var($request->is_active, FILTER_VALIDATE_BOOLEAN);
@@ -61,18 +50,7 @@ class AboutMeController extends Controller
         ], 200);
     }
 
-    public function show(string $id)
-    {
-        //
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    public function destroy(string $id)
-    {
-        //
-    }
+    public function show(string $id) {}
+    public function update(Request $request, string $id) {}
+    public function destroy(string $id) {}
 }

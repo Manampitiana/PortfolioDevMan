@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Helpers\CloudinaryHelper;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $settings = Setting::first();
@@ -44,28 +42,24 @@ class SettingController extends Controller
 
         $data['maintenance_mode'] = filter_var($request->maintenance_mode, FILTER_VALIDATE_BOOLEAN);
 
-        // --- LOGO — fafao taloha any Cloudinary, upload vaovao ---
+        // Logo
         if ($request->hasFile('logo')) {
             if ($settings->logo_public_id) {
-                cloudinary()->destroy($settings->logo_public_id);
+                CloudinaryHelper::destroy($settings->logo_public_id);
             }
-            $uploaded = cloudinary()->uploadFile($request->file('logo')->getRealPath(), [
-                'folder' => 'portfolio/settings'
-            ]);
-            $data['logo']            = $uploaded->getSecurePath();
-            $data['logo_public_id']  = $uploaded->getPublicId();
+            $result                  = CloudinaryHelper::upload($request->file('logo'), 'portfolio/settings');
+            $data['logo']            = $result['secure_url'];
+            $data['logo_public_id']  = $result['public_id'];
         }
 
-        // --- FAVICON — fafao taloha any Cloudinary, upload vaovao ---
+        // Favicon
         if ($request->hasFile('favicon')) {
             if ($settings->favicon_public_id) {
-                cloudinary()->destroy($settings->favicon_public_id);
+                CloudinaryHelper::destroy($settings->favicon_public_id);
             }
-            $uploaded = cloudinary()->uploadFile($request->file('favicon')->getRealPath(), [
-                'folder' => 'portfolio/settings'
-            ]);
-            $data['favicon']            = $uploaded->getSecurePath();
-            $data['favicon_public_id']  = $uploaded->getPublicId();
+            $result                      = CloudinaryHelper::upload($request->file('favicon'), 'portfolio/settings');
+            $data['favicon']             = $result['secure_url'];
+            $data['favicon_public_id']   = $result['public_id'];
         }
 
         $settings->update($data);

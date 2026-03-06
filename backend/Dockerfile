@@ -33,10 +33,7 @@ COPY . .
 # 8️⃣ Install Laravel dependencies (including Cloudinary)
 RUN composer install --no-dev --optimize-autoloader
 
-# 9️⃣ Publish Cloudinary config
-RUN php artisan vendor:publish --provider="CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider" || true
-
-# 🔟 Setup permissions for storage & cache
+# 9️⃣ Setup permissions for storage & cache
 RUN mkdir -p \
     storage/framework/cache \
     storage/framework/sessions \

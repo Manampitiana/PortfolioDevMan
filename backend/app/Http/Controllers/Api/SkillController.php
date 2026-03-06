@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Helpers\CloudinaryHelper;
 use App\Models\Skill;
 use Illuminate\Http\Request;
 
 class SkillController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $skills = Skill::orderBy('created_at', 'desc')->get();
@@ -20,9 +18,6 @@ class SkillController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -33,13 +28,10 @@ class SkillController extends Controller
             'is_active' => 'nullable|boolean',
         ]);
 
-        // Upload logo any Cloudinary
         if ($request->hasFile('logo')) {
-            $uploaded = cloudinary()->uploadFile($request->file('logo')->getRealPath(), [
-                'folder' => 'portfolio/skills'
-            ]);
-            $validated['logo']           = $uploaded->getSecurePath();
-            $validated['logo_public_id'] = $uploaded->getPublicId();
+            $result                      = CloudinaryHelper::upload($request->file('logo'), 'portfolio/skills');
+            $validated['logo']           = $result['secure_url'];
+            $validated['logo_public_id'] = $result['public_id'];
         }
 
         $validated['is_active'] = (int) $request->input('is_active', 1);
@@ -53,22 +45,15 @@ class SkillController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $skill = Skill::findOrFail($id);
-
         return response()->json([
             'success' => true,
             'skill'   => $skill
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $skill = Skill::findOrFail($id);
@@ -81,16 +66,13 @@ class SkillController extends Controller
             'is_active' => 'required|boolean',
         ]);
 
-        // Fafao taloha any Cloudinary, upload vaovao
         if ($request->hasFile('logo')) {
             if ($skill->logo_public_id) {
-                cloudinary()->destroy($skill->logo_public_id);
+                CloudinaryHelper::destroy($skill->logo_public_id);
             }
-            $uploaded = cloudinary()->uploadFile($request->file('logo')->getRealPath(), [
-                'folder' => 'portfolio/skills'
-            ]);
-            $validated['logo']           = $uploaded->getSecurePath();
-            $validated['logo_public_id'] = $uploaded->getPublicId();
+            $result                      = CloudinaryHelper::upload($request->file('logo'), 'portfolio/skills');
+            $validated['logo']           = $result['secure_url'];
+            $validated['logo_public_id'] = $result['public_id'];
         }
 
         $skill->update($validated);
@@ -101,16 +83,12 @@ class SkillController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $skill = Skill::findOrFail($id);
 
-        // Fafao ny logo any Cloudinary
         if ($skill->logo_public_id) {
-            cloudinary()->destroy($skill->logo_public_id);
+            CloudinaryHelper::destroy($skill->logo_public_id);
         }
 
         $skill->delete();
