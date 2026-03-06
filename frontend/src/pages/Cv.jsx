@@ -271,8 +271,8 @@ export default function Cv() {
                 <h3 className="text-xs uppercase font-bold text-gray-500 border-b border-gray-800 pb-2 mb-4 tracking-widest">Langues</h3>
                 <div className="space-y-2 text-sm text-gray-300">
                   <div>• Malgache <span className="text-gray-500">(Maternel)</span></div>
-                  <div>• Français <span className="text-gray-500">(Avancé)</span></div>
-                  <div>• Anglais <span className="text-gray-500">(Technique)</span></div>
+                  <div>• Français <span className="text-gray-500">(Notions de base)</span></div>
+                  <div>• Anglais <span className="text-gray-500">(Notions de base)</span></div>
                 </div>
               </div>
             </div>
