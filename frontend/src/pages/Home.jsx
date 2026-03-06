@@ -288,20 +288,12 @@ export default function Home() {
               >
                 <div className="relative overflow-hidden">
                   <motion.img
-                    src={`https://portfolio-backend-58gy.onrender.com/storage/${project.cover_image}`}
+                    src={project.cover_image}
                     alt={project.title}
                     className='w-full h-48 object-cover'
                     whileHover={{ scale: 1.1 }}
                     transition={{ duration: 0.4 }}
                   />
-                  {/* <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
-                    <a href={project.liveUrl} className="p-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors">
-                      <EyeIcon className="w-5 h-5 text-white" />
-                    </a>
-                    <a href={project.githubUrl} className="p-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors">
-                      <CodeBracketIcon className="w-5 h-5 text-white" />
-                    </a>
-                  </div> */}
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-gray-700 dark:text-white mb-3">{project.title}</h3>
