@@ -66,8 +66,8 @@ const MyCVDocument = ({ user, skills, experiences, projects, education, pdpBase6
 
         <Text style={styles.sidebarTitle}>Langues</Text>
         <Text style={styles.contactInfo}>• Malgache (Maternel)</Text>
-        <Text style={styles.contactInfo}>• Français (Avancé)</Text>
-        <Text style={styles.contactInfo}>• Anglais (Technique)</Text>
+        <Text style={styles.contactInfo}>• Français (Notions de base)</Text>
+        <Text style={styles.contactInfo}>• Anglais (Notions de base)</Text>
       </View>
 
       {/* CONTENU PRINCIPAL */}
