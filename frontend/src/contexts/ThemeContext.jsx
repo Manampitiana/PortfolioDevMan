@@ -24,9 +24,10 @@ export const ThemeProvider = ({ children }) => {
   const toggleTheme = () => setIsDark(!isDark);
 
   // Mampiditra ny loko avy amin'ny DB ho CSS Variable
-  const themeVariable = {
-    "--theme-color": settings?.theme_color || '',
-  };
+  // Raha tsy nofaritan'ny Admin (Settings) manokana, dia avelao ny --theme-color ao amin'ny index.css no manjaka
+  const themeVariable = settings?.theme_color
+    ? { "--theme-color": settings.theme_color }
+    : {};
 
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme }}>
