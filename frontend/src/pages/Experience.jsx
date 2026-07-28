@@ -29,8 +29,14 @@ export default function Experience() {
     };
 
     return (
-        <section className="py-20 pt-5 px-4 bg-gray-100 dark:bg-[var(--theme-color)]">
-            <div className="max-w-6xl mx-auto">
+        <section className="relative py-20 sm:py-24 px-4 sm:px-6 bg-neutral-950 border-t border-white/5 overflow-hidden">
+            {/* Aurora ambient */}
+            <div className="pointer-events-none absolute inset-0">
+                <div className="absolute top-0 left-1/3 w-96 h-96 bg-cyan-500/[0.06] rounded-full blur-3xl" />
+                <div className="absolute bottom-0 -right-20 w-96 h-96 bg-fuchsia-500/[0.06] rounded-full blur-3xl" />
+            </div>
+
+            <div className="relative max-w-4xl mx-auto">
 
                 {/* En-tête de la section */}
                 <motion.div
@@ -40,115 +46,79 @@ export default function Experience() {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-16"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold text-[var(--theme-color)] dark:text-white mb-4">
-                        Mon <span className="text-blue-600">Parcours</span> Professionnel
+                    <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">PARCOURS</p>
+                    <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
+                        Mon <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Parcours</span> Professionnel
                     </h2>
-                    <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    <p className="text-neutral-400 max-w-2xl mx-auto">
                         Découvrez les étapes clés et les expériences acquises au fil de ma carrière.
                     </p>
                 </motion.div>
 
-                <div className="relative">
-                    {/* Ligne de la Timeline */}
-                    <div className="hidden md:block absolute left-1/2 -translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full"></div>
+                {/* Timeline — rail à gauche, identique sur tous les écrans */}
+                <div className="relative pl-10 sm:pl-14">
+                    {/* Ligne verticale */}
+                    <div className="absolute left-[11px] sm:left-[15px] top-2 bottom-2 w-px bg-gradient-to-b from-cyan-400/50 via-white/10 to-fuchsia-400/50" />
 
-                    <div className="space-y-6 md:space-y-0">
+                    <div className="space-y-8">
                         {experiences.map((exp, index) => (
                             <motion.div
                                 key={exp.id || index}
-                                initial={{ opacity: 0, y: 60 }}
+                                initial={{ opacity: 0, y: 40 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ duration: 0.6, delay: index * 0.15 }}
-                                className={`relative flex flex-col md:flex-row items-center gap-8
-                                ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                className="relative group"
                             >
-
                                 {/* Point de la Timeline */}
-                                <motion.div
-                                    animate={{ scale: [1, 1.35, 1] }}
-                                    transition={{ duration: 2, repeat: Infinity }}
-                                    className="
-                                        hidden md:flex 
-                                        absolute 
-                                        left-1/2
-                                        transform -translate-x-1/2
-                                        w-4 h-4 
-                                        bg-blue-600 
-                                        rounded-full
-                                        border-4 border-gray-100 dark:border-[var(--theme-color)]
-                                        shadow-lg z-10
-                                    "
-                                />
+                                <span className="absolute -left-10 sm:-left-14 top-6 flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-neutral-950 border border-cyan-400/40">
+                                    <motion.span
+                                        animate={{ scale: [1, 1.3, 1] }}
+                                        transition={{ duration: 2, repeat: Infinity }}
+                                        className="w-2 h-2 rounded-full bg-gradient-to-br from-cyan-400 to-fuchsia-400"
+                                    />
+                                </span>
 
-                                {/* Contenu */}
-                                <div className={`w-full md:w-5/12 ${index % 2 === 0 ? 'md:text-right md:pr-8' : 'md:text-left md:pl-8'}`}>
+                                {/* Card */}
+                                <div className="relative rounded-2xl bg-white/[0.03] border border-white/10 hover:border-cyan-400/25 p-6 sm:p-8 transition-colors duration-300">
+                                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-cyan-400/10 to-fuchsia-400/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                                    {/* Effet de lueur (Glow) */}
-                                    <div className="relative group">
-                                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
-
-                                        <motion.div
-                                            whileHover={{ y: -8, scale: 1.03 }}
-                                            transition={{ type: 'spring', stiffness: 200 }}
-                                            className="relative bg-white dark:bg-[var(--theme-color)] p-8 rounded-2xl
-                                                 shadow-lg border border-gray-200 dark:border-gray-700
-                                                 transition-all duration-300"
-                                        >
-                                            {/* Header de la carte */}
-                                            <div className="mb-6">
-                                                <div className={`flex items-center mb-3 ${index % 2 === 0 ? 'md:justify-end' : 'md:justify-start'} justify-between`}>
-                                                    <div className="flex items-center text-blue-600 text-sm font-medium">
-                                                        <CalendarIcon className="w-4 h-4 mr-2" />
-                                                        <span className="capitalize">
-                                                            {formatDate(exp.start_date)} –{' '}
-                                                            {exp.is_current ? 'Aujourd’hui' : formatDate(exp.end_date)}
-                                                        </span>
-                                                    </div>
-
-                                                    <div className={`w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center shadow-md ${index % 2 === 0 ? 'md:ml-4' : 'md:mr-4 ml-4 md:ml-0'}`}>
-                                                        <BriefcaseIcon className="w-4 h-4 text-white" />
-                                                    </div>
-                                                </div>
-
-                                                <h3 className="text-xl md:text-2xl font-bold text-[var(--theme-color)] dark:text-white mb-1">
-                                                    {exp.title}
-                                                </h3>
-                                                <p className="text-blue-600 font-semibold">
-                                                    {exp.company}
-                                                </p>
-                                            </div>
-
-                                            {/* Description */}
-                                            <p className="text-gray-700 dark:text-gray-400 leading-relaxed">
-                                                {exp.description}
-                                            </p>
-
-                                            {/* Technologies */}
-                                            {exp.technologies?.length > 0 && (
-                                                <div className={`flex flex-wrap gap-2 mt-5 ${index % 2 === 0 ? 'md:justify-end' : 'md:justify-start'}`}>
-                                                    {exp.technologies.map((tech, i) => (
-                                                        <span
-                                                            key={i}
-                                                            className="
-                                                                inline-block text-xs font-medium px-3 py-1 rounded-full
-                                                                bg-blue-100 text-blue-800
-                                                                dark:bg-blue-900 dark:text-blue-300
-                                                                transition-all duration-300
-                                                                hover:bg-blue-600 hover:text-white hover:scale-110
-                                                            "
-                                                        >
-                                                            {tech}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </motion.div>
+                                    <div className="relative flex items-start justify-between gap-3 flex-wrap mb-3">
+                                        <div>
+                                            <h3 className="text-lg sm:text-xl font-display font-semibold text-white mb-1">
+                                                {exp.title}
+                                            </h3>
+                                            <p className="text-cyan-300 text-sm font-medium">{exp.company}</p>
+                                        </div>
+                                        <div className="flex items-center gap-1.5 text-[11px] font-mono text-neutral-500 bg-white/5 border border-white/10 rounded-full px-3 py-1 shrink-0">
+                                            <CalendarIcon className="w-3.5 h-3.5" />
+                                            <span className="capitalize">
+                                                {formatDate(exp.start_date)} – {exp.is_current ? "Aujourd'hui" : formatDate(exp.end_date)}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
 
-                                {/* Espaceur */}
-                                <div className="hidden md:block w-5/12"></div>
+                                    <p className="relative text-sm text-neutral-400 leading-relaxed">
+                                        {exp.description}
+                                    </p>
+
+                                    {/* Technologies */}
+                                    {exp.technologies?.length > 0 && (
+                                        <div className="relative flex flex-wrap gap-2 mt-5">
+                                            {exp.technologies.map((tech, i) => (
+                                                <span
+                                                    key={i}
+                                                    className="inline-block text-[11px] font-mono px-2.5 py-1 rounded-full
+                                                        bg-white/5 border border-white/10 text-neutral-400
+                                                        transition-colors duration-300
+                                                        hover:border-cyan-400/40 hover:text-cyan-200"
+                                                >
+                                                    {tech}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
                             </motion.div>
                         ))}
                     </div>

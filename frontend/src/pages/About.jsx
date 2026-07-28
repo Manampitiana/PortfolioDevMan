@@ -1,17 +1,26 @@
 import { AcademicCapIcon, BriefcaseIcon, CalendarIcon, EnvelopeIcon, MapPinIcon, UserIcon } from '@heroicons/react/24/outline'
 import { useEffect, useState } from 'react';
 import axiosClient from '../axios';
+import { motion } from 'framer-motion';
 import Experience from './Experience';
 import { Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import CountUp from "react-countup";
 
+// Reveal réutilisable, cohérent avec le reste du site
+const fadeUp = {
+  hidden: { opacity: 0, y: 32 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+};
+
 export default function About() {
   const [aboutMe, setAboutMe] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState(null);
 
   useEffect(() => {
     fetchAboutMe();
+    axiosClient.get("/stats").then((res) => setStats(res.data)).catch(() => {});
   }, []);
 
   const fetchAboutMe = async () => {
@@ -33,42 +42,21 @@ export default function About() {
     }).format(new Date(date));
   }
 
-  const [stats, setStats] = useState(null);
+  // Valeurs par défaut tant que /stats n'a pas répondu — évite l'écran vide
+  const items = [
+    { label: "Projets", value: stats?.projects ?? 0, suffix: "+" },
+    { label: "Années d'expérience", value: stats?.experience ?? 0, suffix: "+" },
+    { label: "Clients", value: stats?.clients ?? 0, suffix: "+" },
+    { label: "Satisfaction", value: stats?.satisfaction ?? 0, suffix: "%" },
+  ];
 
-    useEffect(() => {
-      axiosClient.get("/stats").then((res) => {
-        setStats(res.data);
-      });
-    }, []);
-
-    if (!stats) return null;
-
-    const items = [
-      {
-        label: "Projets",
-        value: stats.projects,
-        suffix: "+",
-        color: "text-blue-600",
-      },
-      {
-        label: "Années d'expérience",
-        value: stats.experience,
-        suffix: "+",
-        color: "text-cyan-600",
-      },
-      {
-        label: "Clients",
-        value: stats.clients,
-        suffix: "+",
-        color: "text-green-600",
-      },
-      {
-        label: "Satisfaction",
-        value: stats.satisfaction,
-        suffix: "%",
-        color: "text-yellow-600",
-      },
-    ];
+  const infoRows = [
+    { icon: UserIcon, value: aboutMe?.full_name },
+    { icon: BriefcaseIcon, value: aboutMe?.title },
+    { icon: MapPinIcon, value: aboutMe?.location || 'Madagascar' },
+    { icon: EnvelopeIcon, value: aboutMe?.email, href: `mailto:${aboutMe?.email}` },
+    { icon: Phone, value: aboutMe?.phone, href: `tel:${aboutMe?.phone}` },
+  ];
 
   const education = [
     {
@@ -81,12 +69,12 @@ export default function About() {
       degree: 'Baccalauréat Technique',
       school: 'LTP Mantasoa',
       year: '2019',
-      description: 'Formation technique axée sur la pratique, incluant l’ouvrage métallique (découpe, soudure, assemblage) ainsi que les bases de la logique et de la technologie.'
+      description: "Formation technique axée sur la pratique, incluant l'ouvrage métallique (découpe, soudure, assemblage) ainsi que les bases de la logique et de la technologie."
     }
   ]
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-neutral-950">
       {/* Hero Section */}
       <section className="relative pt-28 pb-16 px-4 bg-neutral-950 border-b border-white/5 overflow-hidden">
         <div className="pointer-events-none absolute inset-0">
@@ -94,65 +82,75 @@ export default function About() {
           <div className="absolute top-0 -right-20 w-96 h-96 bg-fuchsia-500/10 rounded-full blur-3xl" />
         </div>
         <div className="relative max-w-6xl mx-auto">
-          <div className="text-center mb-16">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeUp}
+            className="text-center mb-16"
+          >
             <h1 className="font-display text-4xl md:text-5xl font-semibold text-white mb-6">
               À propos de <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Moi</span>
             </h1>
             <p className="text-xl text-neutral-400 max-w-3xl mx-auto">
               {aboutMe?.title || "Développeur Full Stack"} - {aboutMe?.short_bio}
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="text-center lg:text-left">
-              <div className="w-64 h-64 mx-auto lg:mx-0 mb-8 rounded-2xl bg-gradient-to-r from-cyan-400 to-fuchsia-400 p-1">
-                <div className="w-full h-full rounded-2xl bg-[var(--theme-color)] overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="text-center lg:text-left"
+            >
+              {/* PDP — glass frame */}
+              <div className="relative w-64 mx-auto lg:mx-0 mb-8">
+                <div className="relative aspect-[4/5] rounded-[28px] bg-white/[0.04] backdrop-blur-2xl border border-white/10 overflow-hidden shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]">
+                  <div className="absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br from-cyan-400 to-fuchsia-400 blur-3xl opacity-30" />
                   {aboutMe?.pdp ? (
                     <img src={aboutMe.pdp} alt="Photo de profil" className="w-full h-full object-cover" />
                   ) : (
-                    <div className="flex items-center h-full justify-center text-gray-500 italic text-sm">Aucune Photo</div>
+                    <div className="w-full h-full flex items-center justify-center text-neutral-600 italic text-sm">
+                      Aucune photo
+                    </div>
                   )}
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <div className="flex items-center justify-center lg:justify-start text-gray-300">
-                  <UserIcon className="w-5 h-5 mr-2 text-blue-400" />
-                  <span>{aboutMe?.full_name}</span>
-                </div>
-                <div className="flex items-center justify-center lg:justify-start text-gray-300">
-                  <BriefcaseIcon className="w-5 h-5 mr-2 text-blue-400" />
-                  <span>{aboutMe?.title}</span>
-                </div>
-                <div className="flex items-center justify-center lg:justify-start text-gray-300">
-                  <MapPinIcon className="w-5 h-5 mr-2 text-blue-400" />
-                  <span>{aboutMe?.location || 'Madagascar'}</span>
-                </div>
-                <a
-                  href={`mailto:${aboutMe?.email}`}
-                  className="flex items-center justify-center lg:justify-start text-gray-300 hover:text-blue-400 transition-colors underline"
-                >
-                  <EnvelopeIcon className="w-5 h-5 mr-2 text-blue-400" />
-                  <span>{aboutMe?.email}</span>
-                </a>
-                <a
-                  href={`tel:${aboutMe?.phone}`}
-                  className="flex items-center justify-center lg:justify-start text-gray-300 hover:text-blue-400 transition-colors"
-                >
-                  <Phone className="w-5 h-5 mr-2 text-blue-400" />
-                  <span>{aboutMe?.phone}</span>
-                </a>
+              <div className="space-y-3 max-w-xs mx-auto lg:mx-0">
+                {infoRows.filter(r => r.value).map((row, i) => {
+                  const Icon = row.icon;
+                  const Wrapper = row.href ? 'a' : 'div';
+                  return (
+                    <Wrapper
+                      key={i}
+                      {...(row.href ? { href: row.href } : {})}
+                      className="flex items-center gap-3 bg-white/[0.03] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-neutral-300 hover:border-cyan-400/30 hover:text-white transition-colors"
+                    >
+                      <Icon className="w-4 h-4 text-cyan-300 shrink-0" />
+                      <span className="truncate">{row.value}</span>
+                    </Wrapper>
+                  );
+                })}
               </div>
-            </div>
+            </motion.div>
 
-            <div className="space-y-6">
-              <div className="bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm p-8 rounded-xl border border-slate-700">
-                <h3 className="text-2xl font-semibold text-[var(--theme-color)] dark:text-white mb-4">Mon Histoire</h3>
-                <div className="text-[var(--theme-color)] dark:text-gray-300 leading-relaxed whitespace-pre-line">
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="space-y-6"
+            >
+              <div className="bg-white/[0.03] border border-white/10 backdrop-blur-xl p-8 rounded-2xl">
+                <h3 className="font-display text-2xl font-semibold text-white mb-4">Mon Histoire</h3>
+                <div className="text-neutral-400 leading-relaxed whitespace-pre-line">
                   {aboutMe?.description || "Aucune description disponible pour le moment..."}
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -161,55 +159,74 @@ export default function About() {
       <Experience />
 
       {/* Section Éducation */}
-      <section className="py-16 px-4 bg-gray-100 dark:bg-[var(--theme-color)]">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-[var(--theme-color)] dark:text-gray-300 mb-16">
-            Mon <span className="text-blue-600">Parcours Académique</span>
-          </h2>
+      <section className="relative py-20 px-4 bg-neutral-950 border-t border-white/5 overflow-hidden">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute top-0 right-1/4 w-96 h-96 bg-fuchsia-500/[0.06] rounded-full blur-3xl" />
+        </div>
+        <div className="relative max-w-6xl mx-auto">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeUp}
+            className="text-center mb-14"
+          >
+            <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">FORMATION</p>
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-white">
+              Mon <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Parcours Académique</span>
+            </h2>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {education.map((edu, index) => (
-              <div key={index} className="bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm p-8 rounded-xl border border-neutral-300 dark:border-white/10 hover:border-cyan-400/60 transition-all duration-300 hover:bg-gray-50 dark:hover:bg-gray-800/80 hover:-translate-y-1">
-                <div className="flex items-start mb-4">
-                  <AcademicCapIcon className="w-10 h-10 text-cyan-500 dark:text-cyan-300 mr-4 mt-1" />
-                  <div>
-                    <h3 className="text-xl font-semibold text-[var(--theme-color)] dark:text-white mb-2">{edu.degree}</h3>
-                    <p className="text-cyan-500 dark:text-cyan-300 font-medium mb-2">{edu.school}</p>
-                    <p className="text-gray-700 dark:text-gray-300 text-sm mb-3">{edu.year}</p>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 32 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.5, delay: index * 0.12 }}
+                whileHover={{ y: -4 }}
+                className="bg-white/[0.03] border border-white/10 backdrop-blur-xl p-8 rounded-2xl hover:border-cyan-400/25 transition-colors duration-300"
+              >
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="w-11 h-11 shrink-0 rounded-xl bg-gradient-to-br from-cyan-400/15 to-fuchsia-400/15 border border-white/10 flex items-center justify-center">
+                    <AcademicCapIcon className="w-5 h-5 text-cyan-300" />
                   </div>
-
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-white mb-1">{edu.degree}</h3>
+                    <p className="text-cyan-300 text-sm font-medium">{edu.school}</p>
+                    <p className="text-neutral-500 text-xs font-mono mt-1">{edu.year}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-gray-700 dark:text-gray-200">{edu.description}</p>
-                </div>
-              </div>
+                <p className="text-neutral-400 text-sm leading-relaxed">{edu.description}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Section Statistiques */}
-      <section className="py-16 px-4 bg-gray-100 dark:bg-[var(--theme-color)]">
-      <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
-        {items.map((item, i) => (
-          <div
-            key={i}
-            className="text-center bg-white dark:bg-[var(--theme-color)] 
-                       p-6 rounded-xl border border-gray-200 
-                       dark:border-gray-700 shadow-lg hover:shadow-xl transition"
-          >
-            <div className={`text-4xl font-bold mb-2 ${item.color}`}>
-              <CountUp end={item.value} duration={2} />
-              {item.suffix || ""}
-            </div>
-
-            <p className="text-gray-700 dark:text-gray-400">
-              {item.label}
-            </p>
-          </div>
-        ))}
-      </div>
-    </section>
+      <section className="relative py-20 px-4 bg-neutral-950 border-t border-white/5">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          {items.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              whileHover={{ y: -4 }}
+              className="text-center bg-white/[0.03] border border-white/10 backdrop-blur-xl p-6 rounded-2xl hover:border-cyan-400/25 transition-colors duration-300"
+            >
+              <div className="font-display text-3xl sm:text-4xl font-semibold mb-2 bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">
+                <CountUp end={item.value} duration={2} />
+                {item.suffix || ""}
+              </div>
+              <p className="text-neutral-500 text-sm">{item.label}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
     </div>
   )
 }
