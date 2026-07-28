@@ -58,12 +58,16 @@ export default function Projects() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 px-4 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Mes <span className="text-cyan-400">Réalisations</span>
+      <section className="relative pt-32 pb-16 px-4 bg-neutral-950 border-b border-white/5 overflow-hidden">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -top-24 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-0 -right-20 w-96 h-96 bg-fuchsia-500/10 rounded-full blur-3xl" />
+        </div>
+        <div className="relative max-w-6xl mx-auto text-center">
+          <h1 className="font-display text-5xl md:text-6xl font-semibold text-white mb-6">
+            Mes <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Réalisations</span>
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-12">
+          <p className="text-xl text-neutral-400 max-w-3xl mx-auto mb-12">
             Découvrez les projets que j'ai réalisés en utilisant des technologies modernes.
           </p>
         </div>

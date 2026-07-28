@@ -25,7 +25,7 @@ export default function Navigation() {
 
           {/* Zone Logo */}
           <Link to="/" className="flex items-center group">
-            <div className="w-9 h-9 overflow-hidden bg-gradient-to-tr from-blue-600 to-indigo-500 rounded flex items-center justify-center mr-3 shadow-lg shadow-blue-500/20 group-hover:rotate-6 transition-transform">
+            <div className="w-9 h-9 overflow-hidden bg-gradient-to-tr from-cyan-400 to-fuchsia-400 rounded flex items-center justify-center mr-3 shadow-lg shadow-cyan-400/20 group-hover:rotate-6 transition-transform">
 
               {settings?.logo ? (
                 <img
@@ -48,7 +48,7 @@ export default function Navigation() {
               )}
 
             </div>
-            <span className="text-gray-900 dark:text-white font-bold text-xl tracking-tight">
+            <span className="text-gray-900 dark:text-white font-display font-semibold text-xl tracking-tight">
               {settings?.site_name || 'Mon Portfolio'}
             </span>
           </Link>
@@ -62,7 +62,7 @@ export default function Navigation() {
                 className={({ isActive }) => `
                   relative px-4 py-2 text-sm font-medium transition-colors duration-300
                   ${isActive
-                    ? 'text-blue-600 dark:text-blue-400'
+                    ? 'text-cyan-500 dark:text-cyan-300'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}
                 `}
               >
@@ -71,7 +71,7 @@ export default function Navigation() {
                     <span>{item.name}</span>
                     {/* Indicateur de ligne soulignée */}
                     <span className={`
-                      absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-blue-600 transition-all duration-300
+                      absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-cyan-400 transition-all duration-300
                       ${isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}
                     `} />
                   </>
@@ -94,7 +94,7 @@ export default function Navigation() {
 
               <button
                 onClick={() => navigate('/cv')}
-                className="ml-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-5 py-2 rounded-full text-sm font-semibold hover:bg-blue-600 dark:hover:bg-blue-500 dark:hover:text-white transition-all active:scale-95"
+                className="ml-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-5 py-2 rounded-full text-sm font-semibold hover:bg-cyan-400 dark:hover:bg-blue-500 dark:hover:text-white transition-all active:scale-95"
               >
                 Mon CV
               </button>
@@ -129,7 +129,7 @@ export default function Navigation() {
                 className={({ isActive }) => `
                   px-4 py-3 rounded-xl text-base font-semibold transition-all
                   ${isActive
-                    ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                    ? 'bg-blue-50 dark:bg-blue-900/20 text-cyan-500 dark:text-cyan-300'
                     : 'text-gray-600 dark:text-gray-300'}
                 `}
               >
@@ -141,7 +141,7 @@ export default function Navigation() {
                 navigate('/cv');
                 setIsOpen(false);
               }}
-              className="ml-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-5 py-2 rounded-full text-sm font-semibold hover:bg-blue-600 dark:hover:bg-blue-500 dark:hover:text-white transition-all active:scale-95"
+              className="ml-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-5 py-2 rounded-full text-sm font-semibold hover:bg-cyan-400 dark:hover:bg-blue-500 dark:hover:text-white transition-all active:scale-95"
             >
               Télécharger mon CV
             </button>
