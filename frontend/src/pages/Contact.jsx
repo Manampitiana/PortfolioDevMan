@@ -107,7 +107,7 @@ export default function Contact() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             
             {/* Contact Form */}
-            <div className="bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm p-8 rounded-2xl border border-gray-600 hover:border-cyan-500/50 transition-all duration-300">
+            <div className="bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm p-8 rounded-2xl border border-neutral-300 dark:border-white/10 hover:border-cyan-400/40 transition-all duration-300">
               <div className="mb-8">
                 <h2 className="text-3xl font-bold text-[var(--theme-color)] dark:text-white mb-4">Envoyer un Message</h2>
                 <p className="text-gray-600 dark:text-gray-300">Remplissez le formulaire ci-dessous et je vous répondrai rapidement.</p>
@@ -133,7 +133,7 @@ export default function Contact() {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 bg-white dark:bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300"
+                      className="w-full px-4 py-3 bg-white dark:bg-gray-700/50 border border-neutral-300 dark:border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300"
                       placeholder="Votre nom"
                     />
                   </div>
@@ -149,7 +149,7 @@ export default function Contact() {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 bg-white dark:bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300"
+                      className="w-full px-4 py-3 bg-white dark:bg-gray-700/50 border border-neutral-300 dark:border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300"
                       placeholder="email@exemple.com"
                     />
                   </div>
@@ -166,7 +166,7 @@ export default function Contact() {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-white dark:bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300"
+                    className="w-full px-4 py-3 bg-white dark:bg-gray-700/50 border border-neutral-300 dark:border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300"
                     placeholder="Quel est l'objet de votre message ?"
                   />
                 </div>
@@ -182,7 +182,7 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-3 bg-white dark:bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300 resize-none"
+                    className="w-full px-4 py-3 bg-white dark:bg-gray-700/50 border border-neutral-300 dark:border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300 resize-none"
                     placeholder="Écrivez votre message ici..."
                   ></textarea>
                 </div>
@@ -190,7 +190,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg"
+                  className="w-full bg-white text-neutral-900 py-4 px-6 rounded-full font-semibold hover:bg-neutral-200 transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg"
                 >
                   {isSubmitting ? (
                     <>
@@ -209,7 +209,7 @@ export default function Contact() {
 
             {/* Contact Info */}
             <div className="space-y-8">
-              <div className="bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm p-8 rounded-2xl border border-gray-600 hover:border-cyan-500/50 transition-all duration-300">
+              <div className="bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm p-8 rounded-2xl border border-neutral-300 dark:border-white/10 hover:border-cyan-400/40 transition-all duration-300">
                 <h2 className="text-2xl font-bold text-[var(--theme-color)] dark:text-white mb-6">Coordonnées</h2>
                 
                 <div className="space-y-6">
@@ -217,14 +217,14 @@ export default function Contact() {
                     const IconComponent = info.icon
                     return (
                       <div key={index} className="flex items-center p-4 bg-gray-200 dark:bg-gray-700/50 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700/70 transition-colors duration-300">
-                        <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center mr-4">
+                        <div className="w-12 h-12 bg-gradient-to-r from-cyan-400 to-fuchsia-400 rounded-lg flex items-center justify-center mr-4">
                           <IconComponent className="w-6 h-6 text-white" />
                         </div>
                         <div>
                           <h3 className="text-gray-700 dark:text-white font-semibold">{info.title}</h3>
                           <a 
                             href={info.link} 
-                            className="text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-cyan-400 transition-colors duration-300"
+                            className="text-gray-500 dark:text-gray-300 hover:text-cyan-600 dark:hover:text-cyan-300 transition-colors duration-300"
                           >
                             {info.value}
                           </a>
@@ -236,7 +236,7 @@ export default function Contact() {
               </div>
 
               {/* Social Links */}
-              <div className="bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm p-8 rounded-2xl border border-gray-600 hover:border-cyan-500/50 transition-all duration-300">
+              <div className="bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm p-8 rounded-2xl border border-neutral-300 dark:border-white/10 hover:border-cyan-400/40 transition-all duration-300">
                 <h2 className="text-2xl font-bold text-gray-700 dark:text-white mb-6">Retrouvez-moi sur</h2>
                 
                 <div className="grid grid-cols-2 gap-4">
@@ -244,7 +244,7 @@ export default function Contact() {
                     <a
                       key={index}
                       href={social.url}
-                      className="p-4 bg-gray-200 dark:bg-gray-700/50 rounded-lg text-center text-gray-700 dark:text-gray-300 hover:bg-cyan-500/20 hover:text-gray-700 dark:hover:text-cyan-300 transition-all duration-300 hover:transform hover:-translate-y-1 border border-gray-600 font-medium"
+                      className="p-4 bg-gray-200 dark:bg-gray-700/50 rounded-lg text-center text-gray-700 dark:text-gray-300 hover:bg-cyan-500/20 hover:text-gray-700 dark:hover:text-cyan-300 transition-all duration-300 hover:transform hover:-translate-y-1 border border-neutral-300 dark:border-white/10 font-medium"
                     >
                       {social.name}
                     </a>
@@ -255,7 +255,7 @@ export default function Contact() {
           </div>
 
           {/* Availability */}
-          <div className="bg-white mt-10 dark:bg-[var(--theme-color)] backdrop-blur-sm p-8 rounded-2xl border border-gray-600">
+          <div className="bg-white mt-10 dark:bg-[var(--theme-color)] backdrop-blur-sm p-8 rounded-2xl border border-neutral-300 dark:border-white/10">
             <h2 className="text-2xl font-bold text-[var(--theme-color)] dark:text-white mb-4">Disponibilité</h2>
             <div className="flex items-center mb-4">
               <div className="w-3 h-3 bg-green-400 rounded-full mr-3 animate-pulse"></div>

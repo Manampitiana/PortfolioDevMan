@@ -169,12 +169,12 @@ export default function About() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {education.map((edu, index) => (
-              <div key={index} className="bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm p-8 rounded-xl border border-gray-600 hover:border-cyan-400/60 transition-all duration-300 hover:bg-gray-50 dark:hover:bg-gray-800/80 hover:-translate-y-1">
+              <div key={index} className="bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm p-8 rounded-xl border border-neutral-300 dark:border-white/10 hover:border-cyan-400/60 transition-all duration-300 hover:bg-gray-50 dark:hover:bg-gray-800/80 hover:-translate-y-1">
                 <div className="flex items-start mb-4">
-                  <AcademicCapIcon className="w-10 h-10 text-blue-600 dark:text-cyan-400 mr-4 mt-1" />
+                  <AcademicCapIcon className="w-10 h-10 text-cyan-500 dark:text-cyan-300 mr-4 mt-1" />
                   <div>
                     <h3 className="text-xl font-semibold text-[var(--theme-color)] dark:text-white mb-2">{edu.degree}</h3>
-                    <p className="text-blue-600 dark:text-cyan-400 font-medium mb-2">{edu.school}</p>
+                    <p className="text-cyan-500 dark:text-cyan-300 font-medium mb-2">{edu.school}</p>
                     <p className="text-gray-700 dark:text-gray-300 text-sm mb-3">{edu.year}</p>
                   </div>
 

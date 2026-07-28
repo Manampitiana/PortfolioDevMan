@@ -77,7 +77,7 @@ export default function Projects() {
       <section className="pb-16 px-4 bg-gray-100 dark:bg-[var(--theme-color)]">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-[var(--theme-color)] dark:text-white pt-12 mb-12 text-center">
-            Projets <span className="text-blue-600 dark:text-cyan-400">Phares</span>
+            Projets <span className="text-cyan-500 dark:text-cyan-300">Phares</span>
           </h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 mb-16">
@@ -89,7 +89,7 @@ export default function Projects() {
                   <p className="col-span-3 text-center text-gray-500">Aucun projet mis en avant trouvé.</p>
                 )}
                 {featuredProjects.map((project) => (
-                  <div key={project.id} className="group bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm rounded-xl border border-gray-400 dark:border-gray-700 overflow-hidden hover:border-cyan-500/50 transition-all duration-300 hover:transform hover:-translate-y-2">
+                  <div key={project.id} className="group bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm rounded-xl border border-gray-400 dark:border-gray-700 overflow-hidden hover:border-cyan-400/40 transition-all duration-300 hover:transform hover:-translate-y-2">
                     <div className="relative overflow-hidden">
                       <div className="w-full h-48 bg-[var(--theme-color)] flex items-center justify-center">
                         <img src={project.cover_image} alt={project.title} className='w-full h-full object-cover'/>
@@ -114,7 +114,7 @@ export default function Projects() {
                         ))}
                       </div>
                       <div className="flex space-x-3">
-                        <Link to={project.project_url} onClick={() => incrementView(project.id)} className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg text-center text-sm font-medium hover:bg-blue-700 transition-all duration-300">
+                        <Link to={project.project_url} onClick={() => incrementView(project.id)} className="flex-1 bg-white text-neutral-900 py-2 px-4 rounded-lg text-center text-sm font-medium hover:bg-neutral-200 transition-all duration-300">
                           Démo Live
                         </Link>
                         <Link to={project.github_url} onClick={() => incrementView(project.id)} className="flex-1 border border-gray-400 text-gray-700 dark:text-gray-300 py-2 px-4 rounded-lg text-center text-sm font-medium hover:bg-gray-700 hover:text-white transition-all duration-300">
@@ -134,7 +134,7 @@ export default function Projects() {
       <section className="pb-10 px-4 bg-gray-100 dark:bg-[var(--theme-color)]">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-[var(--theme-color)] dark:text-white mb-12 text-center">
-            Tous mes <span className="text-blue-600 dark:text-cyan-400">Projets</span>
+            Tous mes <span className="text-cyan-500 dark:text-cyan-300">Projets</span>
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -146,7 +146,7 @@ export default function Projects() {
                   <p className="col-span-3 text-center text-gray-500">Aucun projet trouvé.</p>
                 )}
                 {projects.map((project) => (
-                  <div key={project.id} className="group bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm rounded-xl border dark:border-gray-700 border-gray-400 overflow-hidden hover:border-cyan-500/50 transition-all duration-300 hover:transform hover:-translate-y-1">
+                  <div key={project.id} className="group bg-white dark:bg-[var(--theme-color)] backdrop-blur-sm rounded-xl border dark:border-gray-700 border-gray-400 overflow-hidden hover:border-cyan-400/40 transition-all duration-300 hover:transform hover:-translate-y-1">
                     <div className="relative overflow-hidden">
                       <div className="w-full h-48 bg-[var(--theme-color)] flex items-center justify-center">
                         <img src={project.cover_image} alt={project.title} className='w-full h-full object-cover'/>
