@@ -17,20 +17,7 @@ class AboutMeController extends Controller
 
     public function store(Request $request)
     {
-
-        if ($request->hasFile('pdp')) {
-            $file = $request->file('pdp');
-
-            \Log::info([
-                'isValid' => $file->isValid(),
-                'error' => $file->getError(),
-                'errorMessage' => $file->getErrorMessage(),
-                'size' => $file->getSize(),
-                'mime' => $file->getMimeType(),
-            ]);
-        } else {
-            \Log::info('No file uploaded');
-        }
+        
         $validated = $request->validate([
             'full_name'   => 'required|string|max:255',
             'title'       => 'required|string|max:255',
@@ -44,7 +31,7 @@ class AboutMeController extends Controller
         ]);
 
         $aboutMe = AboutMe::first() ?? new AboutMe();
-
+        
 
         if ($request->hasFile('pdp')) {
             if ($aboutMe->pdp_public_id) {
