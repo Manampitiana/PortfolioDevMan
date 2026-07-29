@@ -14,98 +14,147 @@ import { EnvelopeIcon, PhoneIcon, MapPinIcon } from "@heroicons/react/24/outline
 
 // 1. STYLES POUR LE PDF
 const styles = StyleSheet.create({
-  page: { flexDirection: "row", backgroundColor: "#FFFFFF", padding: 0 },
-  sidebar: { width: "32%", backgroundColor: "#111827", color: "white", padding: 20 },
-  main: { flex: 1, padding: 30, backgroundColor: "#FFFFFF" },
-  profileImg: { width: 80, height: 80, borderRadius: 40, marginBottom: 15, alignSelf: 'center', border: '2pt solid #06b6d4' },
-  name: { fontSize: 18, fontWeight: "bold", color: "#111827", marginBottom: 4 },
-  jobTitle: { fontSize: 10, color: "#0891b2", marginBottom: 15, fontWeight: 'bold', textTransform: 'uppercase' },
-  sidebarTitle: { fontSize: 10, fontWeight: "bold", marginTop: 15, marginBottom: 8, color: "#22d3ee", textTransform: 'uppercase', borderBottom: '0.5pt solid #374151', paddingBottom: 2 },
-  contactInfo: { fontSize: 8, marginBottom: 6, color: "#d1d5db" },
-  skillContainer: { marginBottom: 6 },
-  skillLabel: { fontSize: 8, color: "#f3f4f6", marginBottom: 2 },
-  skillBar: { height: 2, backgroundColor: "#374151", borderRadius: 1 },
-  skillFill: { height: 2, backgroundColor: "#22d3ee", borderRadius: 1 },
-  sectionTitle: { fontSize: 12, fontWeight: "bold", marginTop: 15, marginBottom: 10, color: "#111827", borderLeft: '3pt solid #06b6d4', paddingLeft: 8 },
-  description: { fontSize: 9, color: "#4b5563", lineHeight: 1.5, textAlign: 'justify' },
-  expItem: { marginBottom: 12 },
-  expHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 2 },
-  expTitle: { fontSize: 10, fontWeight: 'bold', color: '#1f2937' },
-  expDate: { fontSize: 8, color: '#6b7280' },
-  company: { fontSize: 9, color: '#0891b2', marginBottom: 3 },
-  eduItem: { marginBottom: 10 },
-  eduDegree: { fontSize: 10, fontWeight: 'bold', color: '#1f2937' },
-  eduSchool: { fontSize: 9, color: '#0891b2', marginBottom: 2 },
-  eduYear: { fontSize: 8, color: '#6b7280' },
-  bulletPoint: { fontSize: 9, color: '#4b5563', marginBottom: 3, paddingLeft: 5 }
+  page: { padding: 32, backgroundColor: "#FFFFFF", fontFamily: "Helvetica" },
+
+  // Header
+  header: { flexDirection: "row", alignItems: "center", marginBottom: 14, paddingBottom: 14, borderBottom: "1pt solid #e5e7eb" },
+  profileImg: { width: 68, height: 68, borderRadius: 34, marginRight: 16, border: "2pt solid #22d3ee" },
+  name: { fontSize: 17, fontWeight: "bold", color: "#111827", marginBottom: 2 },
+  jobTitle: { fontSize: 10, color: "#0891b2", fontWeight: "bold", textTransform: "uppercase", marginBottom: 6, letterSpacing: 0.5 },
+  contactRow: { flexDirection: "row", flexWrap: "wrap", columnGap: 14, rowGap: 3 },
+  contactItem: { fontSize: 8, color: "#4b5563" },
+
+  // Corps à 2 colonnes (hauteur libre, pas de fond fixe = pas de vide)
+  body: { flexDirection: "row" },
+  colLeft: { width: "31%", paddingRight: 14, borderRight: "1pt solid #e5e7eb" },
+  colRight: { flex: 1, paddingLeft: 14 },
+
+  sectionTitle: { fontSize: 10.5, fontWeight: "bold", color: "#111827", textTransform: "uppercase", marginBottom: 8, marginTop: 14 },
+  sectionTitleFirst: { marginTop: 0 },
+
+  // Éducation
+  eduItem: { marginBottom: 9 },
+  eduDegree: { fontSize: 9.5, fontWeight: "bold", color: "#1f2937" },
+  eduSchool: { fontSize: 8.5, color: "#0891b2", marginTop: 1 },
+  eduYear: { fontSize: 8, color: "#9ca3af", marginTop: 1 },
+
+  // Listes à puces compactes (compétences / langues)
+  bulletRow: { flexDirection: "row", alignItems: "flex-start", marginBottom: 4 },
+  bulletDot: { width: 3, height: 3, borderRadius: 1.5, backgroundColor: "#22d3ee", marginRight: 6, marginTop: 3.5 },
+  bulletText: { fontSize: 8.5, color: "#374151" },
+
+  // Profil / description
+  paragraph: { fontSize: 9, color: "#4b5563", lineHeight: 1.5, textAlign: "justify" },
+
+  // Expérience
+  expItem: { marginBottom: 11 },
+  expHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 1 },
+  expTitle: { fontSize: 9.5, fontWeight: "bold", color: "#1f2937", flex: 1, paddingRight: 8 },
+  expDate: { fontSize: 8, color: "#9ca3af" },
+  expCompany: { fontSize: 8.5, color: "#0891b2", marginBottom: 4 },
+
+  // Projets
+  projItem: { marginBottom: 7 },
+  projTitle: { fontSize: 9, fontWeight: "bold", color: "#1f2937", marginBottom: 1 },
 });
+
+// Découpe une description en points compacts (façon "bullet points") pour rester lisible sur 1 page
+const toBullets = (text, max = 3) => {
+  if (!text) return [];
+  return text
+    .split(/(?<=[.!?])\s+/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .slice(0, max);
+};
 
 // 2. COMPOSANT DOCUMENT PDF
 const MyCVDocument = ({ user, skills, experiences, projects, education, pdpBase64 }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      {/* BARRE LATÉRALE */}
-      <View style={styles.sidebar}>
+
+      {/* HEADER */}
+      <View style={styles.header}>
         {pdpBase64 && <Image src={pdpBase64} style={styles.profileImg} />}
-
-        <Text style={styles.sidebarTitle}>Contact</Text>
-        <Text style={styles.contactInfo}>{user.location}</Text>
-        <Text style={styles.contactInfo}>{user.phone}</Text>
-        <Text style={styles.contactInfo}>{user.email}</Text>
-        <Text style={styles.contactInfo}>github.com/{user.github_user}</Text>
-
-        <Text style={styles.sidebarTitle}>Compétences</Text>
-        {skills.map((skill, i) => (
-          <View key={i} style={styles.skillContainer}>
-            <Text style={styles.skillLabel}>{skill.name}</Text>
-            <View style={styles.skillBar}>
-              <View style={{ ...styles.skillFill, width: `${skill.level}%` }} />
-            </View>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.name}>{user.name}</Text>
+          <Text style={styles.jobTitle}>{user.job}</Text>
+          <View style={styles.contactRow}>
+            {user.email && <Text style={styles.contactItem}>{user.email}</Text>}
+            {user.phone && <Text style={styles.contactItem}>{user.phone}</Text>}
+            {user.location && <Text style={styles.contactItem}>{user.location}</Text>}
+            {user.github_user && <Text style={styles.contactItem}>github.com/{user.github_user}</Text>}
           </View>
-        ))}
-
-        <Text style={styles.sidebarTitle}>Langues</Text>
-        <Text style={styles.contactInfo}>• Malgache (Maternel)</Text>
-        <Text style={styles.contactInfo}>• Français (Notions de base)</Text>
-        <Text style={styles.contactInfo}>• Anglais (Notions de base)</Text>
+        </View>
       </View>
 
-      {/* CONTENU PRINCIPAL */}
-      <View style={styles.main}>
-        <Text style={styles.name}>{user.name}</Text>
-        <Text style={styles.jobTitle}>{user.job}</Text>
+      {/* CORPS — 2 colonnes, hauteur libre */}
+      <View style={styles.body}>
 
-        <Text style={styles.sectionTitle}>Résumé Professionnel</Text>
-        <Text style={styles.description}>{user.resume}</Text>
-
-        <Text style={styles.sectionTitle}>Expériences Professionnelles</Text>
-        {experiences.map((exp, i) => (
-          <View key={i} style={styles.expItem}>
-            <View style={styles.expHeader}>
-              <Text style={styles.expTitle}>{exp.title}</Text>
-              <Text style={styles.expDate}>{exp.date_range}</Text>
+        {/* Colonne gauche */}
+        <View style={styles.colLeft}>
+          <Text style={[styles.sectionTitle, styles.sectionTitleFirst]}>Formation</Text>
+          {education.map((edu, i) => (
+            <View key={i} style={styles.eduItem}>
+              <Text style={styles.eduDegree}>{edu.degree}</Text>
+              <Text style={styles.eduSchool}>{edu.school}</Text>
+              <Text style={styles.eduYear}>{edu.year}</Text>
             </View>
-            <Text style={styles.company}>{exp.company}</Text>
-            <Text style={styles.description}>{exp.description}</Text>
-          </View>
-        ))}
+          ))}
 
-        <Text style={styles.sectionTitle}>Projets Majeurs</Text>
-        {projects.slice(0, 3).map((proj, i) => (
-          <View key={i} style={{ marginBottom: 8 }}>
-            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>• {proj.title}</Text>
-            <Text style={{ ...styles.description, fontSize: 8 }}>{proj.short_description || proj.description}</Text>
-          </View>
-        ))}
+          <Text style={styles.sectionTitle}>Compétences</Text>
+          {skills.map((skill, i) => (
+            <View key={i} style={styles.bulletRow}>
+              <View style={styles.bulletDot} />
+              <Text style={styles.bulletText}>{skill.name}</Text>
+            </View>
+          ))}
 
-        <Text style={styles.sectionTitle}>Éducation</Text>
-        {education.map((edu, i) => (
-          <View key={i} style={styles.eduItem}>
-            <Text style={styles.eduDegree}>{edu.degree}</Text>
-            <Text style={styles.eduSchool}>{edu.school}</Text>
-            <Text style={styles.eduYear}>{edu.year}</Text>
+          <Text style={styles.sectionTitle}>Langues</Text>
+          <View style={styles.bulletRow}>
+            <View style={styles.bulletDot} />
+            <Text style={styles.bulletText}>Malgache — Maternel</Text>
           </View>
-        ))}
+          <View style={styles.bulletRow}>
+            <View style={styles.bulletDot} />
+            <Text style={styles.bulletText}>Français — Intermédiaire</Text>
+          </View>
+          <View style={styles.bulletRow}>
+            <View style={styles.bulletDot} />
+            <Text style={styles.bulletText}>Anglais — Notions</Text>
+          </View>
+        </View>
+
+        {/* Colonne droite */}
+        <View style={styles.colRight}>
+          <Text style={[styles.sectionTitle, styles.sectionTitleFirst]}>Profil</Text>
+          <Text style={styles.paragraph}>{user.resume}</Text>
+
+          <Text style={styles.sectionTitle}>Expérience</Text>
+          {experiences.slice(0, 3).map((exp, i) => (
+            <View key={i} style={styles.expItem}>
+              <View style={styles.expHeader}>
+                <Text style={styles.expTitle}>{exp.title}</Text>
+                <Text style={styles.expDate}>{exp.date_range}</Text>
+              </View>
+              <Text style={styles.expCompany}>{exp.company}</Text>
+              {toBullets(exp.description).map((line, j) => (
+                <View key={j} style={styles.bulletRow}>
+                  <View style={styles.bulletDot} />
+                  <Text style={styles.bulletText}>{line}</Text>
+                </View>
+              ))}
+            </View>
+          ))}
+
+          <Text style={styles.sectionTitle}>Projets Majeurs</Text>
+          {projects.slice(0, 3).map((proj, i) => (
+            <View key={i} style={styles.projItem}>
+              <Text style={styles.projTitle}>{proj.title}</Text>
+              <Text style={styles.bulletText}>{proj.short_description || proj.description}</Text>
+            </View>
+          ))}
+        </View>
       </View>
     </Page>
   </Document>
