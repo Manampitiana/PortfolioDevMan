@@ -96,6 +96,8 @@ export default function AdminAboutMe() {
         console.log(error);
         toast.error('Nisy olana nitranga.');
       }
+    }finally {
+      setLoading(false);
     }
   };
 
