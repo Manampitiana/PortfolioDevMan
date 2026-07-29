@@ -85,13 +85,17 @@ export default function AdminAboutMe() {
       });
       toast.success(response.data.message || 'Profile updated successfully!');
     } catch (error) {
+      console.log(error.response);
+      console.log(error.response?.data);
+
       if (error.response?.status === 422) {
-        toast.error('Hamarino ny inputs-nao');
+        Object.values(error.response.data.errors).forEach((messages) => {
+          messages.forEach((msg) => toast.error(msg));
+        });
       } else {
+        console.log(error);
         toast.error('Nisy olana nitranga.');
       }
-    } finally {
-      setLoading(false);
     }
   };
 
