@@ -17,6 +17,20 @@ class AboutMeController extends Controller
 
     public function store(Request $request)
     {
+
+        if ($request->hasFile('pdp')) {
+            $file = $request->file('pdp');
+
+            \Log::info([
+                'isValid' => $file->isValid(),
+                'error' => $file->getError(),
+                'errorMessage' => $file->getErrorMessage(),
+                'size' => $file->getSize(),
+                'mime' => $file->getMimeType(),
+            ]);
+        } else {
+            \Log::info('No file uploaded');
+        }
         $validated = $request->validate([
             'full_name'   => 'required|string|max:255',
             'title'       => 'required|string|max:255',
@@ -31,17 +45,8 @@ class AboutMeController extends Controller
 
         $aboutMe = AboutMe::first() ?? new AboutMe();
 
+
         if ($request->hasFile('pdp')) {
-            $file = $request->file('pdp');
-
-        dd([
-            'hasFile' => true,
-            'valid' => $file->isValid(),
-            'error' => $file->getError(),
-            'message' => $file->getErrorMessage(),
-            'size' => $file->getSize(),
-        ]);
-
             if ($aboutMe->pdp_public_id) {
                 CloudinaryHelper::destroy($aboutMe->pdp_public_id);
             }
@@ -49,9 +54,6 @@ class AboutMeController extends Controller
             $validated['pdp']           = $result['secure_url'];
             $validated['pdp_public_id'] = $result['public_id'];
         }
-
-
-    dd('No file received');
 
         $validated['is_active'] = filter_var($request->is_active, FILTER_VALIDATE_BOOLEAN);
         $aboutMe->fill($validated);
