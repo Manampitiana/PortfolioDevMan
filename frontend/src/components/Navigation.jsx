@@ -70,13 +70,13 @@ export default function Navigation() {
 
             <div className="flex items-center gap-3">
               {/* Bouton de Changement de Thème */}
-              <button
+              {/* <button
                 onClick={toggleTheme}
                 className="p-2 text-neutral-400 hover:text-cyan-300 hover:bg-white/5 rounded-full transition-all"
                 title={isDark ? "Activer le mode clair" : "Activer le mode sombre"}
               >
                 {isDark ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
-              </button>
+              </button> */}
 
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -91,9 +91,9 @@ export default function Navigation() {
 
           {/* Bouton Menu Mobile */}
           <div className="md:hidden flex items-center gap-2">
-            <button onClick={toggleTheme} className="p-2 text-neutral-400">
+            {/* <button onClick={toggleTheme} className="p-2 text-neutral-400">
               {isDark ? <SunIcon className="w-6 h-6" /> : <MoonIcon className="w-6 h-6" />}
-            </button>
+            </button> */}
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="p-2 text-white"
