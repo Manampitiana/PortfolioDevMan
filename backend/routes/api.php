@@ -33,6 +33,14 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::get('/dashboard-stats', [DashboardController::class, 'index']);
 });
 
+Route::get('/upload-limits', function () {
+    return [
+        'upload_max_filesize' => ini_get('upload_max_filesize'),
+        'post_max_size' => ini_get('post_max_size'),
+        'memory_limit' => ini_get('memory_limit'),
+    ];
+});
+
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/fetch_about_me', [ShowController::class, 'fetch_about_me']);
