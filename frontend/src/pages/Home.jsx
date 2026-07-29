@@ -15,20 +15,20 @@ export default function Home() {
   const navigate = useNavigate();
   const [featuredProjects, setFeaturedProjects] = useState([]);
   const [publicSkills, setPublicSkills] = useState([]);
-  const [loading, setLoading] = useState(true); // loader state
+  const [skillsLoading, setSkillsLoading] = useState(true); // loader dédié aux compétences
 
 
 
   // Récupérer les compétences
   const fetchSkills = async () => {
-    setLoading(true);
+    setSkillsLoading(true);
     try {
       const response = await axiosClient.get('/publicSkills');
       setPublicSkills(response.data.publicSkills || []);
     } catch (error) {
       console.error('Erreur lors de la récupération des compétences:', error);
     } finally {
-      setLoading(false); // <-- eto rehefa vita ny fetch
+      setSkillsLoading(false); // <-- eto rehefa vita ny fetch
     }
   };
 
@@ -65,8 +65,6 @@ export default function Home() {
       setAboutMe(response.data);
     } catch (error) {
       console.error('Error fetching about me:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -118,21 +116,21 @@ export default function Home() {
                 <motion.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 3, repeat: Infinity }}
-                  className="absolute -top-4 -right-4 w-14 h-14 rounded-2xl bg-white/[0.06] backdrop-blur-xl border border-white/10 flex items-center justify-center shadow-lg"
+                  className="absolute -top-3 -right-2 sm:-top-4 sm:-right-4 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/[0.06] backdrop-blur-xl border border-white/10 flex items-center justify-center shadow-lg"
                 >
-                  <img src="/react.png" alt="React" className="w-7 h-7" />
+                  <img src="/react.png" alt="React" className="w-6 h-6 sm:w-7 sm:h-7" />
                 </motion.div>
                 <motion.div
                   animate={{ y: [0, -8, 0] }}
                   transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-                  className="absolute -bottom-4 -left-4 w-12 h-12 rounded-2xl bg-white/[0.06] backdrop-blur-xl border border-white/10 flex items-center justify-center shadow-lg"
+                  className="absolute -bottom-3 -left-2 sm:-bottom-4 sm:-left-4 w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-white/[0.06] backdrop-blur-xl border border-white/10 flex items-center justify-center shadow-lg"
                 >
-                  <span className="text-lg">🔧</span>
+                  <span className="text-base sm:text-lg">🔧</span>
                 </motion.div>
                 <motion.div
                   animate={{ y: [0, -6, 0] }}
                   transition={{ duration: 5, repeat: Infinity, delay: 2 }}
-                  className="absolute top-1/2 -left-8 w-10 h-10 rounded-2xl bg-white/[0.06] backdrop-blur-xl border border-white/10 flex items-center justify-center shadow-lg"
+                  className="hidden sm:flex absolute top-1/2 -left-8 w-10 h-10 rounded-2xl bg-white/[0.06] backdrop-blur-xl border border-white/10 items-center justify-center shadow-lg"
                 >
                   <img src="/laravel.png" alt="Laravel" className="w-5 h-5" />
                 </motion.div>
@@ -145,12 +143,12 @@ export default function Home() {
                 <span className="inline-flex items-center gap-2 text-[11px] font-mono tracking-widest text-cyan-300 bg-cyan-400/10 border border-cyan-400/20 rounded-full px-3 py-1.5 mb-6">
                   DÉVELOPPEUR FULL-STACK
                 </span>
-                <h1 className="font-display text-xl sm:text-2xl lg:text-3xl xl:text-5xl font-semibold text-white mb-6 leading-tight">
+                <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-semibold text-white mb-6 leading-tight">
                   Bonjour, je suis
                   <span className="block bg-gradient-to-r from-cyan-300 via-white to-fuchsia-300 bg-clip-text text-transparent">
                     RAVAKA TSIRINIAINA
                   </span>
-                  <span className="block text-2xl sm:text-2xl lg:text-3xl text-neutral-400 font-medium mt-2">
+                  <span className="block text-xl sm:text-2xl lg:text-3xl text-neutral-400 font-medium mt-2">
                     Manampitiana
                   </span>
                 </h1>
@@ -213,7 +211,7 @@ export default function Home() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {loading
+            {skillsLoading
               ? skeletonArray.map((_, index) => (
                 <div
                   key={index}
