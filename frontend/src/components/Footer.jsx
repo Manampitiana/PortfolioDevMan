@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { HeartIcon } from '@heroicons/react/24/solid'
 import { useEffect, useState } from 'react';
 import axiosClient from '../axios';
-import { MapPinIcon, Phone, Github, Linkedin, Facebook, Youtube } from 'lucide-react';
+import { MapPinIcon, Phone, Github, Linkedin, Facebook, Youtube, LinkedinIcon } from 'lucide-react';
 import { EnvelopeIcon } from '@heroicons/react/24/outline';
 import { useSettings } from '../contexts/SettingsContext';
 
@@ -33,6 +33,7 @@ export default function Footer() {
 
   const socialLinks = [
     { name: 'Facebook', href: 'https://www.facebook.com/profile.php?id=100070143253960', icon: <Facebook className='w-5 h-5' /> },
+    { name: 'LinkedIn', href: 'https://www.linkedin.com/in/manampitiana-ravaka-tsiriniaina-5613b1317', icon: <LinkedinIcon className='w-5 h-5' /> },
     { name: 'GitHub', href: 'https://github.com/Manampitiana', icon: <Github className='w-5 h-5' /> },
     { name: 'YouTube', href: 'https://www.youtube.com/@ManampitianaTSIRINIAINA', icon: <Youtube className='w-5 h-5' /> },
   ]
