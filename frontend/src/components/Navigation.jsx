@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { Bars3Icon, XMarkIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '../contexts/ThemeContext'
 import { useSettings } from '../contexts/SettingsContext'
 
 export default function Navigation() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [isOpen, setIsOpen] = useState(false)
   const { isDark, toggleTheme } = useTheme()
   const { settings, loading } = useSettings();
@@ -19,96 +21,83 @@ export default function Navigation() {
   ]
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-[var(--theme-color)/0.5] shadow-md shadow-gray-400 dark:shadow-[var(--theme-color)] backdrop-blur-md border-b border-gray-100 dark:border-slate-800 transition-all duration-300`}>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-neutral-950/80 backdrop-blur-xl border-b border-white/5 transition-all duration-300">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
 
           {/* Zone Logo */}
           <Link to="/" className="flex items-center group">
-            <div className="w-9 h-9 overflow-hidden bg-gradient-to-tr from-cyan-400 to-fuchsia-400 rounded flex items-center justify-center mr-3 shadow-lg shadow-cyan-400/20 group-hover:rotate-6 transition-transform">
-
+            <div className="w-9 h-9 overflow-hidden bg-gradient-to-tr from-cyan-400 to-fuchsia-400 rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-cyan-400/20 group-hover:rotate-6 transition-transform">
               {settings?.logo ? (
-                <img
-                  src={settings.logo}
-                  className="w-full h-full object-contain"
-                  alt="Logo du site"
-                />
+                <img src={settings.logo} className="w-full h-full object-contain" alt="Logo du site" />
               ) : settings?.favicon ? (
-                <img
-                  src={settings.favicon}
-                  className="w-full h-full object-contain p-1"
-                  alt="Favicon utilisée comme logo"
-                />
+                <img src={settings.favicon} className="w-full h-full object-contain p-1" alt="Favicon utilisée comme logo" />
               ) : (
-                <img
-                  src="/logo.png"
-                  className="w-full h-full object-contain p-1"
-                  alt="Logo par défaut"
-                />
+                <img src="/logo.png" className="w-full h-full object-contain p-1" alt="Logo par défaut" />
               )}
-
             </div>
-            <span className="text-gray-900 dark:text-white font-display font-semibold text-xl tracking-tight">
+            <span className="text-white font-display font-semibold text-xl tracking-tight">
               {settings?.site_name || 'Mon Portfolio'}
             </span>
           </Link>
 
           {/* Navigation Bureau (Desktop) */}
-          <div className="hidden md:flex items-center space-x-1">
-            {navigation.map((item) => (
-              <NavLink
-                key={item.name}
-                to={item.href}
-                className={({ isActive }) => `
-                  relative px-4 py-2 text-sm font-medium transition-colors duration-300
-                  ${isActive
-                    ? 'text-cyan-500 dark:text-cyan-300'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}
-                `}
-              >
-                {({ isActive }) => (
-                  <>
-                    <span>{item.name}</span>
-                    {/* Indicateur de ligne soulignée */}
-                    <span className={`
-                      absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-cyan-400 transition-all duration-300
-                      ${isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}
-                    `} />
-                  </>
-                )}
-              </NavLink>
-            ))}
+          <div className="hidden md:flex items-center gap-1">
+            {navigation.map((item) => {
+              const isActive = location.pathname === item.href;
+              return (
+                <NavLink
+                  key={item.name}
+                  to={item.href}
+                  className="relative px-4 py-2 text-sm font-medium"
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-active-pill"
+                      className="absolute inset-0 rounded-full bg-white/[0.06] border border-white/10"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                  <span className={`relative z-10 transition-colors duration-300 ${isActive ? 'text-cyan-300' : 'text-neutral-400 hover:text-white'}`}>
+                    {item.name}
+                  </span>
+                </NavLink>
+              );
+            })}
 
             {/* Séparateur */}
-            <div className="h-6 w-px bg-gray-200 dark:bg-slate-700 mr-4"> </div>
+            <div className="h-6 w-px bg-white/10 mx-3" />
 
-            <div className='flex items-center'>
+            <div className="flex items-center gap-3">
               {/* Bouton de Changement de Thème */}
               <button
                 onClick={toggleTheme}
-                className="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all ms-4"
+                className="p-2 text-neutral-400 hover:text-cyan-300 hover:bg-white/5 rounded-full transition-all"
                 title={isDark ? "Activer le mode clair" : "Activer le mode sombre"}
               >
                 {isDark ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
               </button>
 
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/cv')}
-                className="ml-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-5 py-2 rounded-full text-sm font-semibold hover:bg-cyan-400 dark:hover:bg-blue-500 dark:hover:text-white transition-all active:scale-95"
+                className="bg-white text-neutral-900 px-5 py-2 rounded-full text-sm font-semibold hover:bg-neutral-200 transition-colors"
               >
                 Mon CV
-              </button>
+              </motion.button>
             </div>
           </div>
 
           {/* Bouton Menu Mobile */}
-          <div className="md:hidden flex items-center space-x-3">
-            <button onClick={toggleTheme} className="p-2 text-gray-500">
+          <div className="md:hidden flex items-center gap-2">
+            <button onClick={toggleTheme} className="p-2 text-neutral-400">
               {isDark ? <SunIcon className="w-6 h-6" /> : <MoonIcon className="w-6 h-6" />}
             </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 text-gray-900 dark:text-white"
+              className="p-2 text-white"
+              aria-label="Menu"
             >
               {isOpen ? <XMarkIcon className="h-7 w-7" /> : <Bars3Icon className="h-7 w-7" />}
             </button>
@@ -116,37 +105,55 @@ export default function Navigation() {
         </div>
 
         {/* Panneau de Navigation Mobile */}
-        <div className={`
-          md:hidden overflow-hidden transition-all duration-300 ease-in-out
-          ${isOpen ? 'max-h-96 opacity-100 pb-6' : 'max-h-0 opacity-0'}
-        `}>
-          <div className="flex flex-col space-y-2">
-            {navigation.map((item) => (
-              <NavLink
-                key={item.name}
-                to={item.href}
-                onClick={() => setIsOpen(false)}
-                className={({ isActive }) => `
-                  px-4 py-3 rounded-xl text-base font-semibold transition-all
-                  ${isActive
-                    ? 'bg-blue-50 dark:bg-blue-900/20 text-cyan-500 dark:text-cyan-300'
-                    : 'text-gray-600 dark:text-gray-300'}
-                `}
-              >
-                {item.name}
-              </NavLink>
-            ))}
-            <button
-              onClick={() => {
-                navigate('/cv');
-                setIsOpen(false);
-              }}
-              className="ml-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-5 py-2 rounded-full text-sm font-semibold hover:bg-cyan-400 dark:hover:bg-blue-500 dark:hover:text-white transition-all active:scale-95"
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              key="mobile-nav"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="md:hidden overflow-hidden"
             >
-              Télécharger mon CV
-            </button>
-          </div>
-        </div>
+              <div className="flex flex-col gap-1.5 pb-6 pt-2">
+                {navigation.map((item, i) => (
+                  <motion.div
+                    key={item.name}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.05 + i * 0.05 }}
+                  >
+                    <NavLink
+                      to={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className={({ isActive }) => `
+                        block px-4 py-3 rounded-xl text-base font-medium transition-all
+                        ${isActive
+                          ? 'bg-cyan-400/10 border border-cyan-400/20 text-cyan-300'
+                          : 'text-neutral-300 hover:bg-white/5'}
+                      `}
+                    >
+                      {item.name}
+                    </NavLink>
+                  </motion.div>
+                ))}
+                <motion.button
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.05 + navigation.length * 0.05 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => {
+                    navigate('/cv');
+                    setIsOpen(false);
+                  }}
+                  className="mt-2 bg-white text-neutral-900 px-5 py-3 rounded-full text-sm font-semibold hover:bg-neutral-200 transition-colors"
+                >
+                  Télécharger mon CV
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </nav>
   )
