@@ -77,10 +77,10 @@ export default function Contact() {
   ]
 
   const socialLinks = [
-    { name: 'GitHub', url: '#' },
-    { name: 'LinkedIn', url: '#' },
-    { name: 'Twitter', url: '#' },
-    { name: 'Facebook', url: '#' }
+    { name: 'GitHub', url: 'https://github.com/Manampitiana'},
+    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/manampitiana-ravaka-tsiriniaina-5613b1317' },
+    { name: 'YouTube', url: 'https://www.youtube.com/@ManampitianaTSIRINIAINA' },
+    { name: 'Facebook', url: 'https://www.facebook.com/profile.php?id=100070143253960' }
   ]
 
   return (
