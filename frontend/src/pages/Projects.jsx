@@ -3,6 +3,8 @@ import { EyeIcon, CodeBracketIcon } from '@heroicons/react/24/outline'
 import axiosClient from '../axios'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { Helmet } from 'react-helmet-async'
+import { useSettings } from '../contexts/SettingsContext'
 
 // Reveal réutilisable, cohérent avec le reste du site
 const fadeUp = {
@@ -122,6 +124,8 @@ export default function Projects() {
   const [projects, setProjects] = useState([])
   const [featuredProjects, setFeaturedProjects] = useState([])
   const [loading, setLoading] = useState(true)
+      const { settings } = useSettings();
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -153,110 +157,127 @@ export default function Projects() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-950">
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-16 px-4 bg-neutral-950 border-b border-white/5 overflow-hidden">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-24 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
-          <div className="absolute top-0 -right-20 w-96 h-96 bg-fuchsia-500/10 rounded-full blur-3xl" />
-        </div>
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={fadeUp}
-          className="relative max-w-6xl mx-auto text-center"
-        >
-          <h1 className="font-display text-5xl md:text-6xl font-semibold text-white mb-6">
-            Mes <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Réalisations</span>
-          </h1>
-          <p className="text-xl text-neutral-400 max-w-3xl mx-auto mb-12">
-            Découvrez les projets que j'ai réalisés en utilisant des technologies modernes.
-          </p>
-        </motion.div>
-      </section>
+    <>
+      <Helmet>
+        <title>
+          Projects | {settings?.site_name || "ManDev"} - Portfolio
+        </title>
 
-      {/* Featured Projects Section */}
-      <section className="relative py-20 px-4 bg-neutral-950 border-b border-white/5 overflow-hidden">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/[0.06] rounded-full blur-3xl" />
-        </div>
-        <div className="relative max-w-6xl mx-auto">
+        <meta
+          name="description"
+          content="Browse the web development projects created by ManDev using React, Laravel, Tailwind CSS, and modern web technologies."
+        />
+
+        <link
+          rel="canonical"
+          href="https://portfolio-dev-man.vercel.app/projects"
+        />
+      </Helmet>
+      <div className="min-h-screen bg-neutral-950">
+        {/* Hero Section */}
+        <section className="relative pt-32 pb-16 px-4 bg-neutral-950 border-b border-white/5 overflow-hidden">
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute -top-24 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
+            <div className="absolute top-0 -right-20 w-96 h-96 bg-fuchsia-500/10 rounded-full blur-3xl" />
+          </div>
           <motion.div
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
+            animate="visible"
             variants={fadeUp}
-            className="text-center mb-14"
+            className="relative max-w-6xl mx-auto text-center"
           >
-            <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">SÉLECTION</p>
-            <h2 className="font-display text-3xl md:text-4xl font-semibold text-white">
-              Projets <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Phares</span>
-            </h2>
+            <h1 className="font-display text-5xl md:text-6xl font-semibold text-white mb-6">
+              Mes <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Réalisations</span>
+            </h1>
+            <p className="text-xl text-neutral-400 max-w-3xl mx-auto mb-12">
+              Découvrez les projets que j'ai réalisés en utilisant des technologies modernes.
+            </p>
           </motion.div>
+        </section>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {loading ? (
-              [...Array(3)].map((_, i) => <ProjectSkeleton key={i} />)
-            ) : (
-              <>
-                {featuredProjects.length === 0 && (
-                  <p className="col-span-full text-center text-neutral-500">Aucun projet mis en avant trouvé.</p>
-                )}
-                {featuredProjects.map((project, index) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    index={index}
-                    incrementView={incrementView}
-                    featured
-                  />
-                ))}
-              </>
-            )}
+        {/* Featured Projects Section */}
+        <section className="relative py-20 px-4 bg-neutral-950 border-b border-white/5 overflow-hidden">
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/[0.06] rounded-full blur-3xl" />
           </div>
-        </div>
-      </section>
+          <div className="relative max-w-6xl mx-auto">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={fadeUp}
+              className="text-center mb-14"
+            >
+              <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">SÉLECTION</p>
+              <h2 className="font-display text-3xl md:text-4xl font-semibold text-white">
+                Projets <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Phares</span>
+              </h2>
+            </motion.div>
 
-      {/* All Projects Section */}
-      <section className="relative py-20 px-4 bg-neutral-950 overflow-hidden">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-fuchsia-500/[0.06] rounded-full blur-3xl" />
-        </div>
-        <div className="relative max-w-6xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={fadeUp}
-            className="text-center mb-14"
-          >
-            <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">ARCHIVES</p>
-            <h2 className="font-display text-3xl md:text-4xl font-semibold text-white">
-              Tous mes <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Projets</span>
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {loading ? (
-              [...Array(6)].map((_, i) => <ProjectSkeleton key={i} />)
-            ) : (
-              <>
-                {projects.length === 0 && (
-                  <p className="col-span-full text-center text-neutral-500">Aucun projet trouvé.</p>
-                )}
-                {projects.map((project, index) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    index={index}
-                    incrementView={incrementView}
-                  />
-                ))}
-              </>
-            )}
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+              {loading ? (
+                [...Array(3)].map((_, i) => <ProjectSkeleton key={i} />)
+              ) : (
+                <>
+                  {featuredProjects.length === 0 && (
+                    <p className="col-span-full text-center text-neutral-500">Aucun projet mis en avant trouvé.</p>
+                  )}
+                  {featuredProjects.map((project, index) => (
+                    <ProjectCard
+                      key={project.id}
+                      project={project}
+                      index={index}
+                      incrementView={incrementView}
+                      featured
+                    />
+                  ))}
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+
+        {/* All Projects Section */}
+        <section className="relative py-20 px-4 bg-neutral-950 overflow-hidden">
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-fuchsia-500/[0.06] rounded-full blur-3xl" />
+          </div>
+          <div className="relative max-w-6xl mx-auto">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={fadeUp}
+              className="text-center mb-14"
+            >
+              <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">ARCHIVES</p>
+              <h2 className="font-display text-3xl md:text-4xl font-semibold text-white">
+                Tous mes <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Projets</span>
+              </h2>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {loading ? (
+                [...Array(6)].map((_, i) => <ProjectSkeleton key={i} />)
+              ) : (
+                <>
+                  {projects.length === 0 && (
+                    <p className="col-span-full text-center text-neutral-500">Aucun projet trouvé.</p>
+                  )}
+                  {projects.map((project, index) => (
+                    <ProjectCard
+                      key={project.id}
+                      project={project}
+                      index={index}
+                      incrementView={incrementView}
+                    />
+                  ))}
+                </>
+              )}
+            </div>
+          </div>
+        </section>
+      </div>
+    </>
   )
 }
