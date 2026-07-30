@@ -53,7 +53,7 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-[80vh] bg-neutral-950">
+      <div className="flex justify-center items-center h-screen bg-neutral-950">
         <Loader className="w-10 h-10 text-cyan-300 animate-[spin_1.5s_linear_infinite]" />
       </div>
     )
