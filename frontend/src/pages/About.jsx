@@ -7,6 +7,7 @@ import { Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import CountUp from "react-countup";
 import { Helmet } from 'react-helmet-async';
+import { useSettings } from '../contexts/SettingsContext';
 
 // Reveal réutilisable, cohérent avec le reste du site
 const fadeUp = {
@@ -18,6 +19,8 @@ export default function About() {
   const [aboutMe, setAboutMe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState(null);
+
+  const { settings } = useSettings();
 
   useEffect(() => {
     fetchAboutMe();
@@ -77,11 +80,13 @@ export default function About() {
   return (
     <>
       <Helmet>
-        <title>About | ManDev - Full Stack Web Developer</title>
+        <title>
+          About | {settings?.site_name || "ManDev"} - Full Stack Web Developer
+        </title>
 
         <meta
           name="description"
-          content="Learn more about ManDev, a Full Stack Web Developer from Madagascar specializing in React, Laravel, Tailwind CSS and modern web applications."
+          content="Learn more about ManDev, a Full Stack Web Developer from Madagascar specializing in React, Laravel and modern web applications."
         />
 
         <link
