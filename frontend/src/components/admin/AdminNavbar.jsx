@@ -54,14 +54,14 @@ export default function AdminNavbar({ onMenuClick, currentUser, onLogout, unread
 
     return (
         <div className="sticky top-0 z-30 flex h-16 bg-white/[0.03] backdrop-blur-xl border-b border-white/10">
-            <button
-                onClick={onMenuClick}
-                className="ml-4 pr-4 text-gray-400 hover:text-white transition-colors lg:hidden"
-            >
-                <Bars3Icon className="h-6 w-6" />
-            </button>
 
             <div className="flex items-center justify-between flex-1 px-3 sm:px-6 gap-2 sm:gap-4">
+                <button
+                    onClick={onMenuClick}
+                    className=" text-gray-400 hover:text-white transition-colors lg:hidden"
+                >
+                    <Bars3Icon className="h-6 w-6" />
+                </button>
                 {/* Search - desktop */}
                 <div className="hidden sm:block flex-1 max-w-md">
                     <div className="relative">
