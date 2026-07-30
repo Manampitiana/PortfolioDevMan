@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { useStateContext } from "../../contexts/ContextProvider";
 import AdminSidebar from './AdminSidebar';
 import AdminNavbar from './AdminNavbar';
@@ -7,6 +7,7 @@ import axiosClient from '../../axios';
 
 export default function AdminLayout() {
   const { currentUser, userToken, setUserToken, setCurrentUser } = useStateContext();
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [user, setUser] = useState({ name: 'Admin', role: 'Super Admin' });
@@ -30,14 +31,14 @@ export default function AdminLayout() {
     return <Navigate to="/" />;
   }
 
-  const onLogout = async () => {
+  const onLogout = () => {
     setUserToken(null);
     setCurrentUser({});
-    return <Navigate to="/admin/login" />;
+    navigate('/admin/login');
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
+    <div className="min-h-screen bg-neutral-950 text-white">
       <AdminSidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
