@@ -73,7 +73,7 @@ export default function AdminSidebar({ isOpen, onClose, onLogout, unreadCount })
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-y-0 left-0 w-72 bg-white/[0.03] border-r border-white/5 flex flex-col"
+              className="fixed inset-y-0 left-0 w-72 bg-neutral-950 border-r border-white/5 flex flex-col"
             >
               <div className="h-16 flex items-center justify-between px-6 border-b border-white/5">
                 <span className="font-display text-white font-semibold text-xl flex items-center gap-2">
