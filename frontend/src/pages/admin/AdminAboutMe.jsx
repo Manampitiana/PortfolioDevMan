@@ -1,13 +1,22 @@
 import { useState, useEffect } from 'react';
-import axiosClient from '../../axios'; // Ataovy azo antoka fa marina ny path-nao
+import { motion } from 'framer-motion';
+import axiosClient from '../../axios';
 import toast from 'react-hot-toast';
 import { Loader } from 'lucide-react';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const inputClasses = "w-full p-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all";
+const labelClasses = "block text-sm font-medium text-neutral-400 mb-1.5";
 
 export default function AdminAboutMe() {
   const [pdp, setPdp] = useState(null);
   const [preview, setPreview] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(true); // Ho an'ny loading voalohany
+  const [saving, setSaving] = useState(false);
+  const [fetching, setFetching] = useState(true);
 
   const [form, setForm] = useState({
     full_name: '',
@@ -20,7 +29,6 @@ export default function AdminAboutMe() {
     is_active: true,
   });
 
-  // 1. FAKANA NY DATA REHEFA MISOKATRA NY PEJY
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -34,13 +42,13 @@ export default function AdminAboutMe() {
             email: data.email || '',
             phone: data.phone || '',
             location: data.location || '',
-            is_active: !!data.is_active, // Manova azy ho boolean
+            is_active: !!data.is_active,
           });
-          if (data.pdp) setPreview(data.pdp); // URL feno avy any amin'ny Controller
+          if (data.pdp) setPreview(data.pdp);
         }
       } catch (err) {
-        console.error("Error fetching data", err);
-        toast.error("Tsy azo ny mombamomba anao.");
+        console.error('Erreur lors de la récupération du profil :', err);
+        toast.error('Impossible de charger vos informations.');
       } finally {
         setFetching(false);
       }
@@ -66,142 +74,144 @@ export default function AdminAboutMe() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setSaving(true);
 
     const formData = new FormData();
-    // Ampidirina ny fields rehetra
-    Object.keys(form).forEach((key) => {
-      formData.append(key, form[key]);
-    });
-
-    // Ampidirina ny sary raha misy vaovao
-    if (pdp) {
-      formData.append('pdp', pdp);
-    }
+    formData.append('full_name', form.full_name);
+    formData.append('title', form.title);
+    formData.append('short_bio', form.short_bio);
+    formData.append('description', form.description);
+    formData.append('email', form.email);
+    formData.append('phone', form.phone);
+    formData.append('location', form.location);
+    formData.append('is_active', form.is_active ? 1 : 0);
+    if (pdp) formData.append('pdp', pdp);
 
     try {
       const response = await axiosClient.post('/aboutmes', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      toast.success(response.data.message || 'Profile updated successfully!');
+      toast.success(response.data.message || 'Profil mis à jour avec succès !');
     } catch (error) {
-      // console.log(error.response);
-      // console.log(error.response?.data);
-
       if (error.response?.status === 422) {
         Object.values(error.response.data.errors).forEach((messages) => {
           messages.forEach((msg) => toast.error(msg));
         });
       } else {
-        // console.log(error);
-        toast.error('Nisy olana nitranga.');
+        console.error('Erreur lors de la mise à jour du profil :', error);
+        toast.error('Une erreur est survenue.');
       }
-    }finally {
-      setLoading(false);
+    } finally {
+      setSaving(false);
     }
   };
 
-  const inputClass = "w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200";
-  const labelClass = "block text-sm font-medium text-gray-400 mb-1";
-
   if (fetching) {
     return (
-      <div className="flex items-center justify-center h-[80vh]">
-        <Loader className='w-16 h-16 animate-[spin_1.5s_linear_infinite]' />
+      <div className="flex items-center justify-center h-[80vh] bg-neutral-950">
+        <Loader className="w-10 h-10 text-cyan-300 animate-[spin_1.5s_linear_infinite]" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 p-4 md:p-8">
+    <div className="min-h-screen bg-neutral-950 p-4 sm:p-6">
       <div className="max-w-4xl mx-auto">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold text-white">Edit Profile</h1>
-          <p className="text-gray-400">Manage your personal information and biography.</p>
-        </header>
+        <motion.header initial="hidden" animate="visible" variants={fadeUp} className="mb-8">
+          <h1 className="font-display text-3xl md:text-4xl font-semibold text-white mb-2">Modifier le profil</h1>
+          <p className="text-neutral-400">Gérez vos informations personnelles et votre biographie.</p>
+        </motion.header>
 
-        <form onSubmit={handleSubmit} className="bg-gray-800 rounded-2xl shadow-xl border border-gray-700">
-          <div className="p-6 md:p-8 space-y-8">
+        <motion.form
+          onSubmit={handleSubmit}
+          initial="hidden"
+          animate="visible"
+          variants={fadeUp}
+          transition={{ delay: 0.1 }}
+          className="bg-white/[0.03] border border-white/10 backdrop-blur-xl rounded-2xl"
+        >
+          <div className="p-5 sm:p-8 space-y-8">
 
             {/* SECTION: Profile Picture */}
-            <div className="flex flex-col md:flex-row items-center gap-6 pb-8 border-b border-gray-700">
-              <div className="relative group">
-                <div className="w-28 h-28 rounded-full bg-gray-700 flex items-center justify-center overflow-hidden border-2 border-blue-500 shadow-lg shadow-blue-500/20">
+            <div className="flex flex-col md:flex-row items-center gap-6 pb-8 border-b border-white/10">
+              <div className="relative group flex-shrink-0">
+                <div className="w-28 h-28 rounded-full bg-white/[0.04] flex items-center justify-center overflow-hidden border-2 border-cyan-400/40 shadow-lg shadow-cyan-500/10">
                   {preview ? (
-                    <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                    <img src={preview} alt="Aperçu" className="w-full h-full object-cover" />
                   ) : (
-                    <span className="text-gray-500 text-4xl">?</span>
+                    <span className="text-neutral-500 text-4xl">?</span>
                   )}
                 </div>
-                <label className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 cursor-pointer transition-all rounded-full text-xs text-white font-semibold">
-                  CHANGE PHOTO
+                <label className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 cursor-pointer transition-all rounded-full text-[11px] text-white font-semibold text-center px-2">
+                  CHANGER LA PHOTO
                   <input type="file" className="hidden" onChange={handleImageChange} accept="image/*" />
                 </label>
               </div>
               <div className="text-center md:text-left">
-                <h3 className="text-lg font-medium text-white">Profile Picture</h3>
-                <p className="text-sm text-gray-400">Update your avatar. Square JPG or PNG recommended.</p>
+                <h3 className="text-lg font-medium text-white">Photo de profil</h3>
+                <p className="text-sm text-neutral-400">Mettez à jour votre avatar. Format carré JPG ou PNG recommandé.</p>
               </div>
             </div>
 
             {/* SECTION: Personal Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className={labelClass}>Full Name</label>
-                <input name="full_name" value={form.full_name} onChange={handleInputChange} className={inputClass} placeholder="John Doe" required />
+                <label htmlFor="full_name" className={labelClasses}>Nom complet</label>
+                <input id="full_name" name="full_name" value={form.full_name} onChange={handleInputChange} className={inputClasses} placeholder="Jean Dupont" required />
               </div>
               <div>
-                <label className={labelClass}>Professional Title</label>
-                <input name="title" value={form.title} onChange={handleInputChange} className={inputClass} placeholder="Fullstack Developer" required />
+                <label htmlFor="title" className={labelClasses}>Titre professionnel</label>
+                <input id="title" name="title" value={form.title} onChange={handleInputChange} className={inputClasses} placeholder="Développeur Fullstack" required />
               </div>
             </div>
 
             <div>
-              <label className={labelClass}>Short Bio</label>
-              <textarea name="short_bio" value={form.short_bio} rows="2" onChange={handleInputChange} className={inputClass} placeholder="A short, catchy bio..." />
+              <label htmlFor="short_bio" className={labelClasses}>Biographie courte</label>
+              <textarea id="short_bio" name="short_bio" value={form.short_bio} rows="2" onChange={handleInputChange} className={inputClasses} placeholder="Une bio courte et accrocheuse..." />
             </div>
 
             <div>
-              <label className={labelClass}>Long Description</label>
-              <textarea name="description" value={form.description} rows="5" onChange={handleInputChange} className={inputClass} placeholder="Your detailed background..." />
+              <label htmlFor="description" className={labelClasses}>Description détaillée</label>
+              <textarea id="description" name="description" value={form.description} rows="5" onChange={handleInputChange} className={inputClasses} placeholder="Votre parcours en détail..." />
             </div>
 
             {/* SECTION: Contact Info */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <label className={labelClass}>Email</label>
-                <input name="email" type="email" value={form.email} className={inputClass} placeholder="mail@example.com" onChange={handleInputChange} />
+                <label htmlFor="email" className={labelClasses}>Email</label>
+                <input id="email" name="email" type="email" value={form.email} className={inputClasses} placeholder="mail@example.com" onChange={handleInputChange} />
               </div>
               <div>
-                <label className={labelClass}>Phone</label>
-                <input name="phone" value={form.phone} className={inputClass} placeholder="+261 3x xx xxx xx" onChange={handleInputChange} />
+                <label htmlFor="phone" className={labelClasses}>Téléphone</label>
+                <input id="phone" name="phone" value={form.phone} className={inputClasses} placeholder="+261 3x xx xxx xx" onChange={handleInputChange} />
               </div>
               <div>
-                <label className={labelClass}>Location</label>
-                <input name="location" value={form.location} className={inputClass} placeholder="Antananarivo" onChange={handleInputChange} />
+                <label htmlFor="location" className={labelClasses}>Localisation</label>
+                <input id="location" name="location" value={form.location} className={inputClasses} placeholder="Antananarivo" onChange={handleInputChange} />
               </div>
             </div>
 
             {/* SECTION: Visibility & Save */}
-            <div className="flex flex-col md:flex-row items-center justify-between pt-6 border-t border-gray-700 gap-4">
+            <div className="flex flex-col md:flex-row items-center justify-between pt-6 border-t border-white/10 gap-4">
               <label className="flex items-center gap-3 cursor-pointer group">
                 <div className="relative">
                   <input type="checkbox" name="is_active" checked={form.is_active} onChange={handleInputChange} className="sr-only peer" />
-                  <div className="w-11 h-6 bg-gray-600 rounded-full peer peer-checked:bg-blue-600 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                  <div className="w-11 h-6 bg-white/10 rounded-full peer peer-checked:bg-gradient-to-r peer-checked:from-cyan-500 peer-checked:to-fuchsia-500 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all" />
                 </div>
-                <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">Publicly Visible</span>
+                <span className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors">Visible publiquement</span>
               </label>
 
               <button
                 type="submit"
-                disabled={loading}
-                className="w-full md:w-auto px-10 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-900/40 transition-all active:scale-95 disabled:bg-gray-600"
+                disabled={saving}
+                className="w-full md:w-auto px-10 py-3 bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-white font-semibold rounded-xl shadow-lg shadow-fuchsia-500/10 hover:shadow-fuchsia-500/20 hover:opacity-95 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {loading ? 'Saving Changes...' : 'Save Changes'}
+                {saving && <Loader className="w-4 h-4 animate-[spin_1.5s_linear_infinite]" />}
+                {saving ? 'Enregistrement...' : 'Enregistrer les modifications'}
               </button>
             </div>
           </div>
-        </form>
+        </motion.form>
       </div>
     </div>
   );
