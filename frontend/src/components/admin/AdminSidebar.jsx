@@ -13,7 +13,7 @@ export default function AdminSidebar({ isOpen, onClose, onLogout, unreadCount })
     { name: 'Expériences', href: '/admin/experiences', icon: BriefcaseIcon },
     { name: 'Messages', href: '/admin/messages', icon: MessagesSquare },
     { name: 'À propos', href: '/admin/about_me', icon: UserIcon },
-    { name: 'Galerie', href: '/admin/gallery', icon: PhotoIcon },
+    // { name: 'Galerie', href: '/admin/gallery', icon: PhotoIcon },
     { name: 'Paramètres', href: '/admin/settings', icon: Cog6ToothIcon },
   ];
 
