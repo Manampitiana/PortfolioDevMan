@@ -67,13 +67,13 @@ export default function AdminSidebar({ isOpen, onClose, onLogout, unreadCount })
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-50 lg:hidden"
           >
-            <div className="fixed inset-0 bg-white/[0.03] backdrop-blur-sm" onClick={onClose} />
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
             <motion.div
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-y-0 left-0 w-72 bg-neutral-950 border-r border-white/5 flex flex-col"
+              className="fixed inset-y-0 left-0 w-72 bg-white/[0.03] border-r border-white/5 flex flex-col"
             >
               <div className="h-16 flex items-center justify-between px-6 border-b border-white/5">
                 <span className="font-display text-white font-semibold text-xl flex items-center gap-2">
