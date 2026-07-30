@@ -9,15 +9,21 @@ export const SettingsProvider = ({ children }) => {
 
   const fetchSettings = async () => {
     try {
-      const { data } = await axiosClient.get("/fetch_settings"); // Route public any amin'ny Laravel
+      const { data } = await axiosClient.get("/fetch_settings");
+
       setSettings(data);
-      
-      // Manova dynamique ny Favicon sy ny Titre pejy
-      if (data) {
-        if (data.site_name) document.title = data.site_name;
-        if (data.favicon) {
-          const link = document.querySelector("link[rel~='icon']");
-          if (link) link.href = `${import.meta.env.VITE_API_BASE_URL}/storage/${data.favicon}`;
+
+      // Manova dynamique ny favicon ihany
+      if (data?.favicon) {
+        const link = document.querySelector("link[rel~='icon']");
+
+        if (link) {
+          link.href = `${import.meta.env.VITE_API_BASE_URL}/storage/${data.favicon}`;
+        } else {
+          const newLink = document.createElement("link");
+          newLink.rel = "icon";
+          newLink.href = `${import.meta.env.VITE_API_BASE_URL}/storage/${data.favicon}`;
+          document.head.appendChild(newLink);
         }
       }
     } catch (err) {
@@ -32,7 +38,13 @@ export const SettingsProvider = ({ children }) => {
   }, []);
 
   return (
-    <SettingsContext.Provider value={{ settings, fetchSettings, loading }}>
+    <SettingsContext.Provider
+      value={{
+        settings,
+        loading,
+        fetchSettings,
+      }}
+    >
       {children}
     </SettingsContext.Provider>
   );
