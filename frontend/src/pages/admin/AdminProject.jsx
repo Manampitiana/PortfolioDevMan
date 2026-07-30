@@ -140,16 +140,23 @@ export default function AdminProject() {
     );
 }
 
-function StatusPill({ active }) {
+// Correspondance entre la valeur "status" (varchar) en base et son affichage
+const STATUS_CONFIG = {
+    published: { label: 'Publié', dot: 'bg-emerald-400', classes: 'bg-emerald-400/10 border-emerald-400/20 text-emerald-300' },
+    draft: { label: 'Brouillon', dot: 'bg-amber-400', classes: 'bg-amber-400/10 border-amber-400/20 text-amber-300' },
+    archived: { label: 'Archivé', dot: 'bg-neutral-500', classes: 'bg-neutral-500/10 border-neutral-500/20 text-neutral-400' },
+};
+
+function StatusPill({ status }) {
+    const config = STATUS_CONFIG[status] || {
+        label: status || 'Inconnu',
+        dot: 'bg-neutral-500',
+        classes: 'bg-neutral-500/10 border-neutral-500/20 text-neutral-400',
+    };
     return (
-        <span
-            className={`inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full border ${active
-                    ? 'bg-emerald-400/10 border-emerald-400/20 text-emerald-300'
-                    : 'bg-neutral-500/10 border-neutral-500/20 text-neutral-400'
-                }`}
-        >
-            <span className={`w-1.5 h-1.5 rounded-full ${active ? 'bg-emerald-400' : 'bg-neutral-500'}`} />
-            {active ? 'Actif' : 'Inactif'}
+        <span className={`inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full border ${config.classes}`}>
+            <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
+            {config.label}
         </span>
     );
 }
@@ -231,7 +238,7 @@ function ProjectCard({ project, index, onDelete, deleting }) {
                     <h3 className="text-white font-medium text-sm truncate">{project.title}</h3>
                     <p className="text-neutral-500 text-xs truncate">{project.slug}</p>
                     <div className="mt-1.5 flex items-center gap-2">
-                        <StatusPill active={project.is_active} />
+                        <StatusPill status={project.status} />
                         {project.is_current && (
                             <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-violet-400/10 border border-violet-400/20 text-violet-300">
                                 En cours
@@ -315,7 +322,7 @@ function ProjectTable({ projects, onDelete, deletingId }) {
                                     {project.start_date}
                                     {project.end_date ? ` → ${project.end_date}` : ' → présent'}
                                 </td>
-                                <td className="py-3.5 px-4"><StatusPill active={project.is_active} /></td>
+                                <td className="py-3.5 px-4"><StatusPill status={project.status} /></td>
                                 <td className="py-3.5 px-4">
                                     <div className="flex items-center gap-3 text-xs">
                                         {project.project_url && (
