@@ -22,6 +22,7 @@ import ExperienceForm from './pages/admin/ExperienceForm'
 import Cv from './pages/Cv'
 import AdminMessage from './pages/admin/AdminMessage'
 import { SettingsProvider } from './contexts/SettingsContext'
+import ProjectFormPage from './pages/admin/ProjectFormPage'
 
 function App() {
   return (
@@ -60,8 +61,8 @@ function App() {
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<Dashboard />} /> {/* Default admin route */}
               <Route path='projects' element={<AdminProject />} /> 
-              <Route path='add_projects' element={<ProjectForm />} /> 
-              <Route path='edit_projects/:id' element={<ProjectForm />} /> 
+              <Route path='add_projects' element={<ProjectFormPage />} /> 
+              <Route path='edit_projects/:id' element={<ProjectFormPage />} /> 
               <Route path='skills' element={<AdminSkills />} />
               <Route path='add_skills' element={<SkillsForm />} />
               <Route path='edit_skills/:id' element={<SkillsForm />} />
