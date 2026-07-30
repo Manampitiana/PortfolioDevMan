@@ -12,6 +12,7 @@ import {
 } from "@react-pdf/renderer";
 import { EnvelopeIcon, PhoneIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { useSettings } from "../contexts/SettingsContext";
+import { Helmet } from "react-helmet-async";
 
 // 1. STYLES POUR LE PDF
 const styles = StyleSheet.create({
