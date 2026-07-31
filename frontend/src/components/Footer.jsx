@@ -70,7 +70,7 @@ export default function Footer() {
           <div className="md:col-span-5">
             <div className="flex items-center mb-6">
               <Link to="/" className="flex items-center group">
-                <div className="w-9 h-9 overflow-hidden bg-gradient-to-tr from-cyan-400 to-fuchsia-400 rounded-xl flex items-center justify-center mr-3 shadow-lg shadow-cyan-500/20 group-hover:rotate-6 transition-transform">
+                <div className="w-9 h-9 overflow-hidden  rounded-xl flex items-center justify-center mr-3 shadow-lg shadow-cyan-500/20 group-hover:rotate-6 transition-transform">
                   {settings?.logo ? (
                     <img src={settings.logo} className="w-full h-full object-contain" alt="Logo" />
                   ) : settings?.favicon ? (

@@ -27,7 +27,7 @@ export default function Navigation() {
 
           {/* Zone Logo */}
           <Link to="/" className="flex items-center group">
-            <div className="w-9 h-9 overflow-hidden bg-gradient-to-tr from-cyan-400 to-fuchsia-400 rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-cyan-400/20 group-hover:rotate-6 transition-transform">
+            <div className="w-9 h-9 overflow-hidden rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-cyan-400/20 group-hover:rotate-6 transition-transform">
               {settings?.logo ? (
                 <img src={settings.logo} className="w-full h-full object-contain" alt="Logo du site" />
               ) : settings?.favicon ? (
