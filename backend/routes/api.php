@@ -39,6 +39,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/fetch_about_me', [ShowController::class, 'fetch_about_me']);
 Route::get('/fetch_projects', [ShowController::class, 'index']);
 Route::get('/fetch_featured_projects', [ShowController::class, 'fetch_featured_projects']);
+Route::get('/fetch_project/{slug}', [ProjectController::class, 'showBySlug']);
 Route::get('/publicSkills', [ShowController::class, 'publicSkills']);
 Route::get('/fetch_experiences', [ShowController::class, 'experiences']);
 Route::post('/projects/{project}/view', [ShowController::class, 'incrementView']);

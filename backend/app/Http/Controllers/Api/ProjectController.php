@@ -83,9 +83,30 @@ class ProjectController extends Controller
         ], 201);
     }
 
+    /**
+     * Utilisé par l'admin (ProjectForm) pour pré-remplir le formulaire d'édition.
+     * Ne doit PAS incrémenter les vues publiques — ce n'est pas une visite du site.
+     */
     public function show(string $id)
     {
         $project = Project::findOrFail($id);
+
+        return response()->json([
+            'success' => true,
+            'project' => $project
+        ]);
+    }
+
+    /**
+     * Utilisé par la page publique de détails du projet (/projects/:slug).
+     * Ici uniquement on incrémente les vues, et on ne renvoie que les projets publiés.
+     */
+    public function showBySlug(string $slug)
+    {
+        $project = Project::where('slug', $slug)
+            ->where('status', 'published')
+            ->firstOrFail();
+
         $project->increment('views');
 
         return response()->json([
