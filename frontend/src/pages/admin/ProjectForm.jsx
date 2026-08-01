@@ -102,6 +102,18 @@ export default function ProjectForm({ id, initialData }) {
     setRemovedGallery((prev) => [...prev, img]);
   };
 
+  // Ajoute les nouveaux fichiers à la sélection existante (au lieu de la remplacer),
+  // pour permettre de choisir des images en plusieurs fois
+  const handleGalleryChange = (e) => {
+    const newFiles = Array.from(e.target.files);
+    setForm((prev) => ({ ...prev, gallery: [...prev.gallery, ...newFiles] }));
+    e.target.value = ''; // permet de re-sélectionner le même fichier plus tard si besoin
+  };
+
+  const removeNewGalleryFile = (idx) => {
+    setForm((prev) => ({ ...prev, gallery: prev.gallery.filter((_, i) => i !== idx) }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -276,35 +288,56 @@ export default function ProjectForm({ id, initialData }) {
               multiple
               accept="image/*"
               className="hidden"
-              onChange={(e) => setForm({ ...form, gallery: Array.from(e.target.files) })}
+              onChange={handleGalleryChange}
             />
           </label>
+          <p className="text-xs text-neutral-500 mt-1.5">
+            JPG, PNG ou WEBP — 8 Mo max par image. Vous pouvez ajouter des images en plusieurs fois.
+          </p>
 
           {existingGallery.length > 0 && (
-            <div className="flex gap-2 mt-3 flex-wrap">
-              {existingGallery.map((img, idx) => (
-                <div key={idx} className="relative group">
-                  <img src={img} alt={`Galerie ${idx + 1}`} className="h-16 w-16 object-cover rounded-lg border border-white/10" />
-                  <button
-                    type="button"
-                    onClick={() => removeExistingGalleryImage(img)}
-                    className="absolute -top-1.5 -right-1.5 w-5 h-5 flex items-center justify-center rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                    title="Retirer cette image"
-                  >
-                    <XMarkIcon className="w-3 h-3" />
-                  </button>
-                </div>
-              ))}
+            <div className="mt-4">
+              <p className="text-xs font-medium text-neutral-500 mb-2">Images actuelles</p>
+              <div className="flex gap-2 flex-wrap">
+                {existingGallery.map((img, idx) => (
+                  <div key={idx} className="relative group">
+                    <img src={img} alt={`Galerie ${idx + 1}`} className="h-16 w-16 object-cover rounded-lg border border-white/10" />
+                    <button
+                      type="button"
+                      onClick={() => removeExistingGalleryImage(img)}
+                      className="absolute -top-1.5 -right-1.5 w-5 h-5 flex items-center justify-center rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                      title="Retirer cette image"
+                    >
+                      <XMarkIcon className="w-3 h-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
           {form.gallery.length > 0 && (
-            <div className="flex gap-2 mt-3 flex-wrap">
-              {form.gallery.map((file, idx) => (
-                <span key={idx} className="text-xs text-cyan-300 bg-cyan-400/10 border border-cyan-400/20 px-2.5 py-1 rounded-full truncate max-w-[160px]">
-                  {file.name}
-                </span>
-              ))}
+            <div className="mt-4">
+              <p className="text-xs font-medium text-cyan-300 mb-2">Nouvelles images ({form.gallery.length})</p>
+              <div className="flex gap-2 flex-wrap">
+                {form.gallery.map((file, idx) => (
+                  <div key={idx} className="relative group">
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt={file.name}
+                      className="h-16 w-16 object-cover rounded-lg border border-cyan-400/30"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeNewGalleryFile(idx)}
+                      className="absolute -top-1.5 -right-1.5 w-5 h-5 flex items-center justify-center rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                      title="Retirer cette image"
+                    >
+                      <XMarkIcon className="w-3 h-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
