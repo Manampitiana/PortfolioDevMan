@@ -46,6 +46,11 @@ function App() {
                 <Projects />
               </Layout>
             } />
+            <Route path="/projects/:slug" element={
+              <Layout>
+                <ProjectDetail />
+              </Layout>
+            } />
             <Route path="/contact" element={
               <Layout>
                 <Contact />
@@ -56,13 +61,13 @@ function App() {
                 <Cv />
               </Layout>
             } />
-            
+
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<Dashboard />} /> {/* Default admin route */}
-              <Route path='projects' element={<AdminProject />} /> 
-              <Route path='add_projects' element={<ProjectFormPage />} /> 
-              <Route path='edit_projects/:id' element={<ProjectFormPage />} /> 
+              <Route path='projects' element={<AdminProject />} />
+              <Route path='add_projects' element={<ProjectFormPage />} />
+              <Route path='edit_projects/:id' element={<ProjectFormPage />} />
               <Route path='skills' element={<AdminSkills />} />
               <Route path='add_skills' element={<SkillsForm />} />
               <Route path='edit_skills/:id' element={<SkillsForm />} />
@@ -75,7 +80,7 @@ function App() {
               <Route path='messages' element={<AdminMessage />} />
             </Route>
             <Route path="/admin/login" element={<Login />} />
-            
+
             {/* 404 Route */}
             <Route path="*" element={<NotFound />} />
           </Routes>
