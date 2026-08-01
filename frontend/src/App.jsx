@@ -23,6 +23,7 @@ import Cv from './pages/Cv'
 import AdminMessage from './pages/admin/AdminMessage'
 import { SettingsProvider } from './contexts/SettingsContext'
 import ProjectFormPage from './pages/admin/ProjectFormPage'
+import ProjectDetail from './pages/ProjectDetail'
 
 function App() {
   return (
