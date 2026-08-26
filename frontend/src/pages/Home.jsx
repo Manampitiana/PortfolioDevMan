@@ -26,6 +26,7 @@ const skillColors = {
   Laravel: '#FF2D20',
   PHP: '#777BB4',
   JavaScript: '#F7DF1E',
+  Symfony: '#00000',
   TypeScript: '#3178C6',
   Tailwind: '#06B6D4',
   MySQL: '#4479A1',
