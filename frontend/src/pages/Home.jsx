@@ -140,14 +140,14 @@ export default function Home() {
                           <motion.div
                             animate={{ y: [0, -8, 0] }}
                             transition={{ duration: 3, repeat: Infinity }}
-                            className="sm:flex absolute -top-3 -right-6 w-9 h-9 rounded-xl bg-white/[0.06] backdrop-blur-xl border border-white/10 items-center justify-center shadow-lg"
+                            className="flex sm:flex absolute -top-3 -right-6 w-9 h-9 rounded-xl bg-white/[0.06] backdrop-blur-xl border border-white/10 items-center justify-center shadow-lg"
                           >
                             <img src="/react.png" alt="React" className="w-4.5 h-4.5" />
                           </motion.div>
                           <motion.div
                             animate={{ y: [0, -6, 0] }}
                             transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-                            className="sm:flex absolute -bottom-3 -left-7 w-8 h-8 rounded-xl bg-white/[0.06] backdrop-blur-xl border border-white/10 items-center justify-center shadow-lg"
+                            className="flex sm:flex absolute -bottom-3 -left-7 w-8 h-8 rounded-xl bg-white/[0.06] backdrop-blur-xl border border-white/10 items-center justify-center shadow-lg"
                           >
                             <img src="/laravel.png" alt="Laravel" className="w-4 h-4" />
                           </motion.div>
