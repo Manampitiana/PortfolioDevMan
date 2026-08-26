@@ -76,25 +76,24 @@ export default function OsWallpaper() {
     //   {/* Haizina fanampiny eo ambany mba hamakiana ny soratra */}
     //   <div className="absolute inset-0 bg-neutral-950/25" />
     // </div>
-    <section className="relative min-h-screen overflow-hidden">
+    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
 
       {/* Background image */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="/Font.png"
-          alt=""
-          className="w-full h-full object-cover"
-        />
-      </div>
+      <img
+        src="/Font.png"
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover"
+      />
 
       {/* Dark overlay */}
-      <div className="absolute inset-0 z-10 bg-black/50" />
+      <div className="absolute inset-0 bg-black/50" />
 
-      {/* Content */}
-      <div className="relative z-20">
-        {/* Hero content eto */}
-      </div>
+      {/* Left gradient - hanamora ny famakiana texte */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#020617]/90 via-[#020617]/50 to-transparent" />
 
-    </section>
+      {/* Bottom gradient */}
+      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#020617] to-transparent" />
+
+    </div>
   );
 }
