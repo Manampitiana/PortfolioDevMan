@@ -12,10 +12,10 @@ export default function OsDock() {
   const [showTrash, setShowTrash] = useState(false);
 
   const items = [
-    { label: 'About Me', icon: User, color: 'text-cyan-300', onClick: () => navigate('/about') },
-    { label: 'Projects', icon: FolderKanban, color: 'text-amber-300', onClick: () => navigate('/projects') },
-    { label: 'Skills', icon: Code2, color: 'text-emerald-300', onClick: () => scrollToId('skills-section') },
-    { label: 'Experience', icon: Briefcase, color: 'text-fuchsia-300', onClick: () => scrollToId('experience-section') },
+    { label: 'À propos', icon: User, color: 'text-cyan-300', onClick: () => navigate('/about') },
+    { label: 'Projets', icon: FolderKanban, color: 'text-amber-300', onClick: () => navigate('/projects') },
+    { label: 'Compétences', icon: Code2, color: 'text-emerald-300', onClick: () => scrollToId('skills-section') },
+    { label: 'Expérience', icon: Briefcase, color: 'text-fuchsia-300', onClick: () => scrollToId('experience-section') },
     { label: 'Contact', icon: Mail, color: 'text-sky-300', onClick: () => navigate('/contact') },
     { label: 'Terminal', icon: SquareTerminal, color: 'text-lime-300', onClick: () => scrollToId('terminal-window') },
     { label: 'GitHub', icon: Github, color: 'text-neutral-200', onClick: () => window.open('https://github.com/Manampitiana', '_blank') },
@@ -53,11 +53,11 @@ export default function OsDock() {
           <span className="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center group-hover:scale-105 transition-transform">
             <Trash2 className="w-5 h-5 text-neutral-400" strokeWidth={1.8} />
           </span>
-          <span className="text-[9px] font-mono text-neutral-500 leading-none">Trash</span>
+          <span className="text-[9px] font-mono text-neutral-500 leading-none">Corbeille</span>
         </button>
         {showTrash && (
           <div className="absolute left-16 bottom-1 whitespace-nowrap bg-neutral-900 border border-white/10 text-[11px] text-neutral-300 font-mono px-3 py-2 rounded-lg shadow-xl">
-            Tsy misy bug azo fafana 😄
+            Aucun bug à supprimer 😄
           </div>
         )}
       </div>
@@ -68,9 +68,9 @@ export default function OsDock() {
 export function OsMobileNav() {
   const navigate = useNavigate();
   const items = [
-    { label: 'About', icon: User, onClick: () => navigate('/about') },
-    { label: 'Projects', icon: FolderKanban, onClick: () => navigate('/projects') },
-    { label: 'Skills', icon: Code2, onClick: () => scrollToId('skills-section') },
+    { label: 'À propos', icon: User, onClick: () => navigate('/about') },
+    { label: 'Projets', icon: FolderKanban, onClick: () => navigate('/projects') },
+    { label: 'Compétences', icon: Code2, onClick: () => scrollToId('skills-section') },
     { label: 'Contact', icon: Mail, onClick: () => navigate('/contact') },
   ];
 

@@ -23,7 +23,7 @@ export default function OsTaskbar() {
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         className="w-7 h-7 rounded-full bg-gradient-to-br from-cyan-400 to-fuchsia-400 flex items-center justify-center text-[11px] font-bold text-neutral-950"
-        title="Miakatra any ambony"
+        title="Retour en haut"
       >
         R
       </button>

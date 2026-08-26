@@ -120,15 +120,23 @@ export default function Home() {
                     {/* Contenu */}
                     <div className="flex-1 text-center lg:text-left">
                       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-                        <p className="text-white/80 text-lg mb-2">Hello, I'm</p>
-                        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-3 leading-tight tracking-tight">
-                          RAVAKA
+                        <span className="inline-flex items-center gap-2 text-[11px] font-mono tracking-widest text-cyan-300 bg-cyan-400/10 border border-cyan-400/20 rounded-full px-3 py-1.5 mb-6">
+                          DÉVELOPPEUR FULL-STACK
+                        </span>
+                        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-white mb-6 leading-tight">
+                          Bonjour, je suis
+                          <span className="block bg-gradient-to-r from-cyan-300 via-white to-fuchsia-300 bg-clip-text text-transparent">
+                            RAVAKA TSIRINIAINA
+                          </span>
+                          <span className="block text-xl sm:text-2xl lg:text-3xl text-neutral-400 font-medium mt-2">
+                            Manampitiana
+                          </span>
                         </h1>
-                        <p className="text-xl sm:text-2xl font-semibold bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent mb-6">
-                          Full-Stack Web Developer
+                        <p className="text-lg sm:text-xl text-neutral-300 mb-4 leading-relaxed">
+                          Développeur Full Stack | Spécialiste React & Laravel
                         </p>
-                        <p className="text-neutral-300 text-base sm:text-lg mb-8 max-w-md mx-auto lg:mx-0">
-                          I build modern, responsive and high-performance web applications using Laravel, React and more.
+                        <p className="text-base sm:text-lg text-neutral-500 mb-8 max-w-md mx-auto lg:mx-0">
+                          Je crée des applications web modernes et responsives avec les technologies les plus récentes
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-8">
@@ -138,15 +146,15 @@ export default function Home() {
                             onClick={() => navigate('/projects')}
                             className="bg-gradient-to-r from-cyan-400 to-fuchsia-400 text-neutral-950 px-6 py-3 rounded-xl font-semibold shadow-lg shadow-cyan-500/10"
                           >
-                            Explore Projects
+                            Voir mes Projets
                           </motion.button>
                           <motion.button
                             whileHover={{ scale: 1.04 }}
                             whileTap={{ scale: 0.96 }}
-                            onClick={() => navigate('/contact')}
+                            onClick={() => navigate('/cv')}
                             className="bg-white/10 border border-white/15 backdrop-blur-xl text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/15 transition-colors"
                           >
-                            Contact Me
+                            Télécharger mon CV
                           </motion.button>
                         </div>
 

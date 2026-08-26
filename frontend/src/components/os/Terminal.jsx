@@ -7,7 +7,7 @@ const PROMPT = 'ravaka@portfolio:~$';
 export default function Terminal({ aboutMe, skills = [], projects = [] }) {
   const navigate = useNavigate();
   const [lines, setLines] = useState([
-    { type: 'system', text: "Tafiditra tao amin'ny terminal. Soraty 'help' raha te hahita ny commande azo ampiasaina." },
+    { type: 'system', text: "Bienvenue dans le terminal. Tapez 'help' pour voir les commandes disponibles." },
   ]);
   const [value, setValue] = useState('');
   const bodyRef = useRef(null);
@@ -19,45 +19,45 @@ export default function Terminal({ aboutMe, skills = [], projects = [] }) {
 
   const commands = {
     help: () => [
-      'Available commands:',
+      'Commandes disponibles :',
       '',
-      'about        Show information about me',
-      'projects     List my projects',
-      'skills       My technical skills',
-      'experience   My experience',
-      'contact      Contact information',
-      'github       Open my GitHub profile',
-      'clear        Clear the terminal',
+      'about        Informations à mon sujet',
+      'projects     Liste de mes projets',
+      'skills       Mes compétences techniques',
+      'experience   Mon expérience',
+      'contact      Coordonnées de contact',
+      'github       Ouvrir mon profil GitHub',
+      'clear        Effacer le terminal',
     ],
     about: () => {
-      if (!aboutMe) return ['Mbola mampiditra ny data... andraso kely.'];
+      if (!aboutMe) return ['Chargement des données en cours...'];
       return [
-        `Name:     ${aboutMe.full_name || 'RAVAKA TSIRINIAINA Manampitiana'}`,
-        `Role:     Full-Stack Web Developer`,
-        `Location: ${aboutMe.location || 'Antananarivo, Madagascar'}`,
-        `Email:    ${aboutMe.email || '—'}`,
+        `Nom :        ${aboutMe.full_name || 'RAVAKA TSIRINIAINA Manampitiana'}`,
+        `Rôle :       Développeur Full-Stack`,
+        `Lieu :       ${aboutMe.location || 'Antananarivo, Madagascar'}`,
+        `Email :      ${aboutMe.email || '—'}`,
       ];
     },
     skills: () => {
-      if (!skills.length) return ['Mbola mampiditra ny skills... andraso kely.'];
+      if (!skills.length) return ['Chargement des compétences en cours...'];
       return skills.map((s) => `> ${s.name.padEnd(14, ' ')} ${s.level}%`);
     },
     projects: () => {
-      if (!projects.length) return ['Mbola mampiditra ny projects... andraso kely.'];
+      if (!projects.length) return ['Chargement des projets en cours...'];
       return projects.map((p) => `> ${p.title}`);
     },
     experience: () => {
       navigate('/');
       setTimeout(() => document.getElementById('experience-section')?.scrollIntoView({ behavior: 'smooth' }), 50);
-      return ['Mizotra any amin\'ny fizarana Experience...'];
+      return ["Direction la section Expérience..."];
     },
     contact: () => {
       navigate('/contact');
-      return ["Mizotra any amin'ny pejy Contact..."];
+      return ['Direction la page Contact...'];
     },
     github: () => {
       window.open('https://github.com/Manampitiana', '_blank');
-      return ['Manokatra ny GitHub profile...'];
+      return ['Ouverture du profil GitHub...'];
     },
     clear: () => null,
   };
@@ -82,7 +82,7 @@ export default function Terminal({ aboutMe, skills = [], projects = [] }) {
     } else {
       setLines((prev) => [
         ...prev,
-        { type: 'error', text: `command not found: ${cmd} (soraty 'help')` },
+        { type: 'error', text: `commande introuvable : ${cmd} (tapez 'help')` },
       ]);
     }
   };
