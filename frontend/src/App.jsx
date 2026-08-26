@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './contexts/ThemeContext'
 import Layout from './components/Layout'
+import OsPageLayout from './components/os/OsPageLayout'
 import Home from './pages/Home'
 import About from './pages/About'
 import Projects from './pages/Projects'
@@ -32,32 +33,32 @@ function App() {
         <ThemeProvider>
           <Routes>
             {/* Public Routes */}
-            {/* Home manana chrome OS azy manokana (top bar + dock + taskbar), tsy mampiasa ny Navigation mahazatra */}
+            {/* Ny page rehetra dia mampiasa ny chrome OS (top bar + dock), tsy ny Navigation taloha intsony */}
             <Route path="/" element={<Home />} />
             <Route path="/about" element={
-              <Layout>
+              <OsPageLayout>
                 <About />
-              </Layout>
+              </OsPageLayout>
             } />
             <Route path="/projects" element={
-              <Layout>
+              <OsPageLayout>
                 <Projects />
-              </Layout>
+              </OsPageLayout>
             } />
             <Route path="/projects/:slug" element={
-              <Layout>
+              <OsPageLayout>
                 <ProjectDetail />
-              </Layout>
+              </OsPageLayout>
             } />
             <Route path="/contact" element={
-              <Layout>
+              <OsPageLayout>
                 <Contact />
-              </Layout>
+              </OsPageLayout>
             } />
             <Route path="/cv" element={
-              <Layout>
+              <OsPageLayout>
                 <Cv />
-              </Layout>
+              </OsPageLayout>
             } />
 
             {/* Admin Routes */}

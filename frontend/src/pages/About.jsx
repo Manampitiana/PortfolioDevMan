@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import CountUp from "react-countup";
 import { Helmet } from 'react-helmet-async';
 import { useSettings } from '../contexts/SettingsContext';
+import WindowFrame from '../components/os/WindowFrame';
 
 // Reveal réutilisable, cohérent avec le reste du site
 const fadeUp = {
@@ -95,9 +96,10 @@ export default function About() {
         />
       </Helmet>
 
-      <div className="min-h-screen bg-neutral-950">
+      <WindowFrame title="About Me" breadcrumb="Accueil > À propos" className="mt-2 mb-10">
+      <div className="bg-neutral-950">
         {/* Hero Section */}
-        <section className="relative pt-28 pb-16 px-4 bg-neutral-950 border-b border-white/5 overflow-hidden">
+        <section className="relative pt-10 pb-16 px-4 sm:px-8 bg-neutral-950 border-b border-white/5 overflow-hidden">
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -top-24 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
             <div className="absolute top-0 -right-20 w-96 h-96 bg-fuchsia-500/10 rounded-full blur-3xl" />
@@ -177,7 +179,9 @@ export default function About() {
         </section>
 
         {/* Section Expérience */}
-        <Experience />
+        <div id="experience-section">
+          <Experience />
+        </div>
 
         {/* Section Éducation */}
         <section className="relative py-20 px-4 bg-neutral-950 border-t border-white/5 overflow-hidden">
@@ -249,6 +253,7 @@ export default function About() {
           </div>
         </section>
       </div>
+      </WindowFrame>
 
     </>
   )

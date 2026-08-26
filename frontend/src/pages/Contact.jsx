@@ -5,6 +5,7 @@ import axiosClient from '../axios';
 import toast from 'react-hot-toast';
 import { useSettings } from '../contexts/SettingsContext';
 import { Helmet } from 'react-helmet-async';
+import WindowFrame from '../components/os/WindowFrame';
 
 export default function Contact() {
   const [aboutMe, setAboutMe] = useState(null);
@@ -103,9 +104,10 @@ export default function Contact() {
           href="https://portfolio-dev-man.vercel.app/contact"
         />
       </Helmet>
-      <div className="min-h-screen">
+      <WindowFrame title="Contact" breadcrumb="Accueil > Contact" className="mt-2 mb-10">
+      <div>
         {/* Hero Section */}
-        <section className="relative pt-32 pb-16 px-4 bg-neutral-950 border-b border-white/5 overflow-hidden">
+        <section className="relative pt-10 pb-16 px-4 sm:px-8 bg-neutral-950 border-b border-white/5 overflow-hidden">
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -top-24 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
             <div className="absolute top-0 -right-20 w-96 h-96 bg-fuchsia-500/10 rounded-full blur-3xl" />
@@ -288,6 +290,7 @@ export default function Contact() {
           </div>
         </section>
       </div>
+      </WindowFrame>
     </>
   )
 }

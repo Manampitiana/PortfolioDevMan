@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import axiosClient from '../axios';
 import { useSettings } from '../contexts/SettingsContext';
+import WindowFrame from '../components/os/WindowFrame';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -74,7 +75,7 @@ export default function ProjectDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-neutral-950 pt-32 px-4">
+      <div className="min-h-screen bg-neutral-950 pt-8 px-4">
         <div className="max-w-5xl mx-auto animate-pulse space-y-6">
           <div className="h-4 w-32 bg-white/10 rounded" />
           <div className="h-10 w-2/3 bg-white/10 rounded" />
@@ -114,7 +115,8 @@ export default function ProjectDetail() {
       </Helmet>
 
       <div className="min-h-screen bg-neutral-950">
-        <section className="relative pt-28 sm:pt-32 pb-16 px-4 border-b border-white/5 overflow-hidden">
+      <WindowFrame title={project.title} breadcrumb={`Accueil > Projets > ${project.title}`} className="mt-2 mb-10 max-w-6xl mx-auto">
+        <section className="relative pt-6 sm:pt-8 pb-16 px-4 border-b border-white/5 overflow-hidden">
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -top-24 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
             <div className="absolute top-0 -right-20 w-96 h-96 bg-fuchsia-500/10 rounded-full blur-3xl" />
@@ -234,6 +236,7 @@ export default function ProjectDetail() {
             </p>
           </motion.div>
         </section>
+      </WindowFrame>
       </div>
 
       {/* Lightbox */}

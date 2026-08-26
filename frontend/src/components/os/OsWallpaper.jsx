@@ -76,6 +76,5 @@ export default function OsWallpaper() {
       {/* Haizina fanampiny eo ambany mba hamakiana ny soratra */}
       <div className="absolute inset-0 bg-neutral-950/25" />
     </div>
-    
   );
 }

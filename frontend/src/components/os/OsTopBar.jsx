@@ -1,8 +1,6 @@
-
 import { useEffect, useState } from 'react';
 import { Wifi, BatteryFull } from 'lucide-react';
 import { useSettings } from '../../contexts/SettingsContext';
-import { Link } from 'react-router-dom';
 
 function formatTime(date) {
   return date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
@@ -20,26 +18,12 @@ export default function OsTopBar() {
   return (
     <div className="sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 h-11 bg-black/30 backdrop-blur-xl border-b border-white/10 text-white">
       <div className="flex items-center gap-2">
-        {/* <div className="w-5 h-5 rounded-md bg-gradient-to-br from-cyan-400 to-fuchsia-400 flex items-center justify-center text-[10px] font-bold text-neutral-950">
+        <div className="w-5 h-5 rounded-md bg-gradient-to-br from-cyan-400 to-fuchsia-400 flex items-center justify-center text-[10px] font-bold text-neutral-950">
           R
         </div>
         <span className="text-xs sm:text-sm font-semibold tracking-wide">
           {(settings?.site_name || 'RAVAKA').toUpperCase()} OS
-        </span> */}
-        <Link to="/" className="flex items-center group">
-          <div className="w-9 h-9 overflow-hidden rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-cyan-400/20 group-hover:rotate-6 transition-transform">
-            {settings?.logo ? (
-              <img src={settings.logo} className="w-full h-full object-contain" alt="Logo du site" />
-            ) : settings?.favicon ? (
-              <img src={settings.favicon} className="w-full h-full object-contain p-1" alt="Favicon utilisée comme logo" />
-            ) : (
-              <img src="/logo.png" className="w-full h-full object-contain p-1" alt="Logo par défaut" />
-            )}
-          </div>
-          <span className="text-white font-display font-semibold text-xl tracking-tight">
-            {settings?.site_name || 'Mon Portfolio'}
-          </span>
-        </Link>
+        </span>
       </div>
       <div className="flex items-center gap-3 text-neutral-200">
         <Wifi className="w-4 h-4" strokeWidth={1.8} />

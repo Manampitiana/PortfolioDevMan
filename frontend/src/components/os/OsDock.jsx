@@ -7,6 +7,15 @@ const scrollToId = (id) => {
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
 
+const goToSectionMobile = (id, navigate) => {
+  if (document.getElementById(id)) {
+    scrollToId(id);
+  } else {
+    navigate('/');
+    setTimeout(() => scrollToId(id), 60);
+  }
+};
+
 export default function OsDock() {
   const navigate = useNavigate();
   const [showTrash, setShowTrash] = useState(false);
@@ -80,7 +89,7 @@ export function OsMobileNav() {
   const items = [
     { label: 'À propos', icon: User, onClick: () => navigate('/about') },
     { label: 'Projets', icon: FolderKanban, onClick: () => navigate('/projects') },
-    { label: 'Compétences', icon: Code2, onClick: () => scrollToId('skills-section') },
+    { label: 'Compétences', icon: Code2, onClick: () => goToSectionMobile('skills-section', navigate) },
     { label: 'Contact', icon: Mail, onClick: () => navigate('/contact') },
   ];
 
