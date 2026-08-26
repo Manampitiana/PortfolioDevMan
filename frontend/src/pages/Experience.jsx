@@ -38,7 +38,7 @@ export default function Experience() {
             </div>
 
             <div className="relative max-w-4xl mx-auto">
-                <WindowFrame title="Experience" breadcrumb="Accueil > Expérience" bodyClassName="p-6 sm:p-10">
+                <WindowFrame title="Expérience" breadcrumb="Accueil > Expérience" bodyClassName="p-6 sm:p-10">
 
                 {/* En-tête de la section */}
                 <motion.div

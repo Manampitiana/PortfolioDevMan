@@ -248,7 +248,7 @@ export default function Home() {
                   viewport={{ once: true, amount: 0.3 }}
                   variants={fadeUp}
                 >
-                  <WindowFrame title="Skills" breadcrumb="Accueil > Compétences" bodyClassName="p-6 sm:p-10">
+                  <WindowFrame title="Compétences" breadcrumb="Accueil > Compétences" bodyClassName="p-6 sm:p-10">
                     <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">STACK</p>
                     <h2 className="font-display text-2xl sm:text-3xl font-semibold text-white mb-10">
                       Mes <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Compétences</span>
@@ -365,7 +365,7 @@ export default function Home() {
                   viewport={{ once: true, amount: 0.3 }}
                   variants={fadeUp}
                 >
-                  <WindowFrame title="Projects" breadcrumb="Accueil > Projets" bodyClassName="p-6 sm:p-10">
+                  <WindowFrame title="Projets" breadcrumb="Accueil > Projets" bodyClassName="p-6 sm:p-10">
                     <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">RÉALISATIONS</p>
                     <h2 className="font-display text-2xl sm:text-3xl font-semibold text-white mb-3">
                       Projets <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Populaires</span>
