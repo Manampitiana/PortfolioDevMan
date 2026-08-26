@@ -103,18 +103,18 @@ export default function Home() {
         />
       </Helmet>
       <div className="min-h-screen bg-neutral-950 transition-colors duration-300 pb-16 md:pb-0">
+        <OsTopBar />
 
-        {/* Section Hero — style "Desktop OS" */}
-        <section className="relative overflow-hidden">
-          <OsWallpaper />
+        <div className="flex">
+          <OsDock />
 
-          <div className="relative z-10 flex flex-col min-h-screen">
-            <OsTopBar />
+          <div className="flex-1 min-w-0">
 
-            <div className="flex flex-1">
-              <OsDock />
+            {/* Section Hero — style "Desktop OS" */}
+            <section className="relative overflow-hidden min-h-[calc(100vh-2.75rem)] flex flex-col">
+              <OsWallpaper />
 
-              <div className="flex-1 flex items-center px-5 sm:px-10 lg:px-16 py-14">
+              <div className="relative z-10 flex-1 flex items-center px-5 sm:px-10 lg:px-16 py-14">
                 <div className="w-full max-w-6xl mx-auto">
                   <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
 
@@ -218,21 +218,17 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
 
-            <OsTaskbar />
-          </div>
+              <OsTaskbar />
+            </section>
 
-          <OsMobileNav />
-        </section>
-
-        {/* Section Compétences */}
-        <section id="skills-section" className="relative py-20 px-4 bg-neutral-950 border-t border-white/5 overflow-hidden">
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/[0.06] rounded-full blur-3xl" />
-          </div>
-          <div className="relative max-w-6xl mx-auto">
-            <motion.div
+            {/* Section Compétences */}
+            <section id="skills-section" className="relative py-20 px-4 bg-neutral-950 border-t border-white/5 overflow-hidden">
+              <div className="pointer-events-none absolute inset-0">
+                <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/[0.06] rounded-full blur-3xl" />
+              </div>
+              <div className="relative max-w-6xl mx-auto">
+                <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
@@ -406,6 +402,8 @@ export default function Home() {
 
         <Footer />
       </div>
+    </div>
+    </div>
     </>
   );
 }
