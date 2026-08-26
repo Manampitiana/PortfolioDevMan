@@ -1,5 +1,5 @@
 import { ArrowDownIcon, CodeBracketIcon, DevicePhoneMobileIcon, EyeIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
-import { Github, Linkedin, Mail } from 'lucide-react';
+import { Facebook, Github, Linkedin, Mail } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import axiosClient from '../axios';
 import { Link, useNavigate } from 'react-router-dom';
@@ -206,6 +206,9 @@ export default function Home() {
                         </div>
 
                         <div className="flex items-center justify-center lg:justify-start gap-3">
+                          <a href="https://www.facebook.com/profile.php?id=100070143253960" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+                            <Facebook className="w-4 h-4" />
+                          </a>
                           <a href="https://www.linkedin.com/in/manampitiana-ravaka-tsiriniaina-5613b1317" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
                             <Linkedin className="w-4 h-4" />
                           </a>
