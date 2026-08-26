@@ -121,6 +121,39 @@ export default function Home() {
                     {/* Contenu */}
                     <div className="flex-1 text-center lg:text-left">
                       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+                        {/* Avatar — carte flottante avec PDP + badges tech */}
+                        <div className="relative inline-block mb-6">
+                          <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl p-[2px] bg-gradient-to-br from-cyan-400 to-fuchsia-400 shadow-lg shadow-cyan-500/10">
+                            <div className="w-full h-full rounded-2xl overflow-hidden bg-neutral-900 border border-white/10">
+                              {aboutMe?.pdp ? (
+                                <img src={aboutMe.pdp} alt={aboutMe?.full_name || 'RAVAKA'} className="w-full h-full object-cover" />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-2xl">🧑‍💻</div>
+                              )}
+                            </div>
+                          </div>
+                          <span className="absolute -bottom-1 -right-1 flex items-center gap-1 bg-neutral-900 border border-white/10 rounded-full px-2 py-0.5 text-[10px] font-mono text-emerald-300">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> dispo
+                          </span>
+
+                          {/* Badges technos flottants */}
+                          <motion.div
+                            animate={{ y: [0, -8, 0] }}
+                            transition={{ duration: 3, repeat: Infinity }}
+                            className="hidden sm:flex absolute -top-3 -right-6 w-9 h-9 rounded-xl bg-white/[0.06] backdrop-blur-xl border border-white/10 items-center justify-center shadow-lg"
+                          >
+                            <img src="/react.png" alt="React" className="w-4.5 h-4.5" />
+                          </motion.div>
+                          <motion.div
+                            animate={{ y: [0, -6, 0] }}
+                            transition={{ duration: 4, repeat: Infinity, delay: 1 }}
+                            className="hidden sm:flex absolute -bottom-3 -left-7 w-8 h-8 rounded-xl bg-white/[0.06] backdrop-blur-xl border border-white/10 items-center justify-center shadow-lg"
+                          >
+                            <img src="/laravel.png" alt="Laravel" className="w-4 h-4" />
+                          </motion.div>
+                        </div>
+                        <br />
+
                         <span className="inline-flex items-center gap-2 text-[11px] font-mono tracking-widest text-cyan-300 bg-cyan-400/10 border border-cyan-400/20 rounded-full px-3 py-1.5 mb-6">
                           DÉVELOPPEUR FULL-STACK
                         </span>
