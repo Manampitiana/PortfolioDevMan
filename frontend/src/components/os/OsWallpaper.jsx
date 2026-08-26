@@ -76,7 +76,7 @@ export default function OsWallpaper() {
     //   {/* Haizina fanampiny eo ambany mba hamakiana ny soratra */}
     //   <div className="absolute inset-0 bg-neutral-950/25" />
     // </div>
-    <div>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
       <img src="/Font.png" alt="" className="w-full"/>
     </div>
   );
