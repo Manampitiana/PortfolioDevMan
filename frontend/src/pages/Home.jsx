@@ -1,11 +1,18 @@
 import { ArrowDownIcon, CodeBracketIcon, DevicePhoneMobileIcon, EyeIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { Github, Linkedin, Mail } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import axiosClient from '../axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Experience from './Experience';
+import Footer from '../components/Footer';
 import { Helmet } from 'react-helmet-async';
 import { useSettings } from '../contexts/SettingsContext';
+import OsWallpaper from '../components/os/OsWallpaper';
+import OsTopBar from '../components/os/OsTopBar';
+import OsDock, { OsMobileNav } from '../components/os/OsDock';
+import OsTaskbar from '../components/os/OsTaskbar';
+import Terminal from '../components/os/Terminal';
 
 // Reveal réutilisable, cohérent avec le reste du site
 const fadeUp = {
@@ -94,124 +101,91 @@ export default function Home() {
           href="https://portfolio-dev-man.vercel.app/"
         />
       </Helmet>
-      <div className="min-h-screen bg-neutral-950 transition-colors duration-300">
+      <div className="min-h-screen bg-neutral-950 transition-colors duration-300 pb-16 md:pb-0">
 
-        {/* Section Hero */}
-        <section className="relative min-h-screen flex items-center justify-center px-4 pt-24 py-20 bg-neutral-950 overflow-hidden">
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute -top-32 left-1/4 w-[34rem] h-[34rem] bg-cyan-500/[0.08] rounded-full blur-3xl" />
-            <div className="absolute top-1/3 -right-20 w-[30rem] h-[30rem] bg-fuchsia-500/[0.08] rounded-full blur-3xl" />
-            <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "22px 22px" }} />
-          </div>
-          <div className="relative z-10 w-full max-w-6xl mx-auto">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+        {/* Section Hero — style "Desktop OS" */}
+        <section className="relative overflow-hidden">
+          <OsWallpaper />
 
-              {/* Profil — glass frame */}
-              <div className="flex-1 flex justify-center lg:justify-end order-1 lg:order-2">
-                <div className="relative w-64 sm:w-80 lg:w-96">
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.92, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    className="relative aspect-[4/5] rounded-[28px] bg-white/[0.04] backdrop-blur-2xl border border-white/10 overflow-hidden shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]"
-                  >
-                    <div className="absolute -top-6 -right-6 w-28 h-28 bg-gradient-to-br from-cyan-400 to-fuchsia-400 blur-3xl opacity-30" />
-                    {/* DINAMIKA: Sary (PDP) */}
-                    {aboutMe?.pdp ? (
-                      <img src={aboutMe.pdp} alt={aboutMe?.full_name || 'PDP'} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-neutral-600 border border-dashed border-white/10 m-3 rounded-2xl">
-                        <span className="text-5xl">🧑‍💻</span>
-                        <span className="text-[11px] font-mono">Aucune photo</span>
-                      </div>
-                    )}
-                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-neutral-950/80 to-transparent" />
-                    <div className="absolute bottom-4 left-4 flex items-center gap-1.5 text-[11px] font-mono text-emerald-300">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> disponible
+          <div className="relative z-10 flex flex-col min-h-screen">
+            <OsTopBar />
+
+            <div className="flex flex-1">
+              <OsDock />
+
+              <div className="flex-1 flex items-center px-5 sm:px-10 lg:px-16 py-14">
+                <div className="w-full max-w-6xl mx-auto">
+                  <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+
+                    {/* Contenu */}
+                    <div className="flex-1 text-center lg:text-left">
+                      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+                        <p className="text-white/80 text-lg mb-2">Hello, I'm</p>
+                        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-3 leading-tight tracking-tight">
+                          RAVAKA
+                        </h1>
+                        <p className="text-xl sm:text-2xl font-semibold bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent mb-6">
+                          Full-Stack Web Developer
+                        </p>
+                        <p className="text-neutral-300 text-base sm:text-lg mb-8 max-w-md mx-auto lg:mx-0">
+                          I build modern, responsive and high-performance web applications using Laravel, React and more.
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-8">
+                          <motion.button
+                            whileHover={{ scale: 1.04 }}
+                            whileTap={{ scale: 0.96 }}
+                            onClick={() => navigate('/projects')}
+                            className="bg-gradient-to-r from-cyan-400 to-fuchsia-400 text-neutral-950 px-6 py-3 rounded-xl font-semibold shadow-lg shadow-cyan-500/10"
+                          >
+                            Explore Projects
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.04 }}
+                            whileTap={{ scale: 0.96 }}
+                            onClick={() => navigate('/contact')}
+                            className="bg-white/10 border border-white/15 backdrop-blur-xl text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/15 transition-colors"
+                          >
+                            Contact Me
+                          </motion.button>
+                        </div>
+
+                        <div className="flex items-center justify-center lg:justify-start gap-3">
+                          <a href="https://www.linkedin.com/in/manampitiana-ravaka-tsiriniaina-5613b1317" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+                            <Linkedin className="w-4 h-4" />
+                          </a>
+                          <a href="https://github.com/Manampitiana" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+                            <Github className="w-4 h-4" />
+                          </a>
+                          <a href={`mailto:${aboutMe?.email || ''}`} className="w-10 h-10 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+                            <Mail className="w-4 h-4" />
+                          </a>
+                        </div>
+                      </motion.div>
                     </div>
-                  </motion.div>
 
-                  {/* Chips technologiques flottants */}
-                  <motion.div
-                    animate={{ y: [0, -10, 0] }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                    className="absolute -top-3 -right-2 sm:-top-4 sm:-right-4 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/[0.06] backdrop-blur-xl border border-white/10 flex items-center justify-center shadow-lg"
-                  >
-                    <img src="/react.png" alt="React" className="w-6 h-6 sm:w-7 sm:h-7" />
-                  </motion.div>
-                  <motion.div
-                    animate={{ y: [0, -8, 0] }}
-                    transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-                    className="absolute -bottom-3 -left-2 sm:-bottom-4 sm:-left-4 w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-white/[0.06] backdrop-blur-xl border border-white/10 flex items-center justify-center shadow-lg"
-                  >
-                    <span className="text-base sm:text-lg">🔧</span>
-                  </motion.div>
-                  <motion.div
-                    animate={{ y: [0, -6, 0] }}
-                    transition={{ duration: 5, repeat: Infinity, delay: 2 }}
-                    className="hidden sm:flex absolute top-1/2 -left-8 w-10 h-10 rounded-2xl bg-white/[0.06] backdrop-blur-xl border border-white/10 items-center justify-center shadow-lg"
-                  >
-                    <img src="/laravel.png" alt="Laravel" className="w-5 h-5" />
-                  </motion.div>
-                </div>
-              </div>
-
-              {/* Contenu */}
-              <div className="flex-1 text-center lg:text-left order-2 lg:order-1">
-                <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                  <span className="inline-flex items-center gap-2 text-[11px] font-mono tracking-widest text-cyan-300 bg-cyan-400/10 border border-cyan-400/20 rounded-full px-3 py-1.5 mb-6">
-                    DÉVELOPPEUR FULL-STACK
-                  </span>
-                  <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-white mb-6 leading-tight">
-                    Bonjour, je suis
-                    <span className="block bg-gradient-to-r from-cyan-300 via-white to-fuchsia-300 bg-clip-text text-transparent">
-                      RAVAKA TSIRINIAINA
-                    </span>
-                    <span className="block text-xl sm:text-2xl lg:text-3xl text-neutral-400 font-medium mt-2">
-                      Manampitiana
-                    </span>
-                  </h1>
-                  <p className="text-lg sm:text-xl lg:text-2xl text-neutral-300 mb-6 leading-relaxed">
-                    Développeur Full Stack | Spécialiste React & Laravel
-                  </p>
-                  <p className="text-base sm:text-lg text-neutral-500 mb-8 max-w-2xl mx-auto lg:mx-0">
-                    Je crée des applications web modernes et responsives avec les technologies les plus récentes
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => navigate('/projects')}
-                      className="bg-white text-neutral-900 px-8 py-4 rounded-full font-semibold hover:bg-neutral-200 transition-all duration-300 transform"
+                    {/* Terminal */}
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      transition={{ duration: 0.7, delay: 0.15 }}
+                      className="w-full max-w-md lg:max-w-lg"
                     >
-                      Voir mes Projets
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => navigate('/cv')}
-                      className="bg-white/[0.04] border border-white/10 backdrop-blur-xl text-neutral-200 px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition-all duration-300"
-                    >
-                      Télécharger mon CV
-                    </motion.button>
+                      <Terminal aboutMe={aboutMe} skills={publicSkills} projects={featuredProjects} />
+                    </motion.div>
                   </div>
-                </motion.div>
+                </div>
               </div>
             </div>
 
-            {/* Indicateur de scroll */}
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-              className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-            >
-              <ArrowDownIcon className="w-6 h-6 text-neutral-500" />
-            </motion.div>
+            <OsTaskbar />
           </div>
+
+          <OsMobileNav />
         </section>
 
         {/* Section Compétences */}
-        <section className="relative py-20 px-4 bg-neutral-950 border-t border-white/5 overflow-hidden">
+        <section id="skills-section" className="relative py-20 px-4 bg-neutral-950 border-t border-white/5 overflow-hidden">
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/[0.06] rounded-full blur-3xl" />
           </div>
@@ -381,7 +355,11 @@ export default function Home() {
         </section>
 
         {/* Section Experience */}
-        <Experience />
+        <div id="experience-section">
+          <Experience />
+        </div>
+
+        <Footer />
       </div>
     </>
   );
