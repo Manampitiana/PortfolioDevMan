@@ -75,7 +75,7 @@ export default function OsDock() {
           <span className="text-[9px] font-mono text-neutral-500 leading-none">Corbeille</span>
         </button>
         {showTrash && (
-          <div className="absolute left-16 bottom-1 whitespace-nowrap bg-neutral-900 border border-white/10 text-[11px] text-neutral-300 font-mono px-3 py-2 rounded-lg shadow-xl">
+          <div className="absolute left-16 bottom-1 z-50 whitespace-nowrap bg-neutral-900 border border-white/10 text-[11px] text-neutral-300 font-mono px-3 py-2 rounded-lg shadow-xl">
             Aucun bug à supprimer 😄
           </div>
         )}

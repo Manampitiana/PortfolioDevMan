@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { CalendarIcon, BriefcaseIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import axiosClient from '../axios';
+import WindowFrame from '../components/os/WindowFrame';
 
 // Formatage de la date en français
 const formatDate = (date) => {
@@ -37,6 +38,7 @@ export default function Experience() {
             </div>
 
             <div className="relative max-w-4xl mx-auto">
+                <WindowFrame title="Experience" breadcrumb="Accueil > Expérience" bodyClassName="p-6 sm:p-10">
 
                 {/* En-tête de la section */}
                 <motion.div
@@ -123,6 +125,7 @@ export default function Experience() {
                         ))}
                     </div>
                 </div>
+                </WindowFrame>
             </div>
         </section>
     );

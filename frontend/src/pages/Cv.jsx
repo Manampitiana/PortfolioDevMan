@@ -13,6 +13,7 @@ import {
 import { EnvelopeIcon, PhoneIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { useSettings } from "../contexts/SettingsContext";
 import { Helmet } from "react-helmet-async";
+import WindowFrame from "../components/os/WindowFrame";
 
 // 1. STYLES POUR LE PDF
 const styles = StyleSheet.create({
@@ -257,8 +258,9 @@ export default function Cv() {
           href="https://portfolio-dev-man.vercel.app/cv"
         />
       </Helmet>
-      <div className="min-h-screen bg-neutral-950 pt-24 pb-12 px-4">
+      <div className="min-h-screen bg-neutral-950 pt-8 pb-12 px-4">
         <div className="max-w-5xl mx-auto">
+          <WindowFrame title="CV" breadcrumb="Accueil > CV" bodyClassName="p-4 sm:p-6">
 
           {/* Barre d'en-tête */}
           <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 bg-white/[0.03] border border-white/10 backdrop-blur-xl p-6 rounded-2xl">
@@ -419,6 +421,7 @@ export default function Cv() {
               )}
             </main>
           </div>
+          </WindowFrame>
         </div>
       </div>
     </>
