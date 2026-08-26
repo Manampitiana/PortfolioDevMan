@@ -13,6 +13,7 @@ import OsTopBar from '../components/os/OsTopBar';
 import OsDock, { OsMobileNav } from '../components/os/OsDock';
 import OsTaskbar from '../components/os/OsTaskbar';
 import Terminal from '../components/os/Terminal';
+import WindowFrame from '../components/os/WindowFrame';
 
 // Reveal réutilisable, cohérent avec le reste du site
 const fadeUp = {
@@ -203,58 +204,59 @@ export default function Home() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
               variants={fadeUp}
-              className="text-center mb-14"
             >
-              <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">STACK</p>
-              <h2 className="font-display text-3xl md:text-4xl font-semibold text-white">
-                Mes <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Compétences</span>
-              </h2>
-            </motion.div>
+              <WindowFrame title="Skills" breadcrumb="Accueil > Compétences" bodyClassName="p-6 sm:p-10">
+                <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">STACK</p>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold text-white mb-10">
+                  Mes <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Compétences</span>
+                </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {skillsLoading
-                ? skeletonArray.map((_, index) => (
-                  <div
-                    key={index}
-                    className="p-6 rounded-2xl border border-white/10 bg-white/[0.03] h-40 animate-pulse"
-                  >
-                    <div className="flex items-center mb-6">
-                      <div className="w-8 h-8 bg-white/10 rounded-full mr-3"></div>
-                      <div className="h-5 bg-white/10 rounded-md w-24"></div>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="w-full bg-white/10 rounded-full h-2"></div>
-                      <div className="h-3 bg-white/10 rounded-md w-8"></div>
-                    </div>
-                  </div>
-                ))
-                : publicSkills.map((skill, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.5, delay: index * 0.08 }}
-                    whileHover={{ y: -4 }}
-                    className="bg-white/[0.03] border border-white/10 backdrop-blur-xl p-6 rounded-2xl hover:border-cyan-400/25 transition-colors duration-300"
-                  >
-                    <div className="flex items-center mb-4">
-                      <img src={skill.logo} alt={skill.name} className="w-8 h-8 object-cover mr-3" />
-                      <h3 className="font-display text-lg font-semibold text-white">{skill.name}</h3>
-                    </div>
-                    <div className="w-full bg-white/5 rounded-full h-1.5 mb-2 overflow-hidden">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {skillsLoading
+                    ? skeletonArray.map((_, index) => (
+                      <div
+                        key={index}
+                        className="p-6 rounded-2xl border border-white/10 bg-white/[0.03] h-40 animate-pulse"
+                      >
+                        <div className="flex items-center mb-6">
+                          <div className="w-8 h-8 bg-white/10 rounded-full mr-3"></div>
+                          <div className="h-5 bg-white/10 rounded-md w-24"></div>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="w-full bg-white/10 rounded-full h-2"></div>
+                          <div className="h-3 bg-white/10 rounded-md w-8"></div>
+                        </div>
+                      </div>
+                    ))
+                    : publicSkills.map((skill, index) => (
                       <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-                        className="bg-gradient-to-r from-cyan-400 to-fuchsia-400 h-1.5 rounded-full"
-                      />
-                    </div>
-                    <span className="font-mono text-xs text-neutral-500">{skill.level}%</span>
-                  </motion.div>
-                ))}
-            </div>
+                        key={index}
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.3 }}
+                        transition={{ duration: 0.5, delay: index * 0.08 }}
+                        whileHover={{ y: -4 }}
+                        className="bg-white/[0.03] border border-white/10 backdrop-blur-xl p-6 rounded-2xl hover:border-cyan-400/25 transition-colors duration-300"
+                      >
+                        <div className="flex items-center mb-4">
+                          <img src={skill.logo} alt={skill.name} className="w-8 h-8 object-cover mr-3" />
+                          <h3 className="font-display text-lg font-semibold text-white">{skill.name}</h3>
+                        </div>
+                        <div className="w-full bg-white/5 rounded-full h-1.5 mb-2 overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${skill.level}%` }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                            className="bg-gradient-to-r from-cyan-400 to-fuchsia-400 h-1.5 rounded-full"
+                          />
+                        </div>
+                        <span className="font-mono text-xs text-neutral-500">{skill.level}%</span>
+                      </motion.div>
+                    ))}
+                </div>
+              </WindowFrame>
+            </motion.div>
           </div>
         </section>
 
@@ -269,33 +271,34 @@ export default function Home() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
               variants={fadeUp}
-              className="text-center mb-14"
             >
-              <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">EXPERTISE</p>
-              <h2 className="font-display text-3xl md:text-4xl font-semibold text-white">
-                Mes <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Services</span>
-              </h2>
-            </motion.div>
+              <WindowFrame title="Services" breadcrumb="Accueil > Services" bodyClassName="p-6 sm:p-10">
+                <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">EXPERTISE</p>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold text-white mb-10">
+                  Mes <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Services</span>
+                </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {services.map((service, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.5, delay: index * 0.12 }}
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  className="text-center p-8 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl hover:border-cyan-400/25 transition-colors duration-300"
-                >
-                  <div className={`w-16 h-16 mx-auto mb-6 bg-gradient-to-r ${service.bg} rounded-2xl flex items-center justify-center`}>
-                    <service.icon className="w-8 h-8 text-neutral-950" />
-                  </div>
-                  <h3 className="font-display text-xl font-semibold text-white mb-3">{service.title}</h3>
-                  <p className="text-neutral-400 text-sm leading-relaxed">{service.desc}</p>
-                </motion.div>
-              ))}
-            </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                  {services.map((service, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 40 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ duration: 0.5, delay: index * 0.12 }}
+                      whileHover={{ y: -8, scale: 1.02 }}
+                      className="text-center p-8 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl hover:border-cyan-400/25 transition-colors duration-300"
+                    >
+                      <div className={`w-16 h-16 mx-auto mb-6 bg-gradient-to-r ${service.bg} rounded-2xl flex items-center justify-center`}>
+                        <service.icon className="w-8 h-8 text-neutral-950" />
+                      </div>
+                      <h3 className="font-display text-xl font-semibold text-white mb-3">{service.title}</h3>
+                      <p className="text-neutral-400 text-sm leading-relaxed">{service.desc}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              </WindowFrame>
+            </motion.div>
           </div>
         </section>
 
@@ -310,55 +313,56 @@ export default function Home() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
               variants={fadeUp}
-              className="text-center mb-14"
             >
-              <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">RÉALISATIONS</p>
-              <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
-                Projets <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Populaires</span>
-              </h2>
-              <p className="text-neutral-400 max-w-2xl mx-auto">
-                Découvrez quelques-uns de mes projets les plus réussis
-              </p>
-            </motion.div>
+              <WindowFrame title="Projects" breadcrumb="Accueil > Projets" bodyClassName="p-6 sm:p-10">
+                <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">RÉALISATIONS</p>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold text-white mb-3">
+                  Projets <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Populaires</span>
+                </h2>
+                <p className="text-neutral-400 max-w-2xl mb-10">
+                  Découvrez quelques-uns de mes projets les plus réussis
+                </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
-              {featuredProjects.slice(0, 3).map((project, index) => (
-                <motion.div
-                  key={project.id}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.5, delay: index * 0.12 }}
-                  whileHover={{ y: -6 }}
-                  className="group bg-white/[0.03] border border-white/10 backdrop-blur-xl rounded-2xl overflow-hidden hover:border-cyan-400/25 transition-colors duration-300"
-                >
-                  <div className="relative overflow-hidden h-48">
-                    <motion.img
-                      src={project.cover_image}
-                      alt={project.title}
-                      className="w-full h-full object-cover"
-                      whileHover={{ scale: 1.08 }}
-                      transition={{ duration: 0.4 }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-transparent to-transparent" />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="font-display text-lg font-semibold text-white mb-2">{project.title}</h3>
-                    <p className="text-neutral-400 text-sm leading-relaxed line-clamp-2">{project.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-            <div className="flex justify-center">
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                <Link
-                  to="/projects"
-                  className="inline-block bg-white text-neutral-900 py-3 px-6 rounded-full font-medium hover:bg-neutral-200 transition-all duration-300"
-                >
-                  Voir tous les projets
-                </Link>
-              </motion.div>
-            </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+                  {featuredProjects.slice(0, 3).map((project, index) => (
+                    <motion.div
+                      key={project.id}
+                      initial={{ opacity: 0, y: 40 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ duration: 0.5, delay: index * 0.12 }}
+                      whileHover={{ y: -6 }}
+                      className="group bg-white/[0.03] border border-white/10 backdrop-blur-xl rounded-2xl overflow-hidden hover:border-cyan-400/25 transition-colors duration-300"
+                    >
+                      <div className="relative overflow-hidden h-48">
+                        <motion.img
+                          src={project.cover_image}
+                          alt={project.title}
+                          className="w-full h-full object-cover"
+                          whileHover={{ scale: 1.08 }}
+                          transition={{ duration: 0.4 }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-transparent to-transparent" />
+                      </div>
+                      <div className="p-6">
+                        <h3 className="font-display text-lg font-semibold text-white mb-2">{project.title}</h3>
+                        <p className="text-neutral-400 text-sm leading-relaxed line-clamp-2">{project.description}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+                <div className="flex justify-center">
+                  <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                    <Link
+                      to="/projects"
+                      className="inline-block bg-white text-neutral-900 py-3 px-6 rounded-full font-medium hover:bg-neutral-200 transition-all duration-300"
+                    >
+                      Voir tous les projets
+                    </Link>
+                  </motion.div>
+                </div>
+              </WindowFrame>
+            </motion.div>
           </div>
         </section>
 

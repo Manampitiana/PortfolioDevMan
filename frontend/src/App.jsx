@@ -32,11 +32,8 @@ function App() {
         <ThemeProvider>
           <Routes>
             {/* Public Routes */}
-            <Route path="/" element={
-              <Layout>
-                <Home />
-              </Layout>
-            } />
+            {/* Home manana chrome OS azy manokana (top bar + dock + taskbar), tsy mampiasa ny Navigation mahazatra */}
+            <Route path="/" element={<Home />} />
             <Route path="/about" element={
               <Layout>
                 <About />
