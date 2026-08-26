@@ -220,6 +220,7 @@ export default function Home() {
               </div>
 
               <OsTaskbar />
+               <OsMobileNav />
             </section>
 
             {/* Section Compétences */}
