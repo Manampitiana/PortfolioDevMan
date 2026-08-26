@@ -37,7 +37,7 @@ export default function Experience() {
                 <div className="absolute bottom-0 -right-20 w-96 h-96 bg-fuchsia-500/[0.06] rounded-full blur-3xl" />
             </div>
 
-            <div className="relative max-w-4xl mx-auto">
+            <div className="relative max-w-6xl mx-auto">
                 <WindowFrame title="Expérience" breadcrumb="Accueil > Expérience" bodyClassName="p-6 sm:p-10">
 
                 {/* En-tête de la section */}
