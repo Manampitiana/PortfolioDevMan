@@ -11,18 +11,28 @@ export default function OsDock() {
   const navigate = useNavigate();
   const [showTrash, setShowTrash] = useState(false);
 
+  // Skills/Expérience ne vivent que sur l'Accueil : on y retourne d'abord si besoin
+  const goToSection = (id) => {
+    if (document.getElementById(id)) {
+      scrollToId(id);
+    } else {
+      navigate('/');
+      setTimeout(() => scrollToId(id), 60);
+    }
+  };
+
   const items = [
     { label: 'À propos', icon: User, color: 'text-cyan-300', onClick: () => navigate('/about') },
     { label: 'Projets', icon: FolderKanban, color: 'text-amber-300', onClick: () => navigate('/projects') },
-    { label: 'Compétences', icon: Code2, color: 'text-emerald-300', onClick: () => scrollToId('skills-section') },
-    { label: 'Expérience', icon: Briefcase, color: 'text-fuchsia-300', onClick: () => scrollToId('experience-section') },
+    { label: 'Compétences', icon: Code2, color: 'text-emerald-300', onClick: () => goToSection('skills-section') },
+    { label: 'Expérience', icon: Briefcase, color: 'text-fuchsia-300', onClick: () => goToSection('experience-section') },
     { label: 'Contact', icon: Mail, color: 'text-sky-300', onClick: () => navigate('/contact') },
-    { label: 'Terminal', icon: SquareTerminal, color: 'text-lime-300', onClick: () => scrollToId('terminal-window') },
+    { label: 'Terminal', icon: SquareTerminal, color: 'text-lime-300', onClick: () => goToSection('terminal-window') },
     { label: 'GitHub', icon: Github, color: 'text-neutral-200', onClick: () => window.open('https://github.com/Manampitiana', '_blank') },
   ];
 
   return (
-    <aside className="hidden md:flex flex-col items-center w-20 shrink-0 py-6 gap-3 bg-black/25 backdrop-blur-xl border-r border-white/10 relative z-20">
+    <aside className="hidden md:flex flex-col items-center w-20 shrink-0 py-6 gap-3 bg-black/25 backdrop-blur-xl border-r border-white/10 relative z-20 sticky top-11 self-start h-[calc(100vh-2.75rem)] overflow-y-auto">
       {items.map(({ label, icon: Icon, color, onClick }) => (
         <button
           key={label}

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { Wifi, BatteryFull } from 'lucide-react';
 import { useSettings } from '../../contexts/SettingsContext';
@@ -17,7 +18,7 @@ export default function OsTopBar() {
   }, []);
 
   return (
-    <div className="relative z-30 flex items-center justify-between px-4 sm:px-6 h-11 bg-black/30 backdrop-blur-xl border-b border-white/10 text-white">
+    <div className="sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 h-11 bg-black/30 backdrop-blur-xl border-b border-white/10 text-white">
       <div className="flex items-center gap-2">
         {/* <div className="w-5 h-5 rounded-md bg-gradient-to-br from-cyan-400 to-fuchsia-400 flex items-center justify-center text-[10px] font-bold text-neutral-950">
           R
