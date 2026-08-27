@@ -251,63 +251,93 @@ export default function Home() {
                   viewport={{ once: true, amount: 0.3 }}
                   variants={fadeUp}
                 >
-                  <WindowFrame title="Compétences" breadcrumb="Accueil > Compétences" bodyClassName="p-6 sm:p-10">
+                  <WindowFrame title="skills.json" breadcrumb="Accueil > Compétences" bodyClassName="p-6 sm:p-10">
                     <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">STACK</p>
                     <h2 className="font-display text-2xl sm:text-3xl font-semibold text-white mb-10">
                       Mes <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Compétences</span>
                     </h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                      {skillsLoading
-                        ? skeletonArray.map((_, index) => (
-                          <div
-                            key={index}
-                            className="p-6 rounded-2xl border border-white/10 bg-white/[0.03] h-40 animate-pulse"
-                          >
-                            <div className="flex items-center mb-6">
-                              <div className="w-8 h-8 bg-white/10 rounded-full mr-3"></div>
-                              <div className="h-5 bg-white/10 rounded-md w-24"></div>
-                            </div>
-                            <div className="space-y-3">
-                              <div className="w-full bg-white/10 rounded-full h-2"></div>
-                              <div className="h-3 bg-white/10 rounded-md w-8"></div>
-                            </div>
+                    {/* Bloc "éditeur de code" — gouttière de lignes + JSON coloré */}
+                    <div className="rounded-xl border border-white/10 bg-black/30 overflow-hidden">
+                      <div className="flex items-center gap-2 px-4 h-9 bg-white/[0.03] border-b border-white/10">
+                        <span className="text-[11px] font-mono text-neutral-500">skills.json</span>
+                      </div>
+
+                      <div className="overflow-x-auto">
+                        <div className="min-w-[420px] font-mono text-[13px] leading-7 py-4">
+                          <div className="flex">
+                            <span className="w-10 shrink-0 text-right pr-4 text-neutral-600 select-none">1</span>
+                            <span className="text-neutral-400">{'{'}</span>
                           </div>
-                        ))
-                        : publicSkills.map((skill, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, amount: 0.3 }}
-                            transition={{ duration: 0.5, delay: index * 0.08 }}
-                            whileHover={{ y: -4 }}
-                            className="bg-white/[0.03] border border-white/10 backdrop-blur-xl p-6 rounded-2xl hover:border-cyan-400/25 transition-colors duration-300"
-                          >
-                            <div className="flex items-center mb-4">
-                              <img src={skill.logo} alt={skill.name} className="w-8 h-8 object-cover mr-3" />
-                              <h3 className="font-display text-lg font-semibold text-white">{skill.name}</h3>
-                            </div>
-                            <div className="w-full bg-white/5 rounded-full h-1.5 mb-2 overflow-hidden">
-                              <motion.div
-                                initial={{ width: 0 }}
-                                whileInView={{ width: `${skill.level}%` }}
-                                viewport={{ once: true }}
-                                transition={{
-                                  duration: 1,
-                                  ease: [0.22, 1, 0.36, 1],
-                                  delay: 0.2
-                                }}
-                                className="h-1.5 rounded-full"
-                                style={{
-                                  backgroundColor: skillColors[skill.name] || '#22d3ee',
-                                  boxShadow: `0 0 10px ${skillColors[skill.name] || '#22d3ee'}66`,
-                                }}
-                              />
-                            </div>
-                            <span className="font-mono text-xs text-neutral-500">{skill.level}%</span>
-                          </motion.div>
-                        ))}
+                          <div className="flex">
+                            <span className="w-10 shrink-0 text-right pr-4 text-neutral-600 select-none">2</span>
+                            <span className="pl-4 text-sky-300">"developer"</span>
+                            <span className="text-neutral-500">:</span>
+                            <span className="text-emerald-300">&nbsp;"Ravaka Tsiriniaina"</span>
+                            <span className="text-neutral-500">,</span>
+                          </div>
+                          <div className="flex">
+                            <span className="w-10 shrink-0 text-right pr-4 text-neutral-600 select-none">3</span>
+                            <span className="pl-4 text-sky-300">"stack"</span>
+                            <span className="text-neutral-500">: [</span>
+                          </div>
+
+                          {skillsLoading
+                            ? skeletonArray.map((_, index) => (
+                              <div key={index} className="flex items-center gap-3 pl-16 pr-6 py-1.5">
+                                <div className="h-3.5 w-40 bg-white/10 rounded animate-pulse" />
+                                <div className="h-1.5 flex-1 bg-white/5 rounded-full overflow-hidden">
+                                  <div className="h-full w-1/3 bg-white/10 animate-pulse" />
+                                </div>
+                              </div>
+                            ))
+                            : publicSkills.map((skill, index) => {
+                              const color = skillColors[skill.name] || '#22d3ee';
+                              return (
+                                <motion.div
+                                  key={index}
+                                  initial={{ opacity: 0, x: -12 }}
+                                  whileInView={{ opacity: 1, x: 0 }}
+                                  viewport={{ once: true, amount: 0.3 }}
+                                  transition={{ duration: 0.4, delay: index * 0.06 }}
+                                  className="flex items-center gap-3 flex-wrap sm:flex-nowrap group"
+                                >
+                                  <span className="w-10 shrink-0 text-right pr-4 text-neutral-600 select-none">{index + 4}</span>
+                                  <span className="text-neutral-500 shrink-0">{'{ '}</span>
+                                  <span className="text-sky-300 shrink-0">"name"</span>
+                                  <span className="text-neutral-500 shrink-0">:</span>
+                                  <span className="text-emerald-300 shrink-0">&nbsp;"{skill.name}"</span>
+                                  <span className="text-neutral-500 shrink-0">,</span>
+                                  <span className="text-sky-300 shrink-0">&nbsp;"level"</span>
+                                  <span className="text-neutral-500 shrink-0">:</span>
+                                  <span className="shrink-0 font-semibold" style={{ color }}>&nbsp;{skill.level}</span>
+                                  <span className="text-neutral-500 shrink-0">{' },'}</span>
+
+                                  <div className="flex-1 min-w-[80px] h-1.5 bg-white/5 rounded-full overflow-hidden ml-1">
+                                    <motion.div
+                                      initial={{ width: 0 }}
+                                      whileInView={{ width: `${skill.level}%` }}
+                                      viewport={{ once: true }}
+                                      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 + index * 0.05 }}
+                                      className="h-full rounded-full"
+                                      style={{ backgroundColor: color, boxShadow: `0 0 10px ${color}66` }}
+                                    />
+                                  </div>
+                                </motion.div>
+                              );
+                            })}
+
+                          <div className="flex">
+                            <span className="w-10 shrink-0 text-right pr-4 text-neutral-600 select-none">{publicSkills.length + 4}</span>
+                            <span className="text-neutral-400">]</span>
+                          </div>
+                          <div className="flex">
+                            <span className="w-10 shrink-0 text-right pr-4 text-neutral-600 select-none">{publicSkills.length + 5}</span>
+                            <span className="text-neutral-400">{'}'}</span>
+                            <span className="inline-block w-2 h-4 bg-cyan-300/80 ml-1 animate-pulse" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </WindowFrame>
                 </motion.div>
