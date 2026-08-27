@@ -235,7 +235,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <OsTaskbar />
+              {/* <OsTaskbar /> */}
               <OsMobileNav />
             </section>
 
