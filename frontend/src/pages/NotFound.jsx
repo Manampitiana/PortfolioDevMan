@@ -35,7 +35,7 @@ export default function NotFound() {
               bash: cd: {window.location.pathname}: Aucun fichier ou dossier de ce type
             </p>
             <p className="text-neutral-500 mt-1">
-              <span className="text-emerald-400">ravaka@portfolio:~$</span>
+              <span className="text-emerald-400">manDev@portfolio:~$</span>
               <span className="inline-block w-2 h-4 bg-cyan-300/80 ml-1 align-middle animate-pulse" />
             </p>
           </div>
