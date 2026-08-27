@@ -71,7 +71,7 @@ function BrandLoader() {
           <div className="absolute inset-2 rounded-full bg-gradient-to-r from-cyan-400 via-cyan-300 to-fuchsia-400 p-[1px]">
             <div className="w-full h-full rounded-full bg-neutral-950 flex items-center justify-center">
               <span className="text-3xl font-bold bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">
-                <img src="/favicon.png" alt="LOGO" />
+                T
               </span>
             </div>
           </div>
