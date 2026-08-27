@@ -34,6 +34,21 @@ const skillColors = {
   Express: '#FFFFFF',
 };
 
+// Regroupement par catégorie pour l'affichage "bar list éditorial"
+const skillCategories = {
+  React: 'Frontend',
+  JavaScript: 'Frontend',
+  TypeScript: 'Frontend',
+  Tailwind: 'Frontend',
+  Laravel: 'Backend',
+  PHP: 'Backend',
+  Symfony: 'Backend',
+  Node: 'Backend',
+  Express: 'Backend',
+  MySQL: 'Base de données',
+};
+const CATEGORY_ORDER = ['Frontend', 'Backend', 'Base de données', 'Autres'];
+
 export default function Home() {
   const navigate = useNavigate();
   const [featuredProjects, setFeaturedProjects] = useState([]);
@@ -74,6 +89,14 @@ export default function Home() {
   }, []);
 
   const skeletonArray = Array(6).fill(0); // 6 skeletons
+
+  // Grouper les compétences par catégorie (Frontend / Backend / Base de données / Autres)
+  const groupedSkills = publicSkills.reduce((acc, skill) => {
+    const cat = skillCategories[skill.name] || 'Autres';
+    if (!acc[cat]) acc[cat] = [];
+    acc[cat].push(skill);
+    return acc;
+  }, {});
 
 
   const [aboutMe, setAboutMe] = useState(null);
@@ -251,83 +274,71 @@ export default function Home() {
                   viewport={{ once: true, amount: 0.3 }}
                   variants={fadeUp}
                 >
-                  <WindowFrame title="neofetch" breadcrumb="Accueil > Compétences" bodyClassName="p-6 sm:p-10">
+                  <WindowFrame title="Compétences" breadcrumb="Accueil > Compétences" bodyClassName="p-6 sm:p-10">
                     <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">STACK</p>
-                    <h2 className="font-display text-2xl sm:text-3xl font-semibold text-white mb-10">
+                    <h2 className="font-display text-2xl sm:text-3xl font-semibold text-white mb-12">
                       Mes <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Compétences</span>
                     </h2>
 
-                    {/* Bloc "neofetch" — ASCII + specs + palette de compétences */}
-                    <div className="rounded-xl border border-white/10 bg-black/30 overflow-hidden">
-                      <div className="flex items-center gap-2 px-4 h-9 bg-white/[0.03] border-b border-white/10">
-                        <span className="text-[11px] font-mono text-neutral-500">ravaka@portfolio: neofetch</span>
-                      </div>
-
-                      <div className="p-5 sm:p-8 font-mono text-[12.5px] sm:text-[13px]">
-                        <div className="flex flex-col sm:flex-row gap-8 sm:gap-10">
-
-                          {/* ASCII art */}
-                          <div className="shrink-0 flex justify-center sm:block">
-                            <pre className="leading-[1.15] text-cyan-300/80 select-none text-[10px] sm:text-[11px]">
-{`    .-------.
-   /  .---.  \\
-  |  |     |  |
-  |  | RTM |  |
-  |  |     |  |
-   \\  '---'  /
-    '--\`-'--'
-    /  |||  \\
-   /___|||___\\`}
-                            </pre>
-                          </div>
-
-                          {/* Specs */}
-                          <div className="flex-1 min-w-0">
-                            <p className="text-white font-semibold mb-1">
-                              ravaka<span className="text-cyan-300">@</span>portfolio
-                            </p>
-                            <p className="text-neutral-700 mb-3">{'-'.repeat(26)}</p>
-
-                            <div className="space-y-1.5 text-neutral-300">
-                              <div><span className="text-cyan-300">OS</span><span className="text-neutral-600">: </span>RavakaOS (Web Dev Edition)</div>
-                              <div><span className="text-cyan-300">Host</span><span className="text-neutral-600">: </span>Développeur Full-Stack</div>
-                              <div><span className="text-cyan-300">Location</span><span className="text-neutral-600">: </span>{aboutMe?.location || 'Antananarivo, Madagascar'}</div>
-                              <div><span className="text-cyan-300">Shell</span><span className="text-neutral-600">: </span>JavaScript / PHP</div>
-                              <div><span className="text-cyan-300">Packages</span><span className="text-neutral-600">: </span>{skillsLoading ? '…' : `${publicSkills.length} technologies`}</div>
+                    {/* Bar list éditoriale, groupée par catégorie — sans cards */}
+                    <div className="space-y-11">
+                      {skillsLoading ? (
+                        <div className="space-y-4">
+                          {skeletonArray.map((_, index) => (
+                            <div key={index} className="flex items-center gap-4">
+                              <div className="w-28 sm:w-36 h-4 bg-white/10 rounded animate-pulse shrink-0" />
+                              <div className="flex-1 h-[3px] bg-white/5 rounded-full overflow-hidden">
+                                <div className="h-full w-1/3 bg-white/10 animate-pulse" />
+                              </div>
+                              <div className="w-8 h-3 bg-white/10 rounded animate-pulse shrink-0" />
                             </div>
-
-                            <p className="text-neutral-700 mt-4 mb-3">{'-'.repeat(26)}</p>
-
-                            {/* Palette de compétences */}
-                            <div className="flex flex-wrap gap-x-6 gap-y-3">
-                              {skillsLoading
-                                ? skeletonArray.map((_, index) => (
-                                  <div key={index} className="flex items-center gap-2">
-                                    <span className="w-3.5 h-3.5 rounded-sm bg-white/10 animate-pulse" />
-                                    <span className="h-3 w-20 bg-white/10 rounded animate-pulse" />
-                                  </div>
-                                ))
-                                : publicSkills.map((skill, index) => {
+                          ))}
+                        </div>
+                      ) : (
+                        CATEGORY_ORDER.map((category) => {
+                          const items = groupedSkills[category];
+                          if (!items || !items.length) return null;
+                          return (
+                            <div key={category}>
+                              <h3 className="text-[11px] font-mono tracking-widest text-neutral-500 uppercase mb-5 pb-2.5 border-b border-white/10">
+                                {category}
+                              </h3>
+                              <div className="space-y-5">
+                                {items.map((skill, index) => {
                                   const color = skillColors[skill.name] || '#22d3ee';
                                   return (
                                     <motion.div
-                                      key={index}
-                                      initial={{ opacity: 0, y: 8 }}
+                                      key={skill.name}
+                                      initial={{ opacity: 0, y: 12 }}
                                       whileInView={{ opacity: 1, y: 0 }}
                                       viewport={{ once: true, amount: 0.3 }}
-                                      transition={{ duration: 0.35, delay: index * 0.05 }}
-                                      className="flex items-center gap-2"
+                                      transition={{ duration: 0.4, delay: index * 0.06 }}
+                                      className="flex items-center gap-4 sm:gap-6"
                                     >
-                                      <span className="w-3.5 h-3.5 rounded-sm shrink-0" style={{ backgroundColor: color, boxShadow: `0 0 8px ${color}55` }} />
-                                      <span className="text-neutral-300">{skill.name}</span>
-                                      <span className="text-neutral-600">{skill.level}%</span>
+                                      <span className="w-24 sm:w-36 shrink-0 text-sm text-neutral-200 font-medium">
+                                        {skill.name}
+                                      </span>
+                                      <div className="flex-1 h-[3px] bg-white/5 rounded-full overflow-hidden">
+                                        <motion.div
+                                          initial={{ width: 0 }}
+                                          whileInView={{ width: `${skill.level}%` }}
+                                          viewport={{ once: true }}
+                                          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 + index * 0.05 }}
+                                          className="h-full rounded-full"
+                                          style={{ backgroundColor: color }}
+                                        />
+                                      </div>
+                                      <span className="w-9 shrink-0 text-right text-xs font-mono text-neutral-500">
+                                        {skill.level}%
+                                      </span>
                                     </motion.div>
                                   );
                                 })}
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      </div>
+                          );
+                        })
+                      )}
                     </div>
                   </WindowFrame>
                 </motion.div>
