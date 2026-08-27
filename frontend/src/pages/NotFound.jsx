@@ -29,7 +29,7 @@ export default function NotFound() {
           {/* Simulation d'erreur terminal */}
           <div className="rounded-xl border border-white/10 bg-black/30 font-mono text-[13px] text-left p-4 mb-8 overflow-x-auto">
             <p className="text-neutral-300">
-              <span className="text-emerald-400">ravaka@portfolio:~$</span> cd {window.location.pathname}
+              <span className="text-emerald-400">manDev@portfolio:~$</span> cd {window.location.pathname}
             </p>
             <p className="text-rose-400 mt-1">
               bash: cd: {window.location.pathname}: Aucun fichier ou dossier de ce type

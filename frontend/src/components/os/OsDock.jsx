@@ -58,7 +58,7 @@ export default function OsDock() {
         </button>
       ))}
 
-      <div className="flex-1" />
+      {/* <div className="flex-1" />
 
       <div className="relative">
         <button
@@ -79,7 +79,7 @@ export default function OsDock() {
             Aucun bug à supprimer 😄
           </div>
         )}
-      </div>
+      </div> */}
     </aside>
   );
 }
