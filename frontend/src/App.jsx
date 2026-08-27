@@ -33,13 +33,53 @@ const ProjectFormPage = lazy(() => import('./pages/admin/ProjectFormPage'))
 // Écran d'attente minimal pendant le chargement des chunks
 function RouteLoader() {
   return (
-    <div className="min-h-screen bg-neutral-950 flex items-center justify-center">
-      <div className="flex items-center gap-2 text-neutral-400 font-mono text-sm">
-        <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-        Chargement...
+    <div className="fixed inset-0 z-[9999] bg-neutral-950 flex items-center justify-center overflow-hidden">
+      
+      {/* Background glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/3 left-1/3 w-40 h-40 bg-fuchsia-500/10 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative flex flex-col items-center">
+
+        {/* Logo loader */}
+        <div className="relative w-20 h-20 mb-6">
+
+          {/* Rotating ring */}
+          <div className="absolute inset-0 rounded-full border border-cyan-400/20" />
+
+          <div className="absolute inset-0 rounded-full border-t-2 border-cyan-400 animate-spin" />
+
+          {/* Logo / Initial */}
+          <div className="absolute inset-2 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl flex items-center justify-center">
+            <span className="font-display text-xl font-bold bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">
+              T
+            </span>
+          </div>
+        </div>
+
+        {/* Brand */}
+        <div className="text-center">
+          <p className="text-white font-semibold tracking-wide">
+            TsiryWeb Studio
+          </p>
+
+          <p className="mt-2 text-[11px] font-mono tracking-[0.25em] text-neutral-500 uppercase">
+            Initialisation...
+          </p>
+        </div>
+
+        {/* Loading dots */}
+        <div className="flex items-center gap-1.5 mt-5">
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce [animation-delay:-0.3s]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce [animation-delay:-0.15s]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-400 animate-bounce" />
+        </div>
+
       </div>
     </div>
-  );
+  )
 }
 
 function App() {
