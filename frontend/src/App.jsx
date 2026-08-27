@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import { ThemeProvider } from './contexts/ThemeContext'
 import Layout from './components/Layout'
 import OsPageLayout from './components/os/OsPageLayout'
@@ -32,6 +32,17 @@ const ProjectFormPage = lazy(() => import('./pages/admin/ProjectFormPage'))
 
 // Écran d'attente minimal pendant le chargement des chunks
 function RouteLoader() {
+  const [showLoader, setShowLoader] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoader(false)
+    }, 5000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (!showLoader) return null
   return (
     <div className="fixed inset-0 z-[9999] bg-neutral-950 flex items-center justify-center overflow-hidden">
       
