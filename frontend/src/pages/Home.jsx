@@ -297,7 +297,7 @@ export default function Home() {
                                 </div>
                               </div>
                               <span className="mt-3 text-sm text-neutral-300 text-center">
-                                <img src={skill.logo} alt="LOGO" className='w-20 h-20 object-cover' />
+                                <img src={skill.logo} alt="" className='w-8 h-8 object-cover' />
                                 {skill.name}
                               </span>
                             </motion.div>
