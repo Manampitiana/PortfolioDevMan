@@ -96,7 +96,7 @@ export default function About() {
         />
       </Helmet>
 
-      <WindowFrame title="About Me" breadcrumb="Accueil > À propos" className="mt-2 mb-10">
+      <WindowFrame title="À propos de moi" breadcrumb="Accueil > À propos" className="mt-2 mb-10">
       <div className="bg-neutral-950">
         {/* Hero Section */}
         <section className="relative pt-10 pb-16 px-4 sm:px-8 bg-neutral-950 border-b border-white/5 overflow-hidden">
