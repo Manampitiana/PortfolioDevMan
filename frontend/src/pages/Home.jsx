@@ -253,56 +253,109 @@ export default function Home() {
                 >
                   <WindowFrame title="Compétences" breadcrumb="Accueil > Compétences" bodyClassName="p-6 sm:p-10">
                     <p className="text-[11px] font-mono tracking-widest text-cyan-300 mb-3">STACK</p>
-                    <h2 className="font-display text-2xl sm:text-3xl font-semibold text-white mb-12">
+                    <h2 className="font-display text-2xl sm:text-3xl font-semibold text-white mb-10">
                       Mes <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Compétences</span>
                     </h2>
 
-                    {/* Grille de cercles de progression — sans logos, sans cards */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-y-10 gap-x-6">
-                      {skillsLoading
-                        ? skeletonArray.map((_, index) => (
-                          <div key={index} className="flex flex-col items-center">
-                            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white/5 animate-pulse" />
-                            <div className="mt-3 h-3 w-16 bg-white/10 rounded animate-pulse" />
+                    {/* Bloc "éditeur de code" — onglet + gouttière de lignes + JSON coloré + logos */}
+                    <div className="rounded-xl border border-white/10 bg-[#0b0e14] overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+                      {/* Barre d'onglet façon VS Code */}
+                      <div className="flex items-center px-3 h-10 bg-white/[0.03] border-b border-white/10">
+                        <div className="flex items-center gap-2 bg-white/[0.06] px-3 h-8 rounded-t-md border-t border-x border-white/10 -mb-px">
+                          <span className="w-2 h-2 rounded-full bg-amber-400/80 shrink-0" />
+                          <span className="text-[12px] font-mono text-neutral-300">skills.json</span>
+                        </div>
+                      </div>
+
+                      <div className="overflow-x-auto">
+                        <div className="min-w-[460px] font-mono text-[13px] leading-8 py-4">
+                          <div className="flex px-2">
+                            <span className="w-9 shrink-0 text-right pr-4 text-neutral-700 select-none">1</span>
+                            <span className="text-neutral-600 italic">
+                              // {skillsLoading ? '…' : publicSkills.length} technologies maîtrisées
+                            </span>
                           </div>
-                        ))
-                        : publicSkills.map((skill, index) => {
-                          const color = skillColors[skill.name] || '#22d3ee';
-                          const r = 34;
-                          const circumference = 2 * Math.PI * r;
-                          return (
-                            <motion.div
-                              key={skill.name}
-                              initial={{ opacity: 0, y: 16 }}
-                              whileInView={{ opacity: 1, y: 0 }}
-                              viewport={{ once: true, amount: 0.3 }}
-                              transition={{ duration: 0.4, delay: index * 0.06 }}
-                              className="flex flex-col items-center"
-                            >
-                              <div className="relative w-20 h-20 sm:w-24 sm:h-24">
-                                <svg viewBox="0 0 80 80" className="w-full h-full -rotate-90">
-                                  <circle cx="40" cy="40" r={r} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
-                                  <motion.circle
-                                    cx="40" cy="40" r={r} fill="none" stroke={color} strokeWidth="6" strokeLinecap="round"
-                                    strokeDasharray={circumference}
-                                    initial={{ strokeDashoffset: circumference }}
-                                    whileInView={{ strokeDashoffset: circumference * (1 - skill.level / 100) }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.15 + index * 0.06 }}
-                                    style={{ filter: `drop-shadow(0 0 6px ${color}66)` }}
-                                  />
-                                </svg>
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                  <span className="text-sm sm:text-base font-mono font-semibold text-white">{skill.level}%</span>
+                          <div className="flex px-2">
+                            <span className="w-9 shrink-0 text-right pr-4 text-neutral-700 select-none">2</span>
+                            <span className="text-neutral-400">{'{'}</span>
+                          </div>
+                          <div className="flex px-2">
+                            <span className="w-9 shrink-0 text-right pr-4 text-neutral-700 select-none">3</span>
+                            <span className="pl-4 text-sky-300">"developer"</span>
+                            <span className="text-neutral-500">:</span>
+                            <span className="text-emerald-300">&nbsp;"Ravaka Tsiriniaina"</span>
+                            <span className="text-neutral-500">,</span>
+                          </div>
+                          <div className="flex px-2">
+                            <span className="w-9 shrink-0 text-right pr-4 text-neutral-700 select-none">4</span>
+                            <span className="pl-4 text-sky-300">"stack"</span>
+                            <span className="text-neutral-500">: [</span>
+                          </div>
+
+                          {skillsLoading
+                            ? skeletonArray.map((_, index) => (
+                              <div key={index} className="flex items-center gap-3 pl-16 pr-6 py-1.5">
+                                <div className="w-4 h-4 rounded bg-white/10 animate-pulse shrink-0" />
+                                <div className="h-3.5 w-40 bg-white/10 rounded animate-pulse" />
+                                <div className="h-1.5 flex-1 bg-white/5 rounded-full overflow-hidden">
+                                  <div className="h-full w-1/3 bg-white/10 animate-pulse" />
                                 </div>
                               </div>
-                              <span className="mt-3 text-sm text-neutral-300 text-center">
-                                <img src={skill.logo} alt="" className='w-8 h-8 object-cover' />
-                                {skill.name}
-                              </span>
-                            </motion.div>
-                          );
-                        })}
+                            ))
+                            : publicSkills.map((skill, index) => {
+                              const color = skillColors[skill.name] || '#22d3ee';
+                              return (
+                                <motion.div
+                                  key={skill.name}
+                                  initial={{ opacity: 0, x: -12 }}
+                                  whileInView={{ opacity: 1, x: 0 }}
+                                  viewport={{ once: true, amount: 0.3 }}
+                                  transition={{ duration: 0.4, delay: index * 0.06 }}
+                                  className="flex items-center gap-2 px-2 flex-wrap sm:flex-nowrap rounded hover:bg-white/[0.03] transition-colors"
+                                >
+                                  <span className="w-9 shrink-0 text-right pr-4 text-neutral-700 select-none">{index + 5}</span>
+                                  <span className="pl-4 shrink-0 flex items-center">
+                                    {skill.logo ? (
+                                      <img src={skill.logo} alt="" className="w-4 h-4 object-contain rounded-[3px]" />
+                                    ) : (
+                                      <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: color }} />
+                                    )}
+                                  </span>
+                                  <span className="text-neutral-500 shrink-0">&nbsp;{'{ '}</span>
+                                  <span className="text-sky-300 shrink-0">"name"</span>
+                                  <span className="text-neutral-500 shrink-0">:</span>
+                                  <span className="text-emerald-300 shrink-0">&nbsp;"{skill.name}"</span>
+                                  <span className="text-neutral-500 shrink-0">,</span>
+                                  <span className="text-sky-300 shrink-0">&nbsp;"level"</span>
+                                  <span className="text-neutral-500 shrink-0">:</span>
+                                  <span className="shrink-0 font-semibold" style={{ color }}>&nbsp;{skill.level}</span>
+                                  <span className="text-neutral-500 shrink-0">{' },'}</span>
+
+                                  <div className="flex-1 min-w-[70px] h-1.5 bg-white/5 rounded-full overflow-hidden ml-2">
+                                    <motion.div
+                                      initial={{ width: 0 }}
+                                      whileInView={{ width: `${skill.level}%` }}
+                                      viewport={{ once: true }}
+                                      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 + index * 0.05 }}
+                                      className="h-full rounded-full"
+                                      style={{ backgroundColor: color, boxShadow: `0 0 10px ${color}66` }}
+                                    />
+                                  </div>
+                                </motion.div>
+                              );
+                            })}
+
+                          <div className="flex px-2">
+                            <span className="w-9 shrink-0 text-right pr-4 text-neutral-700 select-none">{publicSkills.length + 5}</span>
+                            <span className="text-neutral-400">]</span>
+                          </div>
+                          <div className="flex px-2">
+                            <span className="w-9 shrink-0 text-right pr-4 text-neutral-700 select-none">{publicSkills.length + 6}</span>
+                            <span className="text-neutral-400">{'}'}</span>
+                            <span className="inline-block w-2 h-4 bg-cyan-300/80 ml-1 animate-pulse" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </WindowFrame>
                 </motion.div>
