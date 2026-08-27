@@ -34,21 +34,6 @@ const skillColors = {
   Express: '#FFFFFF',
 };
 
-// Regroupement par catégorie pour l'affichage "bar list éditorial"
-const skillCategories = {
-  React: 'Frontend',
-  JavaScript: 'Frontend',
-  TypeScript: 'Frontend',
-  Tailwind: 'Frontend',
-  Laravel: 'Backend',
-  PHP: 'Backend',
-  Symfony: 'Backend',
-  Node: 'Backend',
-  Express: 'Backend',
-  MySQL: 'Base de données',
-};
-const CATEGORY_ORDER = ['Frontend', 'Backend', 'Base de données', 'Autres'];
-
 export default function Home() {
   const navigate = useNavigate();
   const [featuredProjects, setFeaturedProjects] = useState([]);
@@ -89,14 +74,6 @@ export default function Home() {
   }, []);
 
   const skeletonArray = Array(6).fill(0); // 6 skeletons
-
-  // Grouper les compétences par catégorie (Frontend / Backend / Base de données / Autres)
-  const groupedSkills = publicSkills.reduce((acc, skill) => {
-    const cat = skillCategories[skill.name] || 'Autres';
-    if (!acc[cat]) acc[cat] = [];
-    acc[cat].push(skill);
-    return acc;
-  }, {});
 
 
   const [aboutMe, setAboutMe] = useState(null);
@@ -280,65 +257,49 @@ export default function Home() {
                       Mes <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">Compétences</span>
                     </h2>
 
-                    {/* Bar list éditoriale, groupée par catégorie — sans cards */}
-                    <div className="space-y-11">
-                      {skillsLoading ? (
-                        <div className="space-y-4">
-                          {skeletonArray.map((_, index) => (
-                            <div key={index} className="flex items-center gap-4">
-                              <div className="w-28 sm:w-36 h-4 bg-white/10 rounded animate-pulse shrink-0" />
-                              <div className="flex-1 h-[3px] bg-white/5 rounded-full overflow-hidden">
-                                <div className="h-full w-1/3 bg-white/10 animate-pulse" />
-                              </div>
-                              <div className="w-8 h-3 bg-white/10 rounded animate-pulse shrink-0" />
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        CATEGORY_ORDER.map((category) => {
-                          const items = groupedSkills[category];
-                          if (!items || !items.length) return null;
+                    {/* Grille de cercles de progression — sans logos, sans cards */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-y-10 gap-x-6">
+                      {skillsLoading
+                        ? skeletonArray.map((_, index) => (
+                          <div key={index} className="flex flex-col items-center">
+                            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white/5 animate-pulse" />
+                            <div className="mt-3 h-3 w-16 bg-white/10 rounded animate-pulse" />
+                          </div>
+                        ))
+                        : publicSkills.map((skill, index) => {
+                          const color = skillColors[skill.name] || '#22d3ee';
+                          const r = 34;
+                          const circumference = 2 * Math.PI * r;
                           return (
-                            <div key={category}>
-                              <h3 className="text-[11px] font-mono tracking-widest text-neutral-500 uppercase mb-5 pb-2.5 border-b border-white/10">
-                                {category}
-                              </h3>
-                              <div className="space-y-5">
-                                {items.map((skill, index) => {
-                                  const color = skillColors[skill.name] || '#22d3ee';
-                                  return (
-                                    <motion.div
-                                      key={skill.name}
-                                      initial={{ opacity: 0, y: 12 }}
-                                      whileInView={{ opacity: 1, y: 0 }}
-                                      viewport={{ once: true, amount: 0.3 }}
-                                      transition={{ duration: 0.4, delay: index * 0.06 }}
-                                      className="flex items-center gap-4 sm:gap-6"
-                                    >
-                                      <span className="w-24 sm:w-36 shrink-0 text-sm text-neutral-200 font-medium">
-                                        {skill.name}
-                                      </span>
-                                      <div className="flex-1 h-[3px] bg-white/5 rounded-full overflow-hidden">
-                                        <motion.div
-                                          initial={{ width: 0 }}
-                                          whileInView={{ width: `${skill.level}%` }}
-                                          viewport={{ once: true }}
-                                          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 + index * 0.05 }}
-                                          className="h-full rounded-full"
-                                          style={{ backgroundColor: color }}
-                                        />
-                                      </div>
-                                      <span className="w-9 shrink-0 text-right text-xs font-mono text-neutral-500">
-                                        {skill.level}%
-                                      </span>
-                                    </motion.div>
-                                  );
-                                })}
+                            <motion.div
+                              key={skill.name}
+                              initial={{ opacity: 0, y: 16 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true, amount: 0.3 }}
+                              transition={{ duration: 0.4, delay: index * 0.06 }}
+                              className="flex flex-col items-center"
+                            >
+                              <div className="relative w-20 h-20 sm:w-24 sm:h-24">
+                                <svg viewBox="0 0 80 80" className="w-full h-full -rotate-90">
+                                  <circle cx="40" cy="40" r={r} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
+                                  <motion.circle
+                                    cx="40" cy="40" r={r} fill="none" stroke={color} strokeWidth="6" strokeLinecap="round"
+                                    strokeDasharray={circumference}
+                                    initial={{ strokeDashoffset: circumference }}
+                                    whileInView={{ strokeDashoffset: circumference * (1 - skill.level / 100) }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.15 + index * 0.06 }}
+                                    style={{ filter: `drop-shadow(0 0 6px ${color}66)` }}
+                                  />
+                                </svg>
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                  <span className="text-sm sm:text-base font-mono font-semibold text-white">{skill.level}%</span>
+                                </div>
                               </div>
-                            </div>
+                              <span className="mt-3 text-sm text-neutral-300 text-center">{skill.name}</span>
+                            </motion.div>
                           );
-                        })
-                      )}
+                        })}
                     </div>
                   </WindowFrame>
                 </motion.div>
