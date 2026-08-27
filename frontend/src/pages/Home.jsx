@@ -296,7 +296,10 @@ export default function Home() {
                                   <span className="text-sm sm:text-base font-mono font-semibold text-white">{skill.level}%</span>
                                 </div>
                               </div>
-                              <span className="mt-3 text-sm text-neutral-300 text-center">{skill.name}</span>
+                              <span className="mt-3 text-sm text-neutral-300 text-center">
+                                <img src={skill.logo} alt="LOGO" className='w-20 h-20 object-cover' />
+                                {skill.name}
+                              </span>
                             </motion.div>
                           );
                         })}
