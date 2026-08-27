@@ -41,7 +41,7 @@ export default function OsDock() {
   ];
 
   return (
-    <aside className="hidden md:flex flex-col items-center w-20 shrink-0 py-6 gap-3 bg-black/25 backdrop-blur-xl border-r border-white/10 relative z-20 sticky top-11 self-start h-[calc(100vh-2.75rem)] overflow-y-auto">
+    <aside className="hidden md:flex flex-col items-center w-20 shrink-0 py-6 gap-3 bg-black/25 backdrop-blur-xl border-r border-white/10 relative z-20 sticky top-11 self-start h-[calc(100vh-2.75rem)]">
       {items.map(({ label, icon: Icon, color, onClick }) => (
         <button
           key={label}
@@ -58,7 +58,7 @@ export default function OsDock() {
         </button>
       ))}
 
-      {/* <div className="flex-1" />
+      <div className="flex-1" />
 
       <div className="relative">
         <button
@@ -79,7 +79,7 @@ export default function OsDock() {
             Aucun bug à supprimer 😄
           </div>
         )}
-      </div> */}
+      </div>
     </aside>
   );
 }

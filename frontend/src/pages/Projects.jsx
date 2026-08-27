@@ -166,7 +166,7 @@ export default function Projects() {
           href="https://portfolio-dev-man.vercel.app/projects"
         />
       </Helmet>
-      <WindowFrame title="Projets" breadcrumb="Accueil > Projets" className="mt-2 mb-10">
+      <WindowFrame title="Projects" breadcrumb="Accueil > Projets" className="mt-2 mb-10">
       <div className="bg-neutral-950">
         {/* Hero Section */}
         <section className="relative pt-10 pb-16 px-4 sm:px-8 bg-neutral-950 border-b border-white/5 overflow-hidden">

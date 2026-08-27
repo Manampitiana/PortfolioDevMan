@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import WindowFrame from './WindowFrame';
 
-const PROMPT = 'manDev@portfolio:~$';
+const PROMPT = 'ravaka@portfolio:~$';
 
 export default function Terminal({ aboutMe, skills = [], projects = [] }) {
   const navigate = useNavigate();
