@@ -4,9 +4,14 @@ import {
     PencilIcon,
     TrashIcon,
     FolderOpenIcon,
+    XMarkIcon,
+    CalendarIcon,
+    UserIcon,
+    ArrowTopRightOnSquareIcon,
+    CodeBracketIcon,
 } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import axiosClient from '../../axios';
 import { Loader } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -33,6 +38,7 @@ export default function AdminProject() {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [deletingId, setDeletingId] = useState(null);
+    const [previewProject, setPreviewProject] = useState(null); // projet affiché dans le modal "Aperçu"
 
     const fetchProjects = async () => {
         setLoading(true);
@@ -120,6 +126,7 @@ export default function AdminProject() {
                                     project={project}
                                     index={index}
                                     onDelete={handleDelete}
+                                    onPreview={setPreviewProject}
                                     deleting={deletingId === project.id}
                                 />
                             ))}
@@ -130,12 +137,15 @@ export default function AdminProject() {
                             <ProjectTable
                                 projects={projects}
                                 onDelete={handleDelete}
+                                onPreview={setPreviewProject}
                                 deletingId={deletingId}
                             />
                         </div>
                     </>
                 )}
             </div>
+
+            <ProjectPreviewModal project={previewProject} onClose={() => setPreviewProject(null)} />
         </div>
     );
 }
@@ -182,12 +192,12 @@ function TechChips({ technologies, max = 3 }) {
     );
 }
 
-function ActionButtons({ project, onDelete, deleting }) {
+function ActionButtons({ project, onDelete, onPreview, deleting }) {
     return (
         <div className="flex items-center gap-1.5">
             <button
                 title="Aperçu"
-                onClick={() => window.open(`/projects/${project.slug}`, '_blank', 'noopener,noreferrer')}
+                onClick={() => onPreview(project)}
                 className="p-2 text-cyan-300 hover:bg-cyan-400/10 rounded-lg transition-colors"
             >
                 <EyeIcon className="w-4 h-4" />
@@ -215,7 +225,7 @@ function ActionButtons({ project, onDelete, deleting }) {
     );
 }
 
-function ProjectCard({ project, index, onDelete, deleting }) {
+function ProjectCard({ project, index, onDelete, onPreview, deleting }) {
     return (
         <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -266,13 +276,13 @@ function ProjectCard({ project, index, onDelete, deleting }) {
                         </a>
                     )}
                 </div>
-                <ActionButtons project={project} onDelete={onDelete} deleting={deleting} />
+                <ActionButtons project={project} onDelete={onDelete} onPreview={onPreview} deleting={deleting} />
             </div>
         </motion.div>
     );
 }
 
-function ProjectTable({ projects, onDelete, deletingId }) {
+function ProjectTable({ projects, onDelete, onPreview, deletingId }) {
     return (
         <div className="bg-white/[0.03] border border-white/10 backdrop-blur-xl rounded-2xl overflow-hidden">
             <div className="overflow-x-auto" style={{ scrollbarWidth: 'thin', scrollbarColor: '#4B5563 transparent' }}>
@@ -341,7 +351,7 @@ function ProjectTable({ projects, onDelete, deletingId }) {
                                 </td>
                                 <td className="py-3.5 px-4">
                                     <div className="flex justify-end">
-                                        <ActionButtons project={project} onDelete={onDelete} deleting={deletingId === project.id} />
+                                        <ActionButtons project={project} onDelete={onDelete} onPreview={onPreview} deleting={deletingId === project.id} />
                                     </div>
                                 </td>
                             </motion.tr>
@@ -350,5 +360,167 @@ function ProjectTable({ projects, onDelete, deletingId }) {
                 </table>
             </div>
         </div>
+    );
+}
+
+// Modal "Aperçu" propre à l'Admin — affiche TOUTES les infos (même un projet en Brouillon/Archivé,
+// qui ne serait pas visible sur la page publique /projects/:slug)
+function ProjectPreviewModal({ project, onClose }) {
+    if (!project) return null;
+
+    const technologies = safeParseJSON(project.technologies);
+    const gallery = safeParseJSON(project.gallery);
+
+    return (
+        <AnimatePresence>
+            {project && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                    onClick={onClose}
+                >
+                    <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.96, y: 12 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.96, y: 12 }}
+                        transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                        onClick={(e) => e.stopPropagation()}
+                        className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-neutral-900 border border-white/10 rounded-2xl shadow-2xl"
+                    >
+                        {/* En-tête sticky */}
+                        <div className="sticky top-0 z-10 flex items-center justify-between gap-3 px-5 sm:px-6 h-14 bg-neutral-900/95 backdrop-blur-xl border-b border-white/10">
+                            <div className="flex items-center gap-2 min-w-0">
+                                <span className="text-white font-medium text-sm truncate">{project.title}</span>
+                                <StatusPill status={project.status} />
+                                {project.is_current && (
+                                    <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-violet-400/10 border border-violet-400/20 text-violet-300 shrink-0">
+                                        En cours
+                                    </span>
+                                )}
+                            </div>
+                            <button
+                                onClick={onClose}
+                                className="p-1.5 text-neutral-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors shrink-0"
+                            >
+                                <XMarkIcon className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <div className="p-5 sm:p-6">
+                            {project.cover_image ? (
+                                <img
+                                    src={project.cover_image}
+                                    alt={project.title}
+                                    className="w-full h-56 sm:h-64 object-cover rounded-xl border border-white/10 mb-6"
+                                />
+                            ) : (
+                                <div className="w-full h-40 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6">
+                                    <FolderOpenIcon className="w-10 h-10 text-neutral-600" />
+                                </div>
+                            )}
+
+                            {project.short_description && (
+                                <p className="text-neutral-300 text-sm leading-relaxed mb-5">{project.short_description}</p>
+                            )}
+
+                            {project.description && (
+                                <div className="mb-6">
+                                    <h4 className="text-[11px] font-semibold uppercase tracking-wide text-neutral-500 mb-2">Description</h4>
+                                    <p className="text-neutral-400 text-sm leading-relaxed whitespace-pre-line">{project.description}</p>
+                                </div>
+                            )}
+
+                            {/* Infos clés */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                                <div className="flex items-start gap-2.5 p-3 rounded-xl bg-white/[0.03] border border-white/10">
+                                    <CalendarIcon className="w-4 h-4 text-cyan-300 mt-0.5 shrink-0" />
+                                    <div className="min-w-0">
+                                        <p className="text-[11px] text-neutral-500 uppercase tracking-wide">Période</p>
+                                        <p className="text-neutral-300 text-sm">
+                                            {project.start_date}{project.end_date ? ` → ${project.end_date}` : ' → présent'}
+                                        </p>
+                                    </div>
+                                </div>
+                                {project.client_name && (
+                                    <div className="flex items-start gap-2.5 p-3 rounded-xl bg-white/[0.03] border border-white/10">
+                                        <UserIcon className="w-4 h-4 text-fuchsia-300 mt-0.5 shrink-0" />
+                                        <div className="min-w-0">
+                                            <p className="text-[11px] text-neutral-500 uppercase tracking-wide">Client</p>
+                                            <p className="text-neutral-300 text-sm truncate">{project.client_name}</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Technologies */}
+                            {technologies.length > 0 && (
+                                <div className="mb-6">
+                                    <h4 className="text-[11px] font-semibold uppercase tracking-wide text-neutral-500 mb-2.5">Technologies</h4>
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {technologies.map((tech, i) => (
+                                            <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/20 text-cyan-300">
+                                                {tech}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Galerie */}
+                            {gallery.length > 0 && (
+                                <div className="mb-6">
+                                    <h4 className="text-[11px] font-semibold uppercase tracking-wide text-neutral-500 mb-2.5">Galerie ({gallery.length})</h4>
+                                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                                        {gallery.map((img, i) => (
+                                            <img key={i} src={img} alt={`Galerie ${i + 1}`} className="w-full aspect-square object-cover rounded-lg border border-white/10" />
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Liens + actions */}
+                            <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-white/10">
+                                {project.project_url && (
+                                    <a
+                                        href={project.project_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 text-sm text-cyan-300 hover:text-cyan-200 transition-colors"
+                                    >
+                                        <ArrowTopRightOnSquareIcon className="w-4 h-4" />
+                                        Voir le site
+                                    </a>
+                                )}
+                                {project.github_url && (
+                                    <a
+                                        href={project.github_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 text-sm text-violet-300 hover:text-violet-200 transition-colors"
+                                    >
+                                        <CodeBracketIcon className="w-4 h-4" />
+                                        GitHub
+                                    </a>
+                                )}
+
+                                <div className="flex-1" />
+
+                                <Link
+                                    to={`/admin/edit_projects/${project.id}`}
+                                    className="inline-flex items-center gap-1.5 text-sm bg-white/10 hover:bg-white/15 text-white px-3.5 py-2 rounded-lg transition-colors"
+                                >
+                                    <PencilIcon className="w-4 h-4" />
+                                    Modifier
+                                </Link>
+                            </div>
+                        </div>
+                    </motion.div>
+                </motion.div>
+            )}
+        </AnimatePresence>
     );
 }
