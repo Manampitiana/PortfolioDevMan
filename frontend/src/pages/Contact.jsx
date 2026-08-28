@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { useSettings } from '../contexts/SettingsContext';
 import { Helmet } from 'react-helmet-async';
 import WindowFrame from '../components/os/WindowFrame';
+import { Facebook, Github, Linkedin, Youtube } from 'lucide-react';
 
 export default function Contact() {
   const [aboutMe, setAboutMe] = useState(null);
@@ -81,10 +82,10 @@ export default function Contact() {
   ]
 
   const socialLinks = [
-    { name: 'GitHub', url: 'https://github.com/Manampitiana' },
-    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/manampitiana-ravaka-tsiriniaina-5613b1317' },
-    { name: 'YouTube', url: 'https://www.youtube.com/@ManampitianaTSIRINIAINA' },
-    { name: 'Facebook', url: 'https://www.facebook.com/profile.php?id=100070143253960' }
+    { name: 'GitHub', icon: Github, url: 'https://github.com/Manampitiana', color: '#e5e7eb' },
+    { name: 'LinkedIn', icon: Linkedin, url: 'https://www.linkedin.com/in/manampitiana-ravaka-tsiriniaina-5613b1317', color: '#0A66C2' },
+    { name: 'YouTube', icon: Youtube, url: 'https://www.youtube.com/@ManampitianaTSIRINIAINA', color: '#FF0000' },
+    { name: 'Facebook', icon: Facebook, url: 'https://www.facebook.com/profile.php?id=100070143253960', color: '#1877F2' }
   ]
 
   return (
@@ -295,15 +296,21 @@ export default function Contact() {
                     <h2 className="text-2xl font-bold text-gray-700 dark:text-white mb-6">Retrouvez-moi sur</h2>
 
                     <div className="grid grid-cols-2 gap-4">
-                      {socialLinks.map((social, index) => (
-                        <a
-                          key={index}
-                          href={social.url}
-                          className="p-4 bg-gray-200 dark:bg-gray-700/50 rounded-lg text-center text-gray-700 dark:text-gray-300 hover:bg-cyan-500/20 hover:text-gray-700 dark:hover:text-cyan-300 transition-all duration-300 hover:transform hover:-translate-y-1 border border-neutral-300 dark:border-white/10 font-medium"
-                        >
-                          {social.name}
-                        </a>
-                      ))}
+                      {socialLinks.map((social, index) => {
+                        const IconComponent = social.icon;
+                        return (
+                          <a
+                            key={index}
+                            href={social.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center gap-3 p-4 bg-gray-200 dark:bg-gray-700/50 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-cyan-500/20 hover:text-gray-700 dark:hover:text-cyan-300 transition-all duration-300 hover:transform hover:-translate-y-1 border border-neutral-300 dark:border-white/10 font-medium"
+                          >
+                            <IconComponent className="w-5 h-5 shrink-0" style={{ color: social.color }} />
+                            {social.name}
+                          </a>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
