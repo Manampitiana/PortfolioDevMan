@@ -76,7 +76,7 @@ export default function Footer() {
                   ) : settings?.favicon ? (
                     <img src={settings.favicon} className="w-full h-full object-contain p-1" alt="Favicon" />
                   ) : (
-                    <img src="/logo.png" className="w-full h-full object-contain p-1" alt="Logo par défaut" />
+                    <img src="/logo.webp" className="w-full h-full object-contain p-1" alt="Logo par défaut" />
                   )}
                 </div>
                 <span className="font-display text-white font-semibold text-xl tracking-tight">
