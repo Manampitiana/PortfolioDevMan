@@ -33,7 +33,7 @@ export default function OsTopBar() {
               ) : settings?.favicon ? (
                 <img src={settings.favicon} className="w-full h-full object-contain p-1" alt="Favicon utilisée comme logo" />
               ) : (
-                <img src="/logo.png" className="w-full h-full object-contain p-1" alt="Logo par défaut" />
+                <img src="/logo.webp" className="w-full h-full object-contain p-1" alt="Logo par défaut" />
               )}
             </div>
             <span className="text-white font-display font-semibold text-xl tracking-tight">
