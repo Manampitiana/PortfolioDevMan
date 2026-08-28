@@ -187,6 +187,7 @@ function ActionButtons({ project, onDelete, deleting }) {
         <div className="flex items-center gap-1.5">
             <button
                 title="Aperçu"
+                onClick={() => window.open(`/projects/${project.slug}`, '_blank', 'noopener,noreferrer')}
                 className="p-2 text-cyan-300 hover:bg-cyan-400/10 rounded-lg transition-colors"
             >
                 <EyeIcon className="w-4 h-4" />
