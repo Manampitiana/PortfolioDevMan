@@ -282,7 +282,11 @@ export default function Contact() {
             overflow-wrap-anywhere
           "
                               >
-                                {info.value}
+                                {loading ? (
+                                  <span className="inline-block h-4 w-32 bg-gray-300 dark:bg-white/10 rounded animate-pulse" />
+                                ) : (
+                                  info.value
+                                )}
                               </a>
                             </div>
                           </div>
