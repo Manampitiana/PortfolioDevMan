@@ -96,7 +96,7 @@ export default function About() {
         />
       </Helmet>
 
-      <WindowFrame title="À propos" breadcrumb="Accueil > À propos" className="mt-2 mb-10">
+      <WindowFrame title="About Me" breadcrumb="Accueil > À propos" className="mt-2 mb-10">
       <div className="bg-neutral-950">
         {/* Hero Section */}
         <section className="relative pt-10 pb-16 px-4 sm:px-8 bg-neutral-950 border-b border-white/5 overflow-hidden">
@@ -120,6 +120,24 @@ export default function About() {
               </p>
             </motion.div>
 
+            {loading ? (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start animate-pulse">
+                <div className="text-center lg:text-left">
+                  <div className="w-64 aspect-[4/5] mx-auto lg:mx-0 mb-8 rounded-[28px] bg-white/[0.04] border border-white/10" />
+                  <div className="space-y-3 max-w-xs mx-auto lg:mx-0">
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="h-11 bg-white/[0.03] border border-white/10 rounded-xl" />
+                    ))}
+                  </div>
+                </div>
+                <div className="bg-white/[0.03] border border-white/10 p-8 rounded-2xl space-y-3">
+                  <div className="h-6 w-40 bg-white/10 rounded" />
+                  <div className="h-3 w-full bg-white/10 rounded" />
+                  <div className="h-3 w-full bg-white/10 rounded" />
+                  <div className="h-3 w-2/3 bg-white/10 rounded" />
+                </div>
+              </div>
+            ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
@@ -175,6 +193,7 @@ export default function About() {
                 </div>
               </motion.div>
             </div>
+            )}
           </div>
         </section>
 
