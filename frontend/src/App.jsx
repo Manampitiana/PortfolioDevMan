@@ -22,7 +22,6 @@ const AdminProject = lazy(() => import('./pages/admin/AdminProject'))
 const AdminSkills = lazy(() => import('./pages/admin/AdminSkills'))
 const AdminExperience = lazy(() => import('./pages/admin/AdminExperience'))
 const AdminAboutMe = lazy(() => import('./pages/admin/AdminAboutMe'))
-const AdminGallery = lazy(() => import('./pages/admin/AdminGallery'))
 const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'))
 const AdminMessage = lazy(() => import('./pages/admin/AdminMessage'))
 const ProjectForm = lazy(() => import('./pages/admin/ProjectForm'))
@@ -244,7 +243,6 @@ function App() {
                   <Route path="add_experiences" element={<ExperienceForm />} />
                   <Route path="edit_experiences/:id" element={<ExperienceForm />} />
                   <Route path="about_me" element={<AdminAboutMe />} />
-                  <Route path="gallery" element={<AdminGallery />} />
                   <Route path="settings" element={<AdminSettings />} />
                   <Route path="messages" element={<AdminMessage />} />
                 </Route>
